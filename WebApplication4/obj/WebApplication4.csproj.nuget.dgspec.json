@@ -1,27 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pc\\source\\repos\\WebApplication4\\WebApplication4\\WebApplication4.csproj": {}
+    "/Users/nathan/Downloads/WebApplication4/WebApplication4/WebApplication4.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pc\\source\\repos\\WebApplication4\\WebApplication4\\WebApplication4.csproj": {
+    "/Users/nathan/Downloads/WebApplication4/WebApplication4/WebApplication4.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pc\\source\\repos\\WebApplication4\\WebApplication4\\WebApplication4.csproj",
+        "projectUniqueName": "/Users/nathan/Downloads/WebApplication4/WebApplication4/WebApplication4.csproj",
         "projectName": "WebApplication4",
-        "projectPath": "C:\\Users\\Pc\\source\\repos\\WebApplication4\\WebApplication4\\WebApplication4.csproj",
-        "packagesPath": "C:\\Users\\Pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pc\\source\\repos\\WebApplication4\\WebApplication4\\obj\\",
+        "projectPath": "/Users/nathan/Downloads/WebApplication4/WebApplication4/WebApplication4.csproj",
+        "packagesPath": "/Users/nathan/.nuget/packages/",
+        "outputPath": "/Users/nathan/Downloads/WebApplication4/WebApplication4/obj/",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/nathan/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -57,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.200/RuntimeIdentifierGraph.json"
         }
       }
     }
