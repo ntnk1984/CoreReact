@@ -10,7 +10,7 @@ export default function TotalOrder() {
   const { long, width, height, weight, money, unit, type } =
     context.createOrder.total;
   return (
-    <div className="p-3 rounded-3 mb-3 shadow-sm " style={{ backgroundColor: "#feffe6" }}>
+    <div className="p-3 border border-1 rounded-3 mb-3 shadow-sm " >
       <h6 className=" text-secondary mx-2">TỔNG </h6>
       <Row>
         <Col span={3}>

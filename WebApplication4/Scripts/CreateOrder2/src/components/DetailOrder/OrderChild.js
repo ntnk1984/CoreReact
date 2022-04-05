@@ -6,22 +6,23 @@ import { contextValue } from "../../App.js";
 const { Option } = Select;
 export default function OrderChild(props) {
 
-  let { val, ind } = props.value;
+  let { val, ind,index } = props.value;
   const context=useContext(contextValue)
 
 
   return (
-    <div className="p-3 rounded-3 mb-3 shadow-sm " >
+    <div className="p-3 border border-1 rounded-3 mb-3 shadow-sm " >
       
       <Row className="mb-2">
       
       <h6 className=" text-secondary mt-1 mx-2">#{++ind} </h6>
        
          <Button type="link">Sửa</Button>
-        <Button type="link" danger onChange={()=>{
+        <Button type="link" danger onClick={()=>{
+         
           context.dispatch({
             type:"REMOVE_ORDER_CHILD",
-            payload:{}
+            payload:props
           })
         }}>Xóa</Button>
       </Row>

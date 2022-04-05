@@ -10,6 +10,7 @@ import {
   Menu,
   Select,
   Alert,
+  message,
 } from "antd";
 import { contextValue } from "../App.js";
 import { validate } from "../validate.js";
@@ -21,27 +22,17 @@ const { Option } = Select;
 
 export default function CreateOrderOne() {
   const context = useContext(contextValue);
-const {sendername,
-  senderphone,
-  phoneregioncode,
-  senderaddress,
-  senderemail,
-  sendercountry,
-  sendercity,
-  senderdistrict,senderward}=context.createOrder.sender
-  
-
-
+  const temp = context?.createOrder.sender;
   const [senderInfo, setSenderInfo] = useState({
-    sendername:undefined,
-    senderphone: undefined,
-    phoneregioncode: undefined,
-    senderaddress: undefined,
-    senderemail: undefined,
-    sendercountry: undefined,
-    sendercity: undefined,
-    senderdistrict: undefined,
-    senderward: undefined,
+    sendername: temp.sendername,
+    senderphone: temp.senderphone,
+    phoneregioncode: temp.phoneregioncode,
+    senderaddress: temp.senderaddress,
+    senderemail: temp.senderemail,
+    sendercountry: temp.sendercountry,
+    sendercity: temp.sendercity,
+    senderdistrict: temp.senderdistrict,
+    senderward: temp.senderward,
   });
 
   const handleChangeVal = (e) => {
@@ -51,8 +42,39 @@ const {sendername,
 
   // const [idProvince, setIdProvince] = useState({});
 
+  /*4.5.20 khởi tạo initialValues */
+
+  const initForm = {
+    sendername: senderInfo.sendername,
+    senderphone: senderInfo.senderphone,
+    phoneregioncode: senderInfo.phoneregioncode,
+    senderaddress: senderInfo.senderaddress,
+    senderemail: senderInfo.senderemail,
+    sendercountry: senderInfo.sendercountry,
+    sendercity: senderInfo.sendercity,
+    senderdistrict: senderInfo.senderdistrict,
+    senderward: senderInfo.senderward,
+  };
+
+  /*4.5.20 xử lý submit form  */
+  const onFinish = () => {
+    context.dispatch({
+      type: "ADD_INFO_SENDER",
+      payload: senderInfo,
+    });
+    context.dispatch({ type: "SET_PROGRESS" });
+   
+  };
+
+  const onFinishFailed = () => {
+    message.error("Vui lòng nhập đầy đủ thông tin");
+  };
+
   return (
     <Form
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      initialValues={initForm}
       layout="vertical"
       className="mt-4 rounded rounded-3 p-3 shadow-sm"
       style={{ background: "white" }}
@@ -74,7 +96,7 @@ const {sendername,
               name="sendername"
               size="large"
               placeholder="Vui lòng nhập"
-              value={sendername}
+              value={senderInfo.sendername}
             />
           </Form.Item>
         </Col>
@@ -93,7 +115,7 @@ const {sendername,
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              defaultValue={senderphone}
+              value={senderInfo.senderphone}
             />
           </Form.Item>
         </Col>
@@ -114,7 +136,7 @@ const {sendername,
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              defaultValue={senderemail}
+              value={senderInfo.senderemail}
             />
           </Form.Item>
         </Col>
@@ -133,14 +155,20 @@ const {sendername,
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              defaultValue={phoneregioncode}
+              value={senderInfo.phoneregioncode}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Form.Item className="mx-2" label="Địa chỉ" required>
+          <Form.Item
+            name="senderaddress"
+            rules={[validate.checkRequire()]}
+            className="mx-2"
+            label="Địa chỉ"
+            required
+          >
             <Input
               name="senderaddress"
               size="large"
@@ -148,23 +176,32 @@ const {sendername,
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              defaultValue={senderaddress}
+              value={senderInfo.senderaddress}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Quốc gia" required>
+          <Form.Item
+            name="sendercountry"
+            rules={[validate.checkRequire()]}
+            className="mx-2"
+            label="Quốc gia"
+            required
+          >
             <Select
               name="sendercountry"
               size="large"
-             
               style={{ width: "100%" }}
               onChange={(e) => {
                 setSenderInfo({ ...senderInfo, sendercountry: e });
               }}
-              defaultValue={sendercountry===""?"Vui lòng chọn":sendercountry}
+              value={
+                senderInfo.sendercountry === ""
+                  ? "Vui lòng chọn"
+                  : senderInfo.sendercountry
+              }
             >
               <Option value="VN">Việt Nam</Option>
               <Option value="CAM">Campuchia</Option>
@@ -172,16 +209,25 @@ const {sendername,
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Thành phố/Tỉnh" required>
+          <Form.Item
+            name="sendercity"
+            rules={[validate.checkRequire()]}
+            className="mx-2"
+            label="Thành phố/Tỉnh"
+            required
+          >
             <Select
               name="sendercity"
               size="large"
-              
               style={{ width: "100%" }}
               onChange={(e) => {
                 setSenderInfo({ ...senderInfo, sendercity: e });
               }}
-              defaultValue={sendercity===""?"Vui lòng chọn":sendercity}
+              value={
+                senderInfo.sendercity === ""
+                  ? "Vui lòng chọn"
+                  : senderInfo.sendercity
+              }
             >
               <Option value="P3">Phường 3</Option>
               <Option value="P2">Phường 2</Option>
@@ -189,11 +235,21 @@ const {sendername,
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Quận/Huyện" required>
+          <Form.Item
+            rules={[validate.checkRequire()]}
+            name="senderdistrict"
+            className="mx-2"
+            label="Quận/Huyện"
+            required
+          >
             <Select
               name="senderdistrict"
               size="large"
-              defaultValue={senderdistrict===""?"Vui lòng chọn":senderdistrict}
+              value={
+                senderInfo.senderdistrict === ""
+                  ? "Vui lòng chọn"
+                  : senderInfo.senderdistrict
+              }
               style={{ width: "100%" }}
               onChange={(e) => {
                 setSenderInfo({ ...senderInfo, senderdistrict: e });
@@ -205,11 +261,21 @@ const {sendername,
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Phường/Xã" required>
+          <Form.Item
+            rules={[validate.checkRequire()]}
+            name="senderward"
+            className="mx-2"
+            label="Phường/Xã"
+            required
+          >
             <Select
               name="senderward"
               size="large"
-              defaultValue={senderward===""?"Vui lòng chọn":senderward}
+              value={
+                senderInfo.senderward === ""
+                  ? "Vui lòng chọn"
+                  : senderInfo.senderward
+              }
               style={{ width: "100%" }}
               onChange={(e) => {
                 setSenderInfo({ ...senderInfo, senderward: e });
@@ -221,30 +287,28 @@ const {sendername,
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item className="my-2 ">
-        <Button
-          trigger="click"
-          className="mx-2"
-          size="large"
-          type="primary"
-          onClick={() => {
-            console.log("senderInfo",senderInfo)
-            context.dispatch({
-              type: "ADD_INFO_SENDER",
-              payload: senderInfo,
-            });
-            context.dispatch({ type: "SET_PROGRESS" });
-          }}
-        >
-          Tiếp tục
-        </Button>
-        <Button size="large" type=""  onClick={() => {
-          
-            context.dispatch({ type: "SET_PROGRESS_BACK" });
-          }}>
-          Trở lại
-        </Button>
-      </Form.Item>
+      <Row justify="end">
+        <Form.Item className="my-2 ">
+          <Button
+            size="large"
+            type=""
+            onClick={() => {
+              context.dispatch({ type: "SET_PROGRESS_BACK" });
+            }}
+          >
+            Trở lại
+          </Button>
+          <Button
+            trigger="click"
+            className="mx-2"
+            size="large"
+            type="primary"
+            htmlType="submit"
+          >
+            Tiếp tục
+          </Button>
+        </Form.Item>
+      </Row>
     </Form>
   );
 }

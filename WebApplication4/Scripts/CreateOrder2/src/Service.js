@@ -1,6 +1,6 @@
-export const postOrder = async (data) => {
+export const postOrder =  (data) => {
   let { listOrder, receiver, sender } = data;
-
+  
   //xu li total order
   const temp = [];
   const handleTotalOrder = () => {
@@ -34,7 +34,6 @@ export const postOrder = async (data) => {
   };
 
   handleTotalOrder();
-
   let dataPostJson = {
     orderShippingItems: [
       {
@@ -59,16 +58,14 @@ export const postOrder = async (data) => {
     ],
   };
   dataPostJson = JSON.stringify(dataPostJson);
-  console.log('dataPostJson',dataPostJson)
+  console.log("dataPostJson", dataPostJson);
 
-  fetch(`http://localhost:5020/api/OrderShipping/add-orderShipping`, {
+  return fetch(`http://localhost:5020/api/OrderShipping/add-orderShipping`, {
     method: "POST",
     body: dataPostJson,
     headers: { "Content-Type": "application/json" },
   })
-    .then((res) => res.json().then((rel) => console.log(rel)))
-    .catch((err) => console.log(err));
-
+   
   //   if (res.status === 200) {
   //     res = await res.json();
   //     console.log("Thành công!");
