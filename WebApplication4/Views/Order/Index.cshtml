@@ -1,0 +1,15 @@
+@inject LayoutUtils LUtils
+@model WebApplication4.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";  
+}
+
+<h2>Index</h2>  
+   <div id="root"></div>
+   
+
+@section reactScript  
+{   
+   <script src="~/js/index-bundle.js" ></script>
+}  

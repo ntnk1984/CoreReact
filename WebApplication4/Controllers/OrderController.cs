@@ -1,33 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplication4.Models;
 using WebApplication4.ViewModels;
 
 namespace WebApplication4.Controllers
 {
-    public class HomeController : Controller
+    public class OrderController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<OrderController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public OrderController(ILogger<OrderController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index(string id)
-        {
-            HomeViewModel model = new HomeViewModel();
-            model.AppId = id;
-            return View(model);
-        }
-
-       
-
-
-        public IActionResult Privacy()
+        public IActionResult Index()
         {
             return View();
         }
+
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

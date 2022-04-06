@@ -1,5 +1,4 @@
 using WebApplication4;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,8 +24,21 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+    });
 
 app.Run();
+
+
+
+
+
+
