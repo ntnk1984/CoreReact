@@ -19,7 +19,7 @@ namespace WebApplication4.Controllers
             HomeViewModel model = new HomeViewModel();
             model.AppId = id;
             model.OrderId = orderid;
-            
+
             return View(model);
         }
 
