@@ -151,7 +151,7 @@ export default function App() {
         </Steps>
       
 
-        {handleProgress(createOrder.progress)}
+        {handleProgress(2)}
       </div>
     </contextValue.Provider>
   );

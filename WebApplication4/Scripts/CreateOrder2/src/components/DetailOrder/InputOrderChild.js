@@ -29,14 +29,14 @@ export default function InputOrderChild(props) {
   
 
   return (
-    <div className="p-3 border border-1 rounded-3 mb-3 mt-3 shadow-sm ">
+    <div style={{backgroundColor:"#ffffb8"}}  className="p-3 border border-1 rounded-3 mb-3 mt-3 shadow-sm ">
       <Form
         // onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         // initialValues={{maSP:randString}}
         layout="vertical"
       
-        style={{ background: "white" }}
+       
       
       >
         <Row>

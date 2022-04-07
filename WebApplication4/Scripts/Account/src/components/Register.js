@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 import { validate } from "../validate.js";
 
 import { Form, Input, Button, Row } from "antd";
+import { contextLogin } from "../App.js";
+
 
 export default function Register() {
   const [userInfo, setUserInfo] = useState({
@@ -18,15 +20,15 @@ export default function Register() {
 
   const onFinish = () => {};
   const onFinishFailed = () => {};
-
+const context=useContext(contextLogin)
   return (
-    <Row justify="space-around" style={{ height: 800 }} align="middle">
+    <Row justify="space-around"  >
       <Form
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         layout="vertical"
         className="mt-4 border  shadow-sm rounded rounded-3 p-3"
-        style={{ width: "380px" }}
+        style={{ width: "500px" }}
       >
         <Row style={{ justifyContent: "center" }}>
           <h4 className="text-secondary  mx-2 mb-4">ĐĂNG KÝ TÀI KHOẢN</h4>
@@ -44,7 +46,7 @@ export default function Register() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{ width: "320px" }}
+              style={{ width: "400px" }}
               name="username"
               size="large"
               placeholder="Vui lòng nhập"
@@ -64,7 +66,7 @@ export default function Register() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{ width: "320px" }}
+              style={{ width: "400px" }}
               name="password"
               size="large"
               placeholder="Vui lòng nhập"
@@ -95,7 +97,7 @@ export default function Register() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{ width: "320px" }}
+              style={{ width: "400px" }}
               name="confirmpassword"
               size="large"
               placeholder="Vui lòng nhập"
@@ -107,7 +109,7 @@ export default function Register() {
             trigger="click"
             className="mx-2 my-4"
             size="large"
-            style={{ width: "320px" }}
+            style={{ width: "400px" }}
             type="primary"
           >
             Đăng ký
@@ -118,7 +120,7 @@ export default function Register() {
           style={{ justifyContent: "center", alignItems: "center" }}
         >
           Đã có tài khoản? --
-          <Button type="link" href="">
+          <Button type="link" onClick={()=>{context.dispatch({type:"SIGN_IN"})}}>
             Đăng nhập
           </Button>
         </Row>

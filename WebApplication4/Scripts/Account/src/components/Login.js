@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { validate } from "../validate.js";
 
 import { Form, Input, Button, Row } from "antd";
+import { contextLogin } from "../App.js";
+
+
 
 export default function Login() {
   const [userInfo, setUserInfo] = useState({
@@ -17,14 +20,16 @@ export default function Login() {
 
   const onFinish = () => {};
   const onFinishFailed = () => {};
+  const context=useContext(contextLogin)
+
   return (
-    <Row justify="space-around" style={{ height: 800 }} align="middle">
+    <Row justify="space-around" >
       <Form
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         layout="vertical"
         className="mt-4 border  shadow-sm rounded rounded-3 p-3"
-        style={{ width: "380px" }}
+        style={{ width: "500px" }}
       >
         <Row style={{ justifyContent: "center" }}>
           <h4 className="text-secondary mx-2 my-4">ĐĂNG NHẬP HỆ THỐNG</h4>
@@ -41,7 +46,7 @@ export default function Login() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{ width: "320px" }}
+              style={{ width: "400px" }}
               name="username"
               size="large"
               placeholder="Vui lòng nhập"
@@ -60,7 +65,7 @@ export default function Login() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{ width: "320px" }}
+              style={{ width: "400px" }}
               name="password"
               size="large"
               placeholder="Vui lòng nhập"
@@ -68,7 +73,7 @@ export default function Login() {
           </Form.Item>
         </Row>
         <Row style={{ justifyContent: "flex-end" }}>
-          <Button className="mb-4" type="link" href="">
+          <Button className="mb-4" type="link" onClick={()=>{context.dispatch({type:"FORGOT"})}}>
             Quên mật khẩu?
           </Button>
         </Row>
@@ -77,7 +82,7 @@ export default function Login() {
             trigger="click"
             className="mx-2"
             size="large"
-            style={{ width: "320px" }}
+            style={{ width: "400px" }}
             type="primary"
             htmlType="submit"
           >
@@ -89,7 +94,7 @@ export default function Login() {
           style={{ justifyContent: "center", alignItems: "center" }}
         >
           Chưa có tài khoản --
-          <Button type="link" href="">
+          <Button type="link" onClick={()=>{context.dispatch({type:"SIGN_UP"})}}>
             Đăng ký
           </Button>
         </Row>

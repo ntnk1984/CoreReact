@@ -8,6 +8,9 @@ import {
   Button,
   Row,
 } from "antd";
+import { contextLogin } from "../App.js";
+
+
 
 
 export default function ForgotPassword() {
@@ -29,14 +32,18 @@ export default function ForgotPassword() {
 
   }
 
+
+  const context=useContext(contextLogin)
   return (
-    <Row justify="space-around" style={{ height: 800 }} align="middle">
+    <Row justify="space-around" >
+  
+    
     <Form
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       layout="vertical"
       className="mt-4 border  shadow-sm rounded rounded-3 p-3"
-      style={{ width: "380px" }}
+      style={{ width: "500px" }}
     >
     <Row style={{justifyContent: "center"}}>
     <h4 className="text-secondary mx-2 my-4">LẤY LẠI MẬT KHẨU</h4>
@@ -53,7 +60,7 @@ export default function ForgotPassword() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{width: "320px"}}
+              style={{width: "400px"}}
               name="username"
               size="large"
               placeholder="Vui lòng nhập"
@@ -72,7 +79,7 @@ export default function ForgotPassword() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
-              style={{width: "320px"}}
+              style={{width: "400px"}}
               name="phone"
               size="large"
               placeholder="Vui lòng nhập"
@@ -84,13 +91,13 @@ export default function ForgotPassword() {
           trigger="click"
           className="mx-2 my-1"
           size="large"
-          style={{width: "320px"}}
+          style={{width: "400px"}}
           type="primary">
           Lấy lại mật khẩu
       </Button>
     </Row>
     <Row className="mt-2"style={{justifyContent: "center", alignItems: "center"}}>
-      <Button type="link" href="">Về trang đăng nhập</Button>
+      <Button type="link" onClick={()=>{context.dispatch({type:"SIGN_IN"})}}>Về trang đăng nhập</Button>
     </Row>
     </Form>
     </Row>
