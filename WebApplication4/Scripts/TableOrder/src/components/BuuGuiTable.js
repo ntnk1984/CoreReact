@@ -117,6 +117,8 @@ const columns = [
 
 const { data } = dataJSON;
 
+console.log(gId);
+
 export default function buuGuiTable() {
   return (
     <div className="container w-75 my-3">

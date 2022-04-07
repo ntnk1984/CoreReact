@@ -14,13 +14,21 @@ namespace WebApplication4.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string id)
+        public IActionResult Index(string id, string orderid)
+        {
+            HomeViewModel model = new HomeViewModel();
+            model.AppId = id;
+            model.OrderId = orderid;
+            
+            return View(model);
+        }
+
+        public IActionResult Order(string id)
         {
             HomeViewModel model = new HomeViewModel();
             model.AppId = id;
             return View(model);
         }
-
        
 
 

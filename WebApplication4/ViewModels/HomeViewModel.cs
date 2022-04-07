@@ -8,6 +8,7 @@
         }
 
         public string AppId { get; set; }
+        public string OrderId { get; set; }
 
     }
 }

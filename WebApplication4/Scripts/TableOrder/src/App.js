@@ -14,8 +14,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={BuuGuiTable} />
-        <Route exact path="/Order/:id" component={DonHangTable} />
+        <Route path="/" component={BuuGuiTable} />
+        <Route path="/Order" children={DonHangTable} />
       </Switch>
     </BrowserRouter>
   );
