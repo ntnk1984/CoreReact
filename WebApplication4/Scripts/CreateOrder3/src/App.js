@@ -4,6 +4,7 @@ import { Steps, Row, Col, Form, Button } from "antd";
 import CreateOrderOne from "./components/CreateOrderOne";
 import CreateOrderTwo from "./components/CreateOrderTwo.js";
 import CreateOrderThree from "./components/CreateOrderThree.js";
+import CreateOrderTest from "./components/CreateOrderTest";
 import { postOrder, postOrderApi } from "./Service.js";
 // import CreateOrderTwo from "./components/CreateOrderTwo";
 // import { orderService } from "../services/orderService";
@@ -89,16 +90,18 @@ const createOrderReducer = (state = initialState, action) => {
       return { ...state, receiver: action.payload };
     }
     case "POST_ORDER_API": {
-      postOrder(state);
-      return { ...state };
+      console.log("Hoàn Thành");
+      // postOrder(state);
+      // return { ...state };
     }
     case "SET_PROGRESS_BACK": {
       return { ...state, progress: --state.progress };
     }
     case "HANDLE_SUBMIT_SENDER": {
-      console.log(action.payload, " log payload Reducer");
+      // console.log(action.payload, " log payload Reducer");
       return { ...state, sender: action.payload };
     }
+
     case "REMOVE_ORDER_CHILD": {
       const { index, val } = action.payload;
       state.listOrder[index] = state.listOrder[index].filter(
@@ -120,36 +123,48 @@ export default function App() {
     createOrder,
     dispatch,
   };
+  // console.log(createOrder.sender);
 
+  const [form] = Form.useForm();
   const [isT, setIsT] = useState(false);
-  const handleSubmit = (e) => {
+  const onFinish = (e) => {
     setIsT(!isT);
     dispatch({ type: "POST_ORDER_API" });
     console.log(createOrder.sender, "log App");
     console.log(createOrder.listOrder, "Logg Lis App");
+    console.log("thanh cong");
   };
-
+  const onFinishFailed = (e) => {
+    console.log("log lỗi");
+    console.log(createOrder.sender, "log App");
+    console.log(createOrder.listOrder, "Logg Lis App");
+  };
   return (
     <contextValue.Provider value={store}>
       <div
         className="main"
         style={{ backgroundColor: "#F5F5FA", margin: "0 auto" }}
       >
-        <Form className="form-app">
+        <Form
+          className="form-app"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
           <Row gutter={[16, 24]} style={{ margin: "0 auto", width: "80%" }}>
             <Col lg={24} xl={12}>
               <CreateOrderOne isT={isT} />
             </Col>
             <Col lg={24} xl={12}>
-              <CreateOrderTwo />
+              <CreateOrderTwo isT={isT} />
             </Col>
 
             <Col className="form-app" xl={24}>
-              <CreateOrderThree onSubmit={handleSubmit} />
+              <CreateOrderThree />
+              {/* <CreateOrderThree onSubmit={handleSubmit} /> */}
               <div className="button-center" style={{ margin: "0 auto" }}>
                 {/* <button onClick={handleSubmit} type="submit">
-              Tsst
-            </button> */}
+                  Tsst
+                </button> */}
                 <Button
                   className="mx-2"
                   onClick={() => {
@@ -158,7 +173,7 @@ export default function App() {
                 >
                   Tạo đơn bưu gửi
                 </Button>
-                <Button htmlType="submit" type="primary" onClick={handleSubmit}>
+                <Button htmlType="submit" type="primary">
                   Hoàn tất
                 </Button>
               </div>

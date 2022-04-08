@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Select, Steps } from "antd";
 import { Form, Input, Button, Row, Col } from "antd";
 import { contextValue } from "../App.js";
@@ -6,8 +6,19 @@ import { validate } from "../validate.js";
 import "./styleCss/CreatOrder.css";
 const { Option } = Select;
 
-export default function CreateOrderTwo() {
+export default function CreateOrderTwo({ isT }) {
   const context = useContext(contextValue);
+  const {
+    receivername,
+    receiverphone,
+    phoneregioncode,
+    receiveraddress,
+    receiveremail,
+    receivercountry,
+    receivercity,
+    receiverdistrict,
+    receiverward,
+  } = context.createOrder.receiver;
 
   const [receiverInfo, setReceiverInfo] = useState({
     receivername: undefined,
@@ -25,6 +36,21 @@ export default function CreateOrderTwo() {
     let { name, value } = e.target;
     setReceiverInfo({ ...receiverInfo, [name]: value });
   };
+
+  useEffect(() => {
+    if (isT) {
+      context.dispatch({ type: "ADD_INFO_RECEIVER", payload: receiverInfo });
+      console.log(receiverInfo, "Page Two");
+    }
+  }, [isT]);
+
+  useEffect(() => {
+    context.dispatch({
+      type: "ADD_INFO_SENDER",
+      payload: receiverInfo,
+    });
+  }, [receiverInfo]);
+  //
   return (
     <div
       // layout="vertical"
@@ -39,36 +65,41 @@ export default function CreateOrderTwo() {
       </h4>
       <Row justify="space-between">
         <Col span={11}>
-          <Row>
-            <Form.Item
-              hasFeedback
-              name="receivername"
-              rules={[validate.checkRequire(), validate.checkName()]}
-              required
+          <Form.Item
+            hasFeedback
+            name="receivername"
+            rules={[validate.checkRequire(), validate.checkName()]}
+            required
+          >
+            <Row
+              justify="between"
+              style={{ justifyContent: "space-between", width: "100%" }}
             >
               <Col span={24}>
                 <label>Tên người nhận</label>
               </Col>
-              <Col span={24}>
+              <Col flex="auto" span={24}>
                 <Input
                   onChange={(e) => {
                     handleChangeVal(e);
                   }}
                   name="receivername"
                   placeholder="Vui lòng nhập tên người nhận"
+                  defaultValue={receivername}
                 />
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
+
         <Col span={11}>
-          <Row>
-            <Form.Item
-              hasFeedback
-              name="receiverphone"
-              rules={[validate.checkRequire(), validate.checkPhone()]}
-              required
-            >
+          <Form.Item
+            hasFeedback
+            name="receiverphone"
+            rules={[validate.checkRequire(), validate.checkPhone()]}
+            required
+          >
+            <Row>
               <Col span={24}>
                 <label>Số điện thoại</label>
               </Col>
@@ -79,48 +110,51 @@ export default function CreateOrderTwo() {
                   onChange={(e) => {
                     handleChangeVal(e);
                   }}
+                  defaultValue={receiverphone}
                 />
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
 
         <Col span={11}>
-          <Row>
-            <Form.Item
-              hasFeedback
-              name="receiveremail"
-              rules={[validate.checkRequire(), validate.checkMail()]}
-              required
-            >
+          <Form.Item
+            hasFeedback
+            name="receiveremail"
+            rules={[validate.checkRequire(), validate.checkMail()]}
+            required
+          >
+            <Row>
               <Col span={24}>
                 <label>Email</label>
               </Col>
               <Col span={24}>
                 <Input
                   name="receiveremail"
+                  defaultValue={receiveremail}
                   placeholder="Vui lòng nhập Email"
                   onChange={(e) => {
                     handleChangeVal(e);
                   }}
                 />
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
         <Col span={11}>
-          <Row>
-            <Form.Item
-              hasFeedback
-              rules={[validate.checkRequire(), validate.checkCodePost()]}
-              name="phoneregioncode"
-              required
-            >
+          <Form.Item
+            hasFeedback
+            rules={[validate.checkRequire(), validate.checkCodePost()]}
+            name="phoneregioncode"
+            required
+          >
+            <Row>
               <Col span={24}>
                 <label>Mã bưu chính</label>
               </Col>
               <Col span={24}>
                 <Input
+                  defaultValue={phoneregioncode}
                   name="phoneregioncode"
                   placeholder="Vui lòng nhập mã bưu chính"
                   onChange={(e) => {
@@ -128,23 +162,24 @@ export default function CreateOrderTwo() {
                   }}
                 />
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
 
         <Col span={24}>
-          <Row>
-            <Form.Item
-              name="receiveraddress"
-              rules={[validate.checkRequire()]}
-              hasFeedback
-              required
-            >
+          <Form.Item
+            name="receiveraddress"
+            rules={[validate.checkRequire()]}
+            hasFeedback
+            required
+          >
+            <Row>
               <Col span={24}>
                 <label>Địa chỉ</label>
               </Col>
               <Col span={24}>
                 <Input
+                  defaultValue={receiveraddress}
                   name="receiveraddress"
                   placeholder="Vui lòng nhập địa chỉ"
                   onChange={(e) => {
@@ -152,18 +187,13 @@ export default function CreateOrderTwo() {
                   }}
                 />
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
 
         <Col span={11}>
-          <Row>
-            <Form.Item
-              name="receivercountry"
-              rules={[validate.checkRequire()]}
-              hasFeedback
-              required
-            >
+          <Form.Item name="receivercountry" hasFeedback required>
+            <Row>
               <Col span={24}>
                 <label>Quốc Gia</label>
               </Col>
@@ -179,18 +209,13 @@ export default function CreateOrderTwo() {
                   <Option value="VN">Việt Nam</Option>
                   <Option value="CAM">Campuchia</Option>
                 </Select>
-              </Col>
-            </Form.Item>
-          </Row>
+              </Col>{" "}
+            </Row>
+          </Form.Item>
         </Col>
         <Col span={11}>
-          <Row>
-            <Form.Item
-              name="receivercity"
-              rules={[validate.checkRequire()]}
-              hasFeedback
-              required
-            >
+          <Form.Item name="receivercity" hasFeedback required>
+            <Row>
               <Col span={24}>
                 <label>Thành phố/Tỉnh</label>
               </Col>
@@ -206,18 +231,14 @@ export default function CreateOrderTwo() {
                   <Option value="HCM">Hồ Chí Minh</Option>
                   <Option value="HN">Hà Nội</Option>
                 </Select>
-              </Col>
-            </Form.Item>
-          </Row>
+              </Col>{" "}
+            </Row>
+          </Form.Item>
         </Col>
         <Col span={11}>
-          <Row>
-            <Form.Item
-              name="receiverdistrict"
-              rules={[validate.checkRequire()]}
-              hasFeedback
-              required
-            >
+          <Form.Item name="receiverdistrict" hasFeedback required>
+            {" "}
+            <Row>
               <Col span={24}>
                 <label>Quận/Huyện</label>
               </Col>
@@ -234,17 +255,12 @@ export default function CreateOrderTwo() {
                   <Option value="Q7">Quận 7</Option>
                 </Select>
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
         <Col span={11}>
-          <Row>
-            <Form.Item
-              name="receiverward"
-              rules={[validate.checkRequire()]}
-              hasFeedback
-              required
-            >
+          <Form.Item name="receiverward" hasFeedback required>
+            <Row>
               <Col span={24}>
                 <label>Phường/Xã</label>
               </Col>
@@ -261,8 +277,8 @@ export default function CreateOrderTwo() {
                   <Option value="P2">Phường 2</Option>
                 </Select>
               </Col>
-            </Form.Item>
-          </Row>
+            </Row>
+          </Form.Item>
         </Col>
 
         {/* <Col span={24}>
