@@ -1,48 +1,29 @@
-﻿module.exports = {
-  context: __dirname,
-  entry: "./src/app.js",
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+module.exports = {
+  entry: "./src/index.js",
   output: {
-    path: __dirname + "/html",
-    filename: "createorder.js",
+    path: path.join(__dirname, "/dist"),
+    filename: "index-bundle.js"
   },
-  watch: true,
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-            plugins: [
-              [
-                "import",
-                { libraryName: "antd", libraryDirectory: "es", style: "css" },
-              ],
-            ],
-          },
-        },
+        exclude: /node_modules/,
+        use: ["babel-loader"]
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.less$/,
-        use: ["style-loader", "css-loader", "less-loader"],
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
-      },
-    ],
+        use: ["style-loader", "css-loader"]
+      }
+    ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html"
+    })
+  ]
 };
+

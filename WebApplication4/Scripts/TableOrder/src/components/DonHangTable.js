@@ -1,82 +1,111 @@
 import React from "react";
-import { Table, Button } from "antd";
-import { Link, NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import dataJSON from "../data.json";
+import { Button, Table, Tag } from "antd";
+
 const columns = [
   {
     title: "#",
-    dataIndex: "stt",
     render: (text, record, index) => ++index,
   },
   {
-    title: "Mã sản phẩm",
-    dataIndex: "HSCode",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Mã đơn hàng ",
+    dataIndex: "MaDonHang",
   },
   {
-    title: "Tên sản phẩm",
-    dataIndex: "VietNameseName",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
-  },
-
-  {
-    title: "Tên sản phẩm tiếng Anh",
-    dataIndex: "EnglishName",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Tổng cước",
+    render: (text, record, index) => record.TongCuoc.toLocaleString(),
   },
   {
-    title: "Mã quốc gia sản xuất",
-    dataIndex: "CountryManufacturedCode",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Tổng cước sau VAT",
+    render: (text, record, index) => record.TongCuocSauVAT.toLocaleString(),
   },
   {
-    title: "Đơn vị sản phẩm",
-    dataIndex: "Unit",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Tổng VAT",
+    render: (text, record, index) => record.TongVAT.toLocaleString(),
   },
   {
-    title: "Đơn vị tiền tệ",
-    dataIndex: "Currency",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Xác nhận",
+    dataIndex:"Done",
+    
+    sorter: (a, b) => {return JSON.stringify(a.Done).length-JSON.stringify(b.Done).length},
+    
   },
   {
-    title: "Đơn giá",
-    dataIndex: "Value",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Sửa",
+    render: (text, record, index) => {
+      
+      return record.Done.props.children==="Đã xác nhận" ? (
+        <Button type="link" disabled>Sửa</Button>
+      ) : (
+        <Button type="link" >Sửa</Button>
+      );
+    },
   },
   {
-    title: "Số lượng ",
-    dataIndex: "Quantity",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
-  },
-  {
-    title: "Cân nặng",
-    dataIndex: "Weight",
-    sorter: (a, b) => console.log(a, b),
-    sortDirections: ["descend"],
+    title: "Xóa",
+    render: (text, record, index) => {
+      return record.Done.props.children==="Đã xác nhận" ? (
+        <Button type="link" disabled >Xóa</Button>
+      ) : (
+        <Button type="link"danger >Xóa</Button>
+      );
+    },
   },
 ];
-export default function Temp2() {
-  const { id } = useParams();
-  return (
-    <div className="my-3">
-      <h4 className="text-center">CHI TIẾT BƯU GỬI</h4>
 
+const data = [
+  {
+    key: "1",
+    MaDonHang: "JK-10924",
+    TongCuoc: 9800000,
+    TongCuocSauVAT: 6000000,
+    TongVAT: 7000000,
+    Done: <Tag color="#87d068">Đã xác nhận</Tag> ,
+  },
+  {
+    key: "2",
+    MaDonHang: "JK-10924",
+    TongCuoc: 9800000,
+    TongCuocSauVAT: 6000000,
+    TongVAT: 7000000,
+    Done:  <Tag color="#87d068">Đã xác nhận</Tag>,
+  },
+  {
+    key: "3",
+    MaDonHang: "JK-10924",
+    TongCuoc: 9800000,
+    TongCuocSauVAT: 6000000,
+    TongVAT: 7000000,
+    Done: <Tag color="#f50">Chưa xác nhận</Tag>,
+  },
+  {
+    key: "4",
+    MaDonHang: "JK-10924",
+    TongCuoc: 9800000,
+    TongCuocSauVAT: 6000000,
+    TongVAT: 7000000,
+    Done: <Tag color="#f50">Chưa xác nhận</Tag>,
+  },
+  {
+    key: "5",
+    MaDonHang: "JK-10924",
+    TongCuoc: 9800000,
+    TongCuocSauVAT: 6000000,
+    TongVAT: 7000000,
+    Done: <Tag color="#87d068">Đã xác nhận</Tag>,
+  }
+];
+
+export default function DonHangTable() {
+  return (
+    <>
+      <h3 className="text-center my-3">ĐƠN HÀNG</h3>
       <Table
         style={{ margin: "0 auto" }}
-        className="w-75"
+        className="w-75 "
         columns={columns}
-        dataSource={dataJSON?.data[id - 1]?.MerchandiseInfomation}
+        dataSource={data}
+        
       />
-    </div>
+    </>
   );
 }

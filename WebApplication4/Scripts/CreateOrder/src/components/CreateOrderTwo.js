@@ -1,31 +1,64 @@
 import React, { useContext, useState } from "react";
 import { Select, Steps } from "antd";
-import { Form, Input, Button, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col,message } from "antd";
+import { contextValue } from "../App.js";
+import { validate } from "../validate.js";
 
-// import { contextValue } from "../../pages/CreateOrder";
 const { Option } = Select;
 
 export default function CreateOrderTwo() {
-  //   const context = useContext(contextValue);
-
+  const context = useContext(contextValue);
+  const temp= context?.createOrder.receiver;
   const [receiverInfo, setReceiverInfo] = useState({
-    receivername: undefined,
-    receiverphone: undefined,
-    phoneregioncode: undefined,
-    receiveraddress: undefined,
-    receiveremail: undefined,
-    receivercountry: undefined,
-    receivercity: undefined,
-    receiverdistrict: undefined,
-    receiverward: undefined,
+    receivername: temp.receivername,
+    receiverphone: temp.receiverphone,
+    phoneregioncode: temp.phoneregioncode,
+    receiveraddress: temp.receiveraddress,
+    receiveremail: temp.receiveremail,
+    receivercountry: temp.receivercountry,
+    receivercity: temp.receivercity,
+    receiverdistrict: temp.receiverdistrict,
+    receiverward: temp.receiverward,
   });
+
+  /*4.5.20 khởi tạo initialValues */
+  const initForm ={
+    receivername: receiverInfo.receivername,
+    receiverphone: receiverInfo.receiverphone,
+    phoneregioncode: receiverInfo.phoneregioncode,
+    receiveraddress: receiverInfo.receiveraddress,
+    receiveremail: receiverInfo.receiveremail,
+    receivercountry: receiverInfo.receivercountry,
+    receivercity: receiverInfo.receivercity,
+    receiverdistrict: receiverInfo.receiverdistrict,
+    receiverward: receiverInfo.receiverward,
+  }
 
   const handleChangeVal = (e) => {
     let { name, value } = e.target;
     setReceiverInfo({ ...receiverInfo, [name]: value });
   };
+
+    /*4.5.20 xử lý submit form  */
+  const onFinish=()=>{
+    context.dispatch({
+      type: "ADD_INFO_RECEIVER",
+      payload: receiverInfo,
+    });
+    context.dispatch({ type: "SET_PROGRESS" });
+  }
+
+  const onFinishFailed =()=>{
+    message.error('Vui lòng nhập đầy đủ thông tin');
+  }
+
+
+
   return (
     <Form
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    initialValues={initForm}
       layout="vertical"
       className="mt-4 rounded rounded-3 p-3 shadow-sm"
       style={{ background: "white" }}
@@ -33,19 +66,32 @@ export default function CreateOrderTwo() {
       <h4 className="text-secondary mx-2">THÔNG TIN NGƯỜI NHẬN</h4>
       <Row>
         <Col span={12}>
-          <Form.Item className="mx-2" label="Tên người gửi" required>
+          <Form.Item
+            name="receivername"
+            rules={[validate.checkRequire(), validate.checkName()]}
+            className="mx-2"
+            label="Tên người gửi"
+            required
+          >
             <Input
+             placeholder="Vui lòng nhập"
               onChange={(e) => {
                 handleChangeVal(e);
               }}
               name="receivername"
               size="large"
-              placeholder="Vui lòng nhập"
+              value={receiverInfo.receivername}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item className="mx-2" label="Số điện thoại" required>
+          <Form.Item
+            name="receiverphone"
+            rules={[validate.checkRequire(), validate.checkPhone()]}
+            className="mx-2"
+            label="Số điện thoại"
+            required
+          >
             <Input
               name="receiverphone"
               size="large"
@@ -53,13 +99,20 @@ export default function CreateOrderTwo() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
+              value={receiverInfo.receiverphone}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={12}>
-          <Form.Item className="mx-2" label="Email" required>
+          <Form.Item
+            name="receiveremail"
+            rules={[validate.checkRequire(), validate.checkMail()]}
+            className="mx-2"
+            label="Email"
+            required
+          >
             <Input
               name="receiveremail"
               size="large"
@@ -67,11 +120,18 @@ export default function CreateOrderTwo() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
+              value={receiverInfo.receiveremail}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item className="mx-2" label="Mã bưu chính" required>
+          <Form.Item
+            rules={[validate.checkRequire(), validate.checkCodePost()]}
+            name="phoneregioncode"
+            className="mx-2"
+            label="Mã bưu chính"
+            required
+          >
             <Input
               name="phoneregioncode"
               size="large"
@@ -79,13 +139,14 @@ export default function CreateOrderTwo() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
+              value={receiverInfo.phoneregioncode}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Form.Item className="mx-2" label="Địa chỉ" required>
+          <Form.Item rules={[validate.checkRequire()]} name="receiveraddress" className="mx-2" label="Địa chỉ" required>
             <Input
               name="receiveraddress"
               size="large"
@@ -93,21 +154,23 @@ export default function CreateOrderTwo() {
               onChange={(e) => {
                 handleChangeVal(e);
               }}
+              value={receiverInfo.receiveraddress}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Quốc gia" required>
+          <Form.Item rules={[validate.checkRequire()]}  name="receivercountry"  className="mx-2" label="Quốc gia" required>
             <Select
               name="receivercountry"
               size="large"
-              defaultValue="Vui lòng chọn"
+              
               style={{ width: "100%" }}
               onChange={(e) => {
                 setReceiverInfo({ ...receiverInfo, receivercountry: e });
               }}
+              value={receiverInfo.receivercountry === "" ? "Vui lòng chọn" : receiverInfo.receivercountry}
             >
               <Option value="VN">Việt Nam</Option>
               <Option value="CAM">Campuchia</Option>
@@ -115,11 +178,11 @@ export default function CreateOrderTwo() {
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Thành phố/Tỉnh" required>
+          <Form.Item rules={[validate.checkRequire()]}  name="receivercity" className="mx-2" label="Thành phố/Tỉnh" required>
             <Select
               name="receivercity"
               size="large"
-              defaultValue="Vui lòng chọn"
+              value={receiverInfo.receivercity === "" ? "Vui lòng chọn" : receiverInfo.receivercity}
               style={{ width: "100%" }}
               onChange={(e) => {
                 setReceiverInfo({ ...receiverInfo, receivercity: e });
@@ -131,11 +194,12 @@ export default function CreateOrderTwo() {
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Quận/Huyện" required>
+          <Form.Item rules={[validate.checkRequire()]}  name="receiverdistrict" className="mx-2" label="Quận/Huyện" required>
             <Select
               name="receiverdistrict"
               size="large"
-              defaultValue="Vui lòng chọn"
+              value={receiverInfo.receiverdistrict === "" ? "Vui lòng chọn" : receiverInfo.receivercity}
+
               style={{ width: "100%" }}
               onChange={(e) => {
                 setReceiverInfo({ ...receiverInfo, receiverdistrict: e });
@@ -147,11 +211,12 @@ export default function CreateOrderTwo() {
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item className="mx-2" label="Phường/Xã" required>
+          <Form.Item rules={[validate.checkRequire()]} name="receiverward" className="mx-2" label="Phường/Xã" required>
             <Select
               name="receiverward"
               size="large"
-              defaultValue="Vui lòng chọn"
+              value={receiverInfo.receiverward === "" ? "Vui lòng chọn" : receiverInfo.receivercity}
+
               style={{ width: "100%" }}
               onChange={(e) => {
                 setReceiverInfo({ ...receiverInfo, receiverward: e });
@@ -163,26 +228,26 @@ export default function CreateOrderTwo() {
           </Form.Item>
         </Col>
       </Row>
+      <Row justify="end">
       <Form.Item className="my-2 ">
+      <Button size="large" type=""  onClick={() => {
+          
+          context.dispatch({ type: "SET_PROGRESS_BACK" });
+        }}>
+        Trở lại
+      </Button>
         <Button
           trigger="click"
           className="mx-2"
           size="large"
           type="primary"
-          onClick={() => {
-            context.dispatch({
-              type: "ADD_INFO_RECEIVER",
-              payload: receiverInfo,
-            });
-            context.dispatch({ type: "SET_PROGRESS" });
-          }}
+          htmlType="submit"
         >
           Tiếp tục
         </Button>
-        <Button size="large" type="">
-          Trở lại
-        </Button>
+       
       </Form.Item>
+      </Row>
     </Form>
   );
 }
