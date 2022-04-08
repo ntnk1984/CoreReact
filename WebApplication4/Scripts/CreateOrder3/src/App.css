@@ -1,0 +1,9 @@
+.form-app{
+  position: relative;
+}
+
+.form-app .button-center{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
