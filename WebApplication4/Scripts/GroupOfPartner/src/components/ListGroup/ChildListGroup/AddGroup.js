@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Button, Modal } from "antd";
 const layout = {
   labelCol: {
@@ -34,29 +34,18 @@ export default function AddGroup() {
         Tạo Group mới
       </Button>
       <Modal
-        title="Basic Modal"
+        title="Thêm mới nhóm"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form
-          {...layout}
-          name="nest-messages"
-          onFinish={onFinish}
- 
-        >
-          <Form.Item
-         
-            label="Tên nhóm"
-           
-          >
+        <Form layout="vertical" name="nest-messages" onFinish={onFinish}>
+          <Form.Item label="Tên nhóm">
             <Input />
           </Form.Item>
-        
-         
-       
-          <Form.Item name={["user", "introduction"]} label="Mô tả nhóm">
-            <Input.TextArea />
+
+          <Form.Item name="moTa" label="Mô tả nhóm">
+            <Input.TextArea style={{ height: "200px" }} />
           </Form.Item>
         </Form>
       </Modal>
