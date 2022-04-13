@@ -1,4 +1,4 @@
-import { Avatar, Button, List, Modal, Space, Table, Tag } from "antd";
+import { Avatar, Button, List, Modal, Space, Table } from "antd";
 import React, { useContext } from "react";
 import { contextValue } from "../App";
 
@@ -88,8 +88,6 @@ function OrderStatus({ statusOrder }) {
         ),
       },
     ];
-    console.log(data);
-    console.log(val);
     Modal.info({
       style: { top: 20 },
       footer: null,

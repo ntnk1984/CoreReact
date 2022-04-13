@@ -1,6 +1,7 @@
-import { Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import React, { useReducer } from "react";
 import InfoOrder from "./components/InfoOrder";
+import StatisModal from "./components/Modal/statisModal";
 import OrderStatus from "./components/OrderStatus";
 
 const { TabPane } = Tabs;
@@ -105,6 +106,76 @@ const initialState = {
       weight: 100,
       statusOrder: false,
       tinhTrangDonHang: "daGiao",
+    },
+    {
+      id: 128,
+      idPackage: 8,
+      HsCode: "ccccc",
+      vietnameseName: "Cơm Sườn - Bì - Chả",
+      englishName: "Rice with Ribs - Pork - Cha",
+      countryCode: "FF01C26B168",
+      donviTinh: "không biết",
+      currebcy: "VND",
+      quantity: 4,
+      weight: 100,
+      statusOrder: false,
+      tinhTrangDonHang: "daGiao",
+    },
+    {
+      id: 129,
+      idPackage: 9,
+      HsCode: "ccccc",
+      vietnameseName: "Áo Dài Nam Bộ Việt Nam",
+      englishName: "Vietnamese men's long dress",
+      countryCode: "FF01C26B169",
+      donviTinh: "không biết",
+      currebcy: "VND",
+      quantity: 4,
+      weight: 100,
+      statusOrder: false,
+      tinhTrangDonHang: "daGiao",
+    },
+    {
+      id: 130,
+      idPackage: 10,
+      HsCode: "ccccc",
+      vietnameseName: "Bánh mì Việt Nam",
+      englishName: "Vietnamese bread",
+      countryCode: "FF01C26B163",
+      donviTinh: "không biết",
+      currebcy: "VND",
+      quantity: 9,
+      weight: 100,
+      statusOrder: false,
+      tinhTrangDonHang: "choXacNhan",
+    },
+    {
+      id: 131,
+      idPackage: 11,
+      HsCode: "ccccc",
+      vietnameseName: "Gậy Bắt Chó - Xe Exciter 155",
+      englishName: "Noose - Exciter 155",
+      countryCode: "FF01C26B163",
+      donviTinh: "không biết",
+      currebcy: "VND",
+      quantity: 9,
+      weight: 100,
+      statusOrder: false,
+      tinhTrangDonHang: "dangGiao",
+    },
+    {
+      id: 132,
+      idPackage: 12,
+      HsCode: "ccccc",
+      vietnameseName: "Máy Rung Massage 7 cấp độ",
+      englishName: "Vibration Massager 7 Levels",
+      countryCode: "FF01C26B163",
+      donviTinh: "không biết",
+      currebcy: "VND",
+      quantity: 9,
+      weight: 100,
+      statusOrder: false,
+      tinhTrangDonHang: "daXacNhan",
     },
   ],
   orderShippingInfo: [
@@ -213,7 +284,83 @@ const initialState = {
       idCreator: undefined,
       createdTime: "01/02/2021",
     },
+    {
+      id: 8,
+      idOrderShipping: "A00008",
+      packageCode: "abc-8",
+      customPackageCode: "abc-auto8",
+      length: 120,
+      width: 220,
+      height: 320,
+      weight: 420,
+      cod: 500,
+      currebcy: "VND",
+      packageType: "Hàng Bình Thường",
+      idCreator: undefined,
+      createdTime: "01/02/2021",
+    },
+    {
+      id: 9,
+      idOrderShipping: "A00009",
+      packageCode: "abc-9",
+      customPackageCode: "abc-auto9",
+      length: 120,
+      width: 220,
+      height: 320,
+      weight: 420,
+      cod: 500,
+      currebcy: "VND",
+      packageType: "Hàng Bình Thường",
+      idCreator: undefined,
+      createdTime: "01/02/2021",
+    },
+    {
+      id: 10,
+      idOrderShipping: "A000010",
+      packageCode: "abc-10",
+      customPackageCode: "abc-auto10",
+      length: 120,
+      width: 220,
+      height: 320,
+      weight: 420,
+      cod: 500,
+      currebcy: "VND",
+      packageType: "Hàng Bình Thường",
+      idCreator: undefined,
+      createdTime: "01/02/2021",
+    },
+    {
+      id: 11,
+      idOrderShipping: "A000011",
+      packageCode: "abc-11",
+      customPackageCode: "abc-auto11",
+      length: 120,
+      width: 220,
+      height: 320,
+      weight: 420,
+      cod: 500,
+      currebcy: "VND",
+      packageType: "Hàng Bình Thường",
+      idCreator: undefined,
+      createdTime: "01/02/2021",
+    },
+    {
+      id: 12,
+      idOrderShipping: "A000012",
+      packageCode: "abc-12",
+      customPackageCode: "abc-auto12",
+      length: 120,
+      width: 220,
+      height: 320,
+      weight: 420,
+      cod: 500,
+      currebcy: "VND",
+      packageType: "Hàng Bình Thường",
+      idCreator: undefined,
+      createdTime: "01/02/2021",
+    },
   ],
+  visibleModal: false,
   // sender: {
   //   sendername: "sadfdsa",
   //   senderphone: "",
@@ -265,8 +412,11 @@ const initialState = {
 //usereducer
 const infoOrderReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_ORDER": {
-      return { ...state };
+    case "SET_VISIBLE_MODAL": {
+      return { ...state, visibleModal: !state.visibleModal };
+    }
+    case "CLOSE_VISIBLE_MODAL": {
+      return { ...state, visibleModal: false };
     }
     // case "SET_VISIBILITY": {
     //   return { ...state, visibility: !state.visibility };
@@ -295,7 +445,10 @@ export default function App() {
     infoOrder,
     dispatch,
   };
-
+  const handleModal = () => {
+    dispatch({ type: "SET_VISIBLE_MODAL" });
+  };
+  // console.log(infoOrder.visibleModal);
   //handle progress
 
   return (
@@ -309,7 +462,7 @@ export default function App() {
         }}
       >
         <div style={{ backgroundColor: "#FFFFFF" }} className="container">
-          <Tabs defaultActiveKey="1" centered>
+          <Tabs style={{ position: "relative" }} defaultActiveKey="1" centered>
             <TabPane tab="Tất Cả Đơn Hàng" key="1">
               <InfoOrder />
             </TabPane>
@@ -328,6 +481,12 @@ export default function App() {
             <TabPane tab="Đã Hủy" key="6">
               <OrderStatus statusOrder="daHuy" />
             </TabPane>
+            <div style={{ position: "absolute", top: "10px", right: 0 }}>
+              <Button type="primary" onClick={handleModal}>
+                Thống Kê
+              </Button>
+              <StatisModal handleModal={handleModal} />
+            </div>
           </Tabs>
         </div>
       </div>

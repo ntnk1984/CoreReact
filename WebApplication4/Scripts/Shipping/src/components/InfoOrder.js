@@ -42,7 +42,7 @@ function InfoOrder(props) {
       );
     }
   };
-  console.log(orderShippingInfo, "shipping");
+  // console.log(orderShippingInfo, "shipping");
   const data = listOrder || [
     {
       title: "Ant Design Title 1",
