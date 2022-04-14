@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
-import { Form, Input, InputNumber, Button, Modal, Row, Col } from "antd";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  Modal,
+  Row,
+  Col,
+  Upload,
+} from "antd";
 import dataUserTest from "../../../assets/dataTest/dataUser.json";
-
-
 
 export default function AddUser() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -35,17 +42,17 @@ export default function AddUser() {
     IDDoiTac: 1, //lấy từ token login partner
   });
 
-  const handleChangeValue=(e)=>{
-    const {name,value}=e.target
-    setCreateUser({...createUser,[name]:value})
-  }
+  const handleChangeValue = (e) => {
+    const { name, value } = e.target;
+    setCreateUser({ ...createUser, [name]: value });
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    //call api thêm user 
+    //call api thêm user
     setIsModalVisible(false);
   };
 
@@ -58,39 +65,50 @@ export default function AddUser() {
   };
   return (
     <>
-      <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
-        Tạo user mới
-      </Button>
+      <Row>
+        <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
+          Tạo user mới
+        </Button>
+        <Form.Item name="upload" valuePropName="fileList">
+          <Upload name="logo" listType="picture">
+            <Button className="mx-2" icon={<UploadOutlined /> } type="danger">Import nhiều user</Button>
+          </Upload>
+        </Form.Item>
+      </Row>
       <Modal
         title="Tạo mới người dùng"
         visible={isModalVisible}
-        width={1000}
+        width={400}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Form layout="vertical" onFinish={onFinish}>
           <Row>
-            <Col span={8}>
-              <Form.Item  className="mx-2" name="TaiKhoan" label="Tài khoản">
-                <Input  name="TaiKhoan" onChange={handleChangeValue} />
+            <Col span={24}>
+              <Form.Item className="mx-2" name="TaiKhoan" label="Tài khoản">
+                <Input name="TaiKhoan" onChange={handleChangeValue} />
               </Form.Item>
             </Col>
-            <Col span={8}>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Form.Item className="mx-2" name="MatKhau" label="Mật khẩu">
-                <Input.Password name="MatKhau" onChange={handleChangeValue}/>
+                <Input.Password name="MatKhau" onChange={handleChangeValue} />
               </Form.Item>
             </Col>
-            <Col span={8}>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Form.Item
                 className="mx-2"
                 name="ReMatKhau"
                 label="Nhập lại mật khẩu"
               >
-                <Input.Password name="ReMatKhau" onChange={handleChangeValue}/>
+                <Input.Password name="ReMatKhau" onChange={handleChangeValue} />
               </Form.Item>
             </Col>
           </Row>
-
+          {/* 
           <Row>
             <Col span={8}>
               <Form.Item className="mx-2" name="Ten" label="Tên">
@@ -172,7 +190,7 @@ export default function AddUser() {
                 <Input name="SoDienThoaiNguoiLienHe" onChange={handleChangeValue}/>
               </Form.Item>
             </Col>
-          </Row>
+          </Row> */}
         </Form>
       </Modal>
     </>

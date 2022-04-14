@@ -1,7 +1,7 @@
-import { AutoComplete, Avatar, Button, List, Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Avatar, Checkbox, List, Modal,Row, Button, Tabs } from "antd";
 import React, { useState } from "react";
-import { ExclamationCircleOutlined,EditOutlined,DeleteOutlined } from "@ant-design/icons";
-
+const { TabPane } = Tabs;
 const data = [
   {
     title: "Ant Design Title 1",
@@ -53,30 +53,9 @@ const data = [
   },
   {
     title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
-  {
-    title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
+  }
+  
 ];
-
 
 // 4.12.2020-tin tuong - confirm remove user in group
 function confirmRemoveUserInGroup() {
@@ -95,55 +74,48 @@ export default function ListUserGroup() {
   const mockVal = (str, repeat = 1) => ({
     value: str.repeat(repeat),
   });
-  
-  const [value, setValue] = useState('');
+
+  const [value, setValue] = useState("");
   const [options, setOptions] = useState([]);
 
-  const onSearch = (searchText) => {
-    setOptions(
-      !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)],
-    );
-  };
-
-  const onSelect = (data) => {
-    console.log('onSelect', data);
-  };
-
-  const onChange = (data) => {
-    setValue(data);
-  }
   return (
     <>
-     <AutoComplete
-        options={options}
-        style={{ width: "100%" }}
-        onSelect={onSelect}
-        onSearch={onSearch}
-        placeholder="Thêm user mới"
-       
-      />
-      <List
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item
-            actions={[
-              <Button
-            onClick={() => {
-              confirmRemoveUserInGroup();
-            }}
-            icon={<DeleteOutlined />}
-            danger
-          ></Button>
-            ]}
-          >
-            <List.Item.Meta
-              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-              title={<a href="https://ant.design">{item.title}</a>}
+      <Row justify="center"><Button type="danger">Xóa khỏi nhóm</Button>
+      <Button disabled type="primary">Thêm vào nhóm</Button></Row>
+      <Tabs defaultActiveKey="1" centered>
+        <TabPane tab="Trong nhóm" key="1">
+          <Checkbox.Group style={{ width: "100%" }}>
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item) => (
+                <List.Item actions={[<Checkbox value={item}></Checkbox>]}>
+                  <List.Item.Meta
+                    avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                    title={<a href="https://ant.design">{item.title}</a>}
+                  />
+                </List.Item>
+              )}
             />
-          </List.Item>
-        )}
-      />
+          </Checkbox.Group>
+        </TabPane>
+        <TabPane tab="Toàn bộ" key="2">
+          <Checkbox.Group style={{ width: "100%" }}>
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item) => (
+                <List.Item actions={[<Checkbox value={item}></Checkbox>]}>
+                  <List.Item.Meta
+                    avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                    title={<a href="#">{item.title}</a>}
+                  />
+                </List.Item>
+              )}
+            />
+          </Checkbox.Group>
+        </TabPane>
+      </Tabs>
     </>
-  )
+  );
 }

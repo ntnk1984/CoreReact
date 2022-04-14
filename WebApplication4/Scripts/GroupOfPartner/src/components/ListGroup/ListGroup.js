@@ -1,26 +1,24 @@
-import React, { useState } from "react";
 import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import {
+  AutoComplete,
+  Avatar,
+  Button,
+  Col,
+  Drawer,
+  Modal,
+  Row,
+  Select,
+  Space,
   Table,
   Tag,
-  Space,
-  Button,
   Tooltip,
-  Avatar,
-  Popover,
-  Select,
-  AutoComplete,
-  Row,
-  Col,
-  Modal,
-  Drawer,
+  Checkbox,
 } from "antd";
-import {
-  UserOutlined,
-  AntDesignOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import React, { useState } from "react";
 import AddGroup from "./ChildListGroup/AddGroup.js";
 import EditGroup from "./ChildListGroup/EditGroup.js";
 import ListUserGroup from "./ChildListGroup/ListUserGroup.js";
@@ -46,35 +44,40 @@ const dataJSON = [
     key: "1",
     ID: 1,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     level: [0, 1, 2],
   },
   {
     key: "2",
     ID: 2,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     level: [0, 1, 2, 3, 4],
   },
   {
     key: "3",
     ID: 3,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     level: [0, 1, 2, 3, 4, 5],
   },
   {
     key: "4",
     ID: 4,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     level: [0, 1, 2],
   },
   {
     key: "5",
     ID: 5,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
 
     level: [0, 1, 2, 9],
   },
@@ -82,7 +85,8 @@ const dataJSON = [
     key: "6",
     ID: 6,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
 
     level: [0, 1, 2, 4, 8],
   },
@@ -90,7 +94,8 @@ const dataJSON = [
     key: "7",
     ID: 7,
     name: "Nhóm 1",
-    description: " Lorem ipsum dolor sit amet, consectetur adipiscing elit... ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
 
     level: [0, 1],
   },
@@ -125,7 +130,7 @@ export default function ListGroup() {
     {
       title: "#",
 
-      render: (text, record, index) => <a>{++index}</a>,
+      render: (text, record, index) => <Checkbox value={text}></Checkbox>,
     },
     {
       title: "Name",
@@ -138,14 +143,7 @@ export default function ListGroup() {
       width: "450px",
       dataIndex: "description",
       render: (text) => {
-        return (
-          <p className="m-0">
-            {text}
-            <Button className="p-0 m-0" type="link" ghost>
-              Xem thêm
-            </Button>
-          </p>
-        );
+        return <p className="m-0 text-over">{text}</p>;
       },
     },
     {
@@ -167,6 +165,7 @@ export default function ListGroup() {
               >
                 +3
               </Avatar>
+              
             </Avatar.Group>
           </>
         );
@@ -180,39 +179,17 @@ export default function ListGroup() {
         <Avatar.Group>
           {record.level.map((item, index) => {
             return (
-              <Popover
-                placement="bottomRight"
-                content={
-                  <Button type="danger" style={{ width: 100 }}>
-                    Xóa
-                  </Button>
-                }
-                trigger="click"
-              >
-                <Tooltip placement="topLeft" title={"Mô tả quyền hạn"}>
-                  <Avatar
-                    style={{ color: "white", backgroundColor: "#bae7ff" }}
-                  >
-                    {item}
-                  </Avatar>
-                </Tooltip>
-              </Popover>
+              <Tooltip placement="topLeft" title={"Mô tả quyền hạn"}>
+                <Avatar style={{ color: "white", backgroundColor: "#bae7ff" }}>
+                  {item}
+                </Avatar>
+              </Tooltip>
             );
           })}
-          <Popover
-            placement="bottomRight"
-            content={
-              <Select defaultValue="lucy" style={{ width: 120 }}>
-                <Option value="jack">Cấp 1</Option>
-                <Option value="lucy">Cấp 2</Option>
-              </Select>
-            }
-            trigger="click"
-          >
-            <Avatar style={{ color: "white", backgroundColor: "#69c0ff" }}>
-              +
-            </Avatar>
-          </Popover>
+
+          <Avatar style={{ color: "white", backgroundColor: "#69c0ff" }}>
+            <EditGroup icon={"+"} type={"link"} style={{ color: "white" }} />
+          </Avatar>
         </Avatar.Group>
       ),
     },
@@ -222,7 +199,7 @@ export default function ListGroup() {
 
       render: () => (
         <Space size="middle">
-          <EditGroup />
+          <EditGroup icon={<EditOutlined />} type={"primary"} />
         </Space>
       ),
     },
@@ -260,10 +237,16 @@ export default function ListGroup() {
         </Col>
       </Row>
       <div>
-        <Table className="mt-3" columns={columns} dataSource={dataGroup.data} />
+        <Checkbox.Group style={{ width: "100%" }} >
+          <Table
+            className="mt-3"
+            columns={columns}
+            dataSource={dataGroup.data}
+          />
+        </Checkbox.Group>
       </div>
       <Drawer
-        title="Danh sách thành viên"
+      
         placement="right"
         onClose={onClose}
         visible={visible}

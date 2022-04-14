@@ -1,3 +1,16 @@
 .ant-list-item-meta-content {
     margin-top: 10px;
 }
+
+.text-over {
+    white-space: nowrap;
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ant-drawer-header-title,
+.ant-drawer-header,
+.ant-drawer-header-close-only {
+    display: none;
+}

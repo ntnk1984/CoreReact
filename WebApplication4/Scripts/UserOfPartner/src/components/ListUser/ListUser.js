@@ -10,8 +10,13 @@ import {
   Col,
   AutoComplete,
   Modal,
+  Checkbox,
 } from "antd";
-import { ExclamationCircleOutlined,EditOutlined,DeleteOutlined } from "@ant-design/icons";
+import {
+  ExclamationCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import AddUser from "./ChildListUser/AddUser.js";
 import dataUserTestJSON from "../../assets/dataTest/dataUser.json";
 import EditUser from "./ChildListUser/EditUser.js";
@@ -48,31 +53,31 @@ const { Option } = Select;
 const columns = [
   {
     title: "#",
-    width:"40px",
-    render: (text, record, index) => <a>{++index}</a>,
+    width: "40px",
+    render: (text, record, index) =>   <Checkbox value={text}></Checkbox>,
   },
   {
     title: "Name",
     dataIndex: "name",
     key: "name",
-    width:"180px",
+    width: "180px",
     render: (text) => <a>{text}</a>,
   },
   {
     title: "Username",
     dataIndex: "username",
-    width:"120px",
+    width: "120px",
   },
   {
     title: "Address",
     dataIndex: "address",
     key: "address",
-    width:"250px",
+    width: "250px",
   },
   {
     title: "Nhóm",
     key: "group",
-    width:"290px",
+    width: "190px",
     dataIndex: "group",
     render: (tags) => (
       <>
@@ -91,14 +96,14 @@ const columns = [
               }
               trigger="click"
             >
-              <Tag style={{cursor: "pointer"}} color={color} key={tag}>
+              <Tag style={{ cursor: "pointer" }} color={color} key={tag}>
                 {tag.toUpperCase()}
               </Tag>
             </Popover>
           );
         })}
 
-        <Popover 
+        <Popover
           placement="top"
           content={
             <AutoComplete
@@ -109,15 +114,37 @@ const columns = [
             />
           }
           trigger="click"
-        >
-         
-        </Popover>
+        ></Popover>
       </>
     ),
   },
   {
+    title: "Hạn mức",
+    key: "hanMuc",
+    width: "190px",
+
+    render: (text, record, index) => (
+      <Tag style={{ cursor: "pointer" }} color="cyan" >
+        {/* HAN MUC CÁ NHÂN */}
+        1.000.000
+      </Tag>
+    ),
+  },
+  {
+    title: "Công nợ",
+    key: "congNo",
+    width: "190px",
+
+    render: (text, record, index) => (
+      <Tag style={{ cursor: "pointer" }} color="gold" >
+        {/* HAN MUC CÁ NHÂN */}
+        1.000.000
+      </Tag>
+    ),
+  },
+  {
     title: "Active",
-    width:"220px",
+    width: "220px",
     render: (text, record, index) => (
       <Space size="middle">
         <Select
@@ -136,16 +163,16 @@ const columns = [
   },
   {
     title: "Sửa",
-    width:"90px",
+    width: "90px",
     render: () => (
       <Space size="middle">
-        <EditUser/>
+        <EditUser />
       </Space>
     ),
   },
   {
     title: "Xóa",
-    width:"90px",
+    width: "90px",
     render: (text, record, index) => (
       <Space size="middle">
         <Button
@@ -153,26 +180,18 @@ const columns = [
             confirmRemoveUser(record.ID);
           }}
           danger
-         icon={<DeleteOutlined />}
-        >
-          
-        </Button>
+          icon={<DeleteOutlined />}
+        ></Button>
       </Space>
     ),
   },
 ];
 
 export default function ListUser() {
-  const [value, setValue] = useState("");
   const [options, setOptions] = useState([]);
   const [dataUserTest, setDataUserTest] = useState({
     data: [...dataUserTestJSON],
   });
-
-
-
-  
-
 
   const data = dataUserTest.data.map((item, index) => {
     return {
@@ -197,10 +216,10 @@ export default function ListUser() {
     <>
       <h3 className="text-center mt-3">DANH SÁCH THÀNH VIÊN</h3>
       <Row>
-        <Col span={4}>
+        <Col span={16}>
           <AddUser />
         </Col>
-        <Col span={4} offset={16} className="d-flex justify-content-end">
+        <Col span={8}  className="d-flex justify-content-end">
           <AutoComplete
             options={options}
             style={{ width: 200 }}
@@ -210,7 +229,10 @@ export default function ListUser() {
         </Col>
       </Row>
       <div>
+      <Checkbox.Group style={{ width: '100%' }} >
         <Table className="mt-3" columns={columns} dataSource={data} />
+      </Checkbox.Group>
+      
       </div>
     </>
   );
