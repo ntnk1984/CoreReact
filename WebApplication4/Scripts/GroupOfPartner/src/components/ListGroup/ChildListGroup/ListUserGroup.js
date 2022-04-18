@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Avatar, Checkbox, List, Modal,Row, Button, Tabs } from "antd";
+import { Avatar, Checkbox, List, Modal, Row, Button, Tabs } from "antd";
 import React, { useState } from "react";
 const { TabPane } = Tabs;
 const data = [
@@ -53,8 +53,7 @@ const data = [
   },
   {
     title: "Ant Design Title 1",
-  }
-  
+  },
 ];
 
 // 4.12.2020-tin tuong - confirm remove user in group
@@ -70,19 +69,41 @@ function confirmRemoveUserInGroup() {
     },
   });
 }
-export default function ListUserGroup() {
-  const mockVal = (str, repeat = 1) => ({
-    value: str.repeat(repeat),
+// 4.18.2022-tin tuong - confirm add user to group
+function confirmAddUserInGroup() {
+  Modal.confirm({
+    title: "Xác nhận thêm người dùng ",
+    icon: <ExclamationCircleOutlined />,
+    content: "Bạn có muốn thêm người dùng vào nhóm",
+    okText: "Đồng ý",
+    cancelText: "Trở lại",
+    onOk: () => {
+      /*call API remove user in group*/
+    },
   });
+}
 
-  const [value, setValue] = useState("");
-  const [options, setOptions] = useState([]);
 
+export default function ListUserGroup() {
+
+
+  // 4.18.2022 -Tin Tuong - disable btn them thanh vien btn xoa thanh vien
+  const [visible, setVisible] = useState(true);
   return (
     <>
-      <Row justify="center"><Button type="danger">Xóa khỏi nhóm</Button>
-      <Button disabled type="primary">Thêm vào nhóm</Button></Row>
-      <Tabs defaultActiveKey="1" centered>
+      <Row justify="center">
+        <Button type="danger" disabled={!visible} onClick={()=>{confirmRemoveUserInGroup()}}>Xóa khỏi nhóm</Button>
+        <Button  type="primary" disabled={visible}  onClick={()=>{confirmAddUserInGroup()}}>
+          Thêm vào nhóm
+        </Button>
+      </Row>
+      <Tabs
+        defaultActiveKey="1"
+        onChange={(e) => {
+          e == 1 ? setVisible(true) : setVisible(false);
+        }}
+        centered
+      >
         <TabPane tab="Trong nhóm" key="1">
           <Checkbox.Group style={{ width: "100%" }}>
             <List
