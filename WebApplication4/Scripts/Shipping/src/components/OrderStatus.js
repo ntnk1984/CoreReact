@@ -1,12 +1,20 @@
 import { Avatar, Button, List, Modal, Space, Table } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { contextValue } from "../App";
+import InputSearch from "./Modal/InputSearch";
+import "./Style/OrderStatus.css";
 
 function OrderStatus({ statusOrder }) {
   const context = useContext(contextValue);
+  const [searchTerm, setSearchTerm] = useState("");
   const { listOrder, orderShippingInfo } = context.infoOrder;
 
-  const data = listOrder.filter((item, index) => {
+  const updateState = (value) => {
+    console.log(value);
+    setSearchTerm(value);
+  };
+
+  const dataTemp = listOrder.filter((item, index) => {
     return item.tinhTrangDonHang === statusOrder;
   }) || [
     {
@@ -22,7 +30,17 @@ function OrderStatus({ statusOrder }) {
       title: "Ant Design Title 4",
     },
   ];
-  // console.log("jhjh", data);
+  const data = dataTemp.filter((val) => {
+    if (searchTerm == "") {
+      return val;
+    } else if (
+      val.vietnameseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.englishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.countryCode.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  });
 
   const handleInfo = (val) => {
     const data = orderShippingInfo.filter((item, index) => {
@@ -88,8 +106,10 @@ function OrderStatus({ statusOrder }) {
         ),
       },
     ];
+
     Modal.info({
       style: { top: 20 },
+      className: "abc ",
       footer: null,
       width: "1000px",
       title: "Thông tin Bưu Kiện",
@@ -102,7 +122,8 @@ function OrderStatus({ statusOrder }) {
     });
   };
   return (
-    <div>
+    <div className="orderStatus-main">
+      <InputSearch updateState={updateState} />
       <List
         itemLayout="horizontal"
         dataSource={data}
@@ -111,26 +132,20 @@ function OrderStatus({ statusOrder }) {
             <List.Item.Meta
               avatar={<Avatar src="https://joeschmoe.io/api/v1/10" />}
               title={
-                <>
-                  <h1 style={{ fontSize: "16px", fontWeight: 600 }}>
+                <div className="style-text">
+                  <h1>
                     {item.vietnameseName} - {item.englishName}
                   </h1>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      color: "#343a40",
-                    }}
-                  >
+                  <p>
                     Số Lượng: {item.quantity}
                     <br />
                     Đơn vị tính: {item.donviTinh} <br />
                   </p>
-                </>
+                </div>
               }
               description={item.countryCode}
             />
-            <div>
+            <div className="btn-handleInfo">
               <Button onClick={() => handleInfo(item)}>Xem Chi tiết</Button>
             </div>
           </List.Item>

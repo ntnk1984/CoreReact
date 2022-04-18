@@ -1,8 +1,9 @@
-import { Button, Tabs } from "antd";
+import { Button, Input, Tabs } from "antd";
 import React, { useReducer } from "react";
 import InfoOrder from "./components/InfoOrder";
 import StatisModal from "./components/Modal/statisModal";
 import OrderStatus from "./components/OrderStatus";
+import "./components/Style/App.css";
 
 const { TabPane } = Tabs;
 
@@ -448,21 +449,28 @@ export default function App() {
   const handleModal = () => {
     dispatch({ type: "SET_VISIBLE_MODAL" });
   };
+  const showStatistic = (
+    <div className="button-statistic">
+      <Button type="primary" onClick={handleModal}>
+        Thống Kê
+      </Button>
+      <StatisModal handleModal={handleModal} />
+    </div>
+  );
   // console.log(infoOrder.visibleModal);
   //handle progress
 
   return (
     <contextValue.Provider value={store}>
-      <div
-        className="main  pt-4 "
-        style={{
-          minHeight: "100vh",
-          margin: "0 auto",
-          backgroundColor: "#F5F5F5",
-        }}
-      >
+      <div className="app-main  pt-4 ">
         <div style={{ backgroundColor: "#FFFFFF" }} className="container">
-          <Tabs style={{ position: "relative" }} defaultActiveKey="1" centered>
+          <Tabs
+            className="app-tabs"
+            // style={{ position: "relative" }}
+            defaultActiveKey="1"
+            centered
+            tabBarExtraContent={showStatistic}
+          >
             <TabPane tab="Tất Cả Đơn Hàng" key="1">
               <InfoOrder />
             </TabPane>
@@ -481,12 +489,12 @@ export default function App() {
             <TabPane tab="Đã Hủy" key="6">
               <OrderStatus statusOrder="daHuy" />
             </TabPane>
-            <div style={{ position: "absolute", top: "10px", right: 0 }}>
+            {/* <div style={{ position: "absolute", top: "10px", right: 0 }}>
               <Button type="primary" onClick={handleModal}>
                 Thống Kê
               </Button>
               <StatisModal handleModal={handleModal} />
-            </div>
+            </div> */}
           </Tabs>
         </div>
       </div>

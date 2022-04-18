@@ -1,9 +1,11 @@
-import { Avatar, Button, List, Modal, Space, Table, Tag } from "antd";
-import React, { useContext } from "react";
+import { Avatar, Button, Input, List, Modal, Space, Table, Tag } from "antd";
+import React, { useContext, useState } from "react";
 import { contextValue } from "../App";
+import InputSearch from "./Modal/InputSearch";
 
 function InfoOrder(props) {
   const context = useContext(contextValue);
+  const [searchTerm, setSearchTerm] = useState("");
   const { listOrder, orderShippingInfo } = context.infoOrder;
   const renderStatus = (val) => {
     if (val.tinhTrangDonHang === "choXacNhan") {
@@ -43,7 +45,22 @@ function InfoOrder(props) {
     }
   };
   // console.log(orderShippingInfo, "shipping");
-  const data = listOrder || [
+  const updateState = (value) => {
+    console.log(value);
+    setSearchTerm(value);
+  };
+  //FilterData search
+  const data = listOrder.filter((val) => {
+    if (searchTerm == "") {
+      return val;
+    } else if (
+      val.vietnameseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.englishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      val.countryCode.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return val;
+    }
+  }) || [
     {
       title: "Ant Design Title 1",
     },
@@ -140,6 +157,7 @@ function InfoOrder(props) {
   };
   return (
     <div>
+      <InputSearch updateState={updateState} />
       <List
         itemLayout="horizontal"
         dataSource={data}
