@@ -4,8 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": " webpack-dev-server --mode development --open --hot",
-        "build": "webpack --mode production",
+        "dev": "set NODE_ENV=development  && webpack-dev-server --mode development --open --hot",
+        "product": "set NODE_ENV=production  && webpack-dev-server --mode production --open --hot",
+        "build-dev": "set NODE_ENV=development  && webpack --mode production",
+        "build-product": "set NODE_ENV=production  && webpack --mode production",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",

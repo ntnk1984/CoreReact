@@ -1,38 +1,47 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
+
+
+let env=""
+
+if(process.env.NODE_ENV=="development  "){
+  env="./.development.env"
+}else{
+  env="./.production.env"
+}
+
 
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "/dist"),
-    filename: "index-bundle.js"
+    filename: "index-bundle.js",
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: ["babel-loader"],
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
-    ]
+        use: ["style-loader", "css-loader"],
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      template: "./src/index.html",
     }),
     new Dotenv({
-      path: './.env' // default is .env
-  })
-   
-   
+      path: env,
+      // 
+    }),
   ],
   devServer: {
-    port:7230,
+    port: 7230,
     historyApiFallback: true,
   },
 };

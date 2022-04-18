@@ -3,6 +3,7 @@ import { Button, Checkbox, Table, Tag, Row, Col, Typography,Dropdown,Menu } from
 import { UnorderedListOutlined } from "@ant-design/icons";
 
 const menu = (
+  
   <Menu>
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="#">
@@ -143,7 +144,7 @@ const columns = [
 
 export default function TableDonHang(props) {
   const dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
-
+  console.log("FIFIF",process.env.NAME)
   return (
     <>
       <Checkbox.Group style={{ width: "100%" }}>

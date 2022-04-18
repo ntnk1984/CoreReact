@@ -7,7 +7,7 @@ import data from "../assets/data/dataJSON.json"
 
 const { TabPane } = Tabs;
 const App = () => {
- console.log(process.env.NAME)
+ console.log(process.env.NODE_ENV)
   return (
     <div style={{ width: "1700px", margin: "0 auto" }}>
       <h3 className="text-center my-3">QUẢN LÝ ĐƠN HÀNG</h3>
