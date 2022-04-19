@@ -112,6 +112,9 @@ const createOrderReducer =  (state = initialState, action) => {
 };
 
 export default function App() {
+
+
+  console.log("ORDER:",process.env.ORDER)
   //set up reducer
   const [createOrder, dispatch] = useReducer(createOrderReducer, initialState);
   const store = {
