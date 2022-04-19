@@ -64,7 +64,7 @@ export const postOrder =  (data) => {
   dataPostJson = JSON.stringify(dataPostJson);
   console.log("dataPostJson", dataPostJson);
 
-  return fetch(`http://localhost:5020/api/OrderShipping/add-orderShipping`, {
+  return fetch(`${process.env.ORDER}/api/OrderShipping/add-orderShipping`, {
     method: "POST",
     body: dataPostJson,
     headers: { "Content-Type": "application/json" },
