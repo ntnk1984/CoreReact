@@ -1,40 +1,35 @@
-import React from 'react';
-import {Bar,Chart} from 'react-chartjs-2';
-import {CategoryScale} from 'chart.js'; 
-Chart.register(CategoryScale)
-
-const state = {
-  labels: ['January', 'February', 'March',
-           'April', 'May'],
-  datasets: [
-    {
-      label: 'Rainfall',
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,0,0,1)',
-      borderWidth: 2,
-      data: [65, 59, 80, 81, 56]
-    }
-  ]
-}
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <Bar
-          data={state}
-          options={{
-            title:{
-              display:true,
-              text:'Average Rainfall per month',
-              fontSize:20
-            },
-            legend:{
-              display:true,
-              position:'right'
-            }
-          }}
-        />
+import { Typography } from "antd";
+import React from "react";
+import BangThongKeGiaoHang from "./components/BangThongKeGiaoHang.js";
+import BangThongKeTien from "./components/BangThongKeTien.js";
+const { Title } = Typography;
+const App = () => {
+  return (
+    <>
+      <div className="row w-75 mt-5" style={{ margin: "0 auto" }}>
+        <h5>Tổng tiền </h5>
+        <div className="d-flex mt-3">
+          <div className=" border border-1 rounded-2  p-2 mx-4">
+            Đã trả tiền :1.000.000
+          </div>
+          <div className=" border border-1 rounded-2  p-2 mx-4">
+            Chưa trả tiền:1.000.000
+          </div>
+          <div className=" border border-1 rounded-2  p-2 mx-4">
+            Chưa đối soát :1.000.000
+          </div>
+        </div>
       </div>
-    );
-  }}
+      <div className="row w-75 mt-5" style={{ margin: "0 auto" }}>
+        <div className="col-6">
+<BangThongKeTien/>
+        </div>
+         <div className="col-6">
+          <BangThongKeGiaoHang/>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default App;
