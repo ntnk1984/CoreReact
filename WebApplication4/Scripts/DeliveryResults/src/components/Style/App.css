@@ -1,0 +1,61 @@
+.app-main {
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: #F5F5F5;
+}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 992px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .app-main .app-tabs{
+    /* width: 100%; */
+    min-width: 100%;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 15px;
+    height: initial;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 10px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 10px;
+    padding: 3px 9px;
+    height: initial;
+  }
+
+}
+
+@media screen and (max-width: 576px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 9px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 9px;
+    padding: 2px 4px;
+    height: initial;
+  }
+  .app-tabs .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0 0 0 12px;
+  }
+}

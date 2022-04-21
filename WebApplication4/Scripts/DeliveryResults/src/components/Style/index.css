@@ -1,0 +1,88 @@
+.DeliveryResults{
+  margin: auto;
+width: 70%;
+}
+.DeliveryResults .inFoReceiver{
+  background-color: #FFFFFF;
+  padding: 10px 30px;
+  border-radius: 10px;
+  color: #313131d8;
+  font-weight: 500;
+  align-items: center;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+.DeliveryResults .formPost{
+  background-color: #FFFFFF;
+  padding: 10px 30px;
+  border-radius: 10px;
+}
+.DeliveryResults .inFoPost{
+  justify-content: left;
+  line-height: 30px;
+}
+.DeliveryResults .inFoPost .ant-form-item-label{
+  text-align: left;
+}
+
+.DeliveryResults .stepForm{
+  width: 100%;
+  align-items: center;
+
+  min-height:300px ;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+  
+  /* line-height: 30px; */
+}
+/* .ant-tabs-tab-active */
+
+.disableTab{
+  display: none;
+}
+.DeliveryResults .stepForm .example {
+  margin: 50px 0;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  text-align: center;
+
+}
+.DeliveryResults .stepForm  .ant-tabs-tab {
+  
+  cursor: default;
+}
+.DeliveryResults .stepForm span{
+  cursor: pointer;
+}
+
+  /* {/* <Row gutter={[48, 16]} justify="space-between">
+  <Col sm={12} md={7} lg={6}>
+    <label htmlFor="postman"> Bưu tá:</label>
+  </Col>
+  <Col sm={12} md={17} lg={18}>
+      <SelectModal
+    handleSelect={(e) => {
+      setDataFormSuccess({ ...dataFormSuccess, postman: e });
+      setDataFormError({ ...dataFormError, postman: e });
+    }}
+    id="postman"
+    name="postman"
+    data={inFoPostman}
+  />
+  </Col>
+
+  <Col sm={12} md={7} lg={6}>
+    <label htmlFor="timedate"> Ngày giờ phát:</label>
+  </Col>
+  <Col sm={12} md={17} lg={18}>
+    <DatePicker
+      onChange={(e) => {
+        formatsDate(e);
+      }}
+      style={{ width: "100%" }}
+      name="timedate"
+      showTime
+      format="HH:mm DD-MM-YYYY "
+    />
+  </Col>
+</Row> } */

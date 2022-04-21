@@ -2,7 +2,7 @@ const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 let env = "";
-
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == "development  ") {
   env = "./.deverlopment.env";
 } else {

@@ -411,6 +411,7 @@ const initialState = {
 };
 
 //usereducer
+console.log(process.env.API);
 const infoOrderReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_VISIBLE_MODAL": {

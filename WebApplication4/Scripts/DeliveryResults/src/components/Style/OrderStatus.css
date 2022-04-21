@@ -1,0 +1,105 @@
+.orderStatus-main .style-text h1{
+  /* color: red; */
+  font-size: 16px;
+  font-weight: 600;
+}
+.orderStatus-main .style-text p{
+  font-size: 14px;
+  font-weight: 400;
+  color: "#343a40";
+}
+.orderStatus-main .btn-handleInfo .ant-btn{
+  padding: 4px 15px;
+  font-size: 14px;
+}
+ 
+.orderStatus-main .ant-list-item-meta-description{
+  font-size: 14px;
+}
+
+
+/* Responsive */
+
+@media screen and (max-width: 1200px) {
+
+}
+@media screen and (max-width: 992px) {
+  .orderStatus-main .style-text h1{
+    /* color: red; */
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .orderStatus-main .style-text p{
+    font-size: 12px;
+    font-weight: 400;
+    color: "#343a40";
+  }
+  .orderStatus-main .btn-handleInfo .ant-btn{
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+  
+
+}
+@media screen and (max-width: 768px) {
+  .orderStatus-main .style-text h1{
+    /* color: red; */
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .orderStatus-main .style-text p{
+    font-size: 12px;
+    font-weight: 400;
+    color: "#343a40";
+  } 
+  .orderStatus-main .btn-handleInfo .ant-btn{
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+  .orderStatus-main .ant-list-item-meta-description{
+    font-size: 10px;
+  }
+
+}
+@media screen and (max-width: 576px) {
+  .orderStatus-main .style-text h1{
+    /* color: red; */
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .orderStatus-main .style-text p{
+    font-size: 9px;
+    font-weight: 400;
+    color: "#343a40";
+  }
+  .orderStatus-main .btn-handleInfo .ant-btn{
+    height: initial;
+    padding: 3px 8px;
+    font-size: 9  px;
+  }
+ 
+  .orderStatus-main .ant-list-item-meta-description{
+    font-size: 10px;
+  }
+}
+@media screen and (max-width: 376px) {
+  .orderStatus-main .style-text h1{
+    /* color: red; */
+    font-size: 9px;
+    font-weight: 500;
+  }
+  .orderStatus-main .style-text p{
+    font-size: 7px;
+    font-weight: 400;
+    color: "#343a40";
+  }
+  .orderStatus-main .btn-handleInfo .ant-btn{
+    height: initial;
+    padding: 3px 5px;
+    font-size: 7  px;
+  }
+ 
+  .orderStatus-main .ant-list-item-meta-description{
+    font-size: 9px;
+  }
+}

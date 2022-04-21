@@ -109,6 +109,7 @@ function OrderStatus({ statusOrder }) {
 
     Modal.info({
       style: { top: 20 },
+
       className: "abc ",
       footer: null,
       width: "1000px",
