@@ -15,7 +15,7 @@ import dataUserTest from "../../../assets/dataTest/dataUser.json";
 import { useAsync } from "react-async-hook";
 import { getPhuongXa, getQuanHuyen, getTinhThanh } from "../../../services/Province.js";
 import { contextValue } from "../../../App.js";
-import { createUserOfPartner } from "../../../services/UserService.js";
+import { createUserOfPartner, getAllUserOfPartner } from "../../../services/UserService.js";
 
 const { Option } = Select;
 export default function AddUser() {
@@ -61,9 +61,15 @@ export default function AddUser() {
 
   const handleOk =async () => {
     //call api thêm user
-    setIsModalVisible(false);
+    
     await createUserOfPartner(createUser)
- 
+    //reset data table
+    dispatch({
+      type: "GET_ALL_USER_API",
+      payload:await getAllUserOfPartner(),
+    });
+    //hide
+    await setIsModalVisible(false);
   };
 
   const handleCancel = () => {
@@ -87,7 +93,7 @@ export default function AddUser() {
         </Button>
         <Form.Item name="upload" valuePropName="fileList">
           <Upload name="logo" listType="picture">
-            <Button className="mx-2" icon={<UploadOutlined />} type="danger">
+            <Button className="mx-2" icon={<UploadOutlined />} type="">
               Import nhiều user
             </Button>
           </Upload>
@@ -110,7 +116,7 @@ export default function AddUser() {
 
             <Col span={8}>
               <Form.Item className="mx-2" name="MatKhau" label="Mật khẩu">
-                <Input.Password name="MatKhau" onChange={handleChangeValue} />
+                <Input name="MatKhau" onChange={handleChangeValue} />
               </Form.Item>
             </Col>
 
@@ -120,7 +126,7 @@ export default function AddUser() {
                 name="ReMatKhau"
                 label="Nhập lại mật khẩu"
               >
-                <Input.Password name="ReMatKhau" onChange={handleChangeValue} />
+                <Input name="ReMatKhau" onChange={handleChangeValue} />
               </Form.Item>
             </Col>
           </Row>

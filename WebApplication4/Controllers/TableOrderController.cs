@@ -5,11 +5,11 @@ using WebApplication4.ViewModels;
 
 namespace WebApplication4.Controllers
 {
-    public class OrderController : Controller
+    public class TableOrderController : Controller
     {
-        private readonly ILogger<OrderController> _logger;
+        private readonly ILogger<TableOrderController> _logger;
 
-        public OrderController(ILogger<OrderController> logger)
+        public TableOrderController(ILogger<TableOrderController> logger)
         {
             _logger = logger;
         }

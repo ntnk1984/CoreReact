@@ -62,12 +62,12 @@ export const postOrder =  (data) => {
     ],
   };
   dataPostJson = JSON.stringify(dataPostJson);
-  console.log("dataPostJson", dataPostJson);
+  console.log("dataPostJson",dataPostJson);
 
   return fetch(`${process.env.ORDER}/api/OrderShipping/add-orderShipping`, {
     method: "POST",
     body: dataPostJson,
-    headers: { "Content-Type": "application/json" },
+    headers: {Authorization: `Bearer ${process.env.TOKEN}`},
   })
    
   //   if (res.status === 200) {

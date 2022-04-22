@@ -23,4 +23,16 @@ export const getUserByIdOfPartner= async (id) => {
   };
 
   
+  export const removeUserById= async (id) => {
+    const options = {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+    };
+    return await (
+      await fetch(`https://625fcbde53a42eaa07fb1165.mockapi.io/api/users/${id}`,options)
+    ).json();
+  };
+
+
+  
   

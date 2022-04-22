@@ -3,7 +3,7 @@ import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Button, Modal, Row, Col } from "antd";
 import dataUserTest from "../../../assets/dataTest/dataUser.json";
 
-export default function EditUser() {
+export default function EditUser(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   //initValue create user
@@ -54,9 +54,13 @@ export default function EditUser() {
   const onFinish = (values) => {
     console.log(values);
   };
+
+
+  console.log(props)
   return (
     <>
-      <Button type="primary" ghost icon={<EditOutlined />} onClick={showModal}></Button>
+
+      <Button type="link" onClick={showModal}>Sửa</Button>
       <Modal
         title="Sửa thông tin người dùng"
         visible={isModalVisible}

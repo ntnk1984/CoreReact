@@ -14,6 +14,7 @@ const initialTodos = {
 const userPartnerReducer = (state = initialTodos, action) => {
   switch (action.type) {
     case "GET_TINHTHANH_API": {
+      console.log(action)
       return { ...state, tinhThanhData: action.payload.results };
     }
     case "GET_QUANHUYEN_API": {

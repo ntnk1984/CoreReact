@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Button, Modal, Select, Tag } from "antd";
-
+import { createGroupPartner } from "../../../services/Groups.js";
 
 //CALL API NHOM QUYEN
 const options = [
-  { value: "#fff0f6",label:"Cấp 1" },
-  { value: "#ffd6e7",label:"Cấp 2" },
-  { value: "#ffadd2",label:"Cấp 3" },
-  { value: "#ff85c0",label:"Cấp 4" },
-  { value: "#f759ab",label:"Cấp 5" },
-  { value: "#eb2f96",label:"Cấp 6" },
-  { value: "#c41d7f",label:"Cấp 7" },
-  { value: "#9e1068",label:"Cấp 8" },
-  { value: "#780650",label:"Cấp 9" },
+  { label: "Cấp 1", value: "1" },
+  { label: "Cấp 2", value: "2" },
+  { label: "Cấp 3", value: "3" },
+  { label: "Cấp 4", value: "4" },
+  { label: "Cấp 5", value: "5" },
+  { label: "Cấp 6", value: "6" },
+  { label: "Cấp 7", value: "7" },
+  { label: "Cấp 8", value: "8" },
+  { label: "Cấp 9", value: "9" },
 ];
 
 function tagRender(props) {
-  const { label, value, closable, onClose } = props;
+  const { label, value, closable, onClose, color } = props;
   const onPreventMouseDown = (event) => {
     event.preventDefault();
     event.stopPropagation();
   };
   return (
     <Tag
-      color={value}
+      color={"#f759ab"}
       onMouseDown={onPreventMouseDown}
       closable={closable}
       onClose={onClose}
@@ -35,24 +35,25 @@ function tagRender(props) {
   );
 }
 
-export default function AddGroup() {
+export default function AddGroup(props) {
+  const [infoGroup, setInfoGroup] = useState({});
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleOk = async () => {
+    const response = await createGroupPartner(infoGroup);
+    await props.handle()
+    await setIsModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
   return (
     <>
       <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
@@ -64,20 +65,36 @@ export default function AddGroup() {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form layout="vertical" name="nest-messages" onFinish={onFinish}>
-          <Form.Item label="Tên nhóm">
-            <Input />
+        <Form layout="vertical" name="nest-messages">
+          <Form.Item name="name" label="Tên nhóm">
+            <Input
+              name="name"
+              onChange={(e) => {
+                const { name, value } = e.target;
+                setInfoGroup({ ...infoGroup, [name]: value });
+              }}
+            />
           </Form.Item>
 
-          <Form.Item name="moTa" label="Mô tả nhóm">
-            <Input.TextArea style={{ height: "200px" }} />
+          <Form.Item name="description" label="Mô tả nhóm">
+            <Input.TextArea
+              onChange={(e) => {
+                const { name, value } = e.target;
+                setInfoGroup({ ...infoGroup, [name]: value });
+              }}
+              name="description"
+              style={{ height: "200px" }}
+            />
           </Form.Item>
           <Form.Item>
             <Select
               mode="multiple"
               showArrow
               tagRender={tagRender}
-            
+              name="jurisdiction"
+              onChange={(e) => {
+                setInfoGroup({ ...infoGroup, jurisdiction: e });
+              }}
               style={{ width: "100%" }}
               options={options}
             />

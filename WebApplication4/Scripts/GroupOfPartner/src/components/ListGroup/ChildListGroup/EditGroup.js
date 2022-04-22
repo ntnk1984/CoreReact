@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Button, Modal, Select, Tag } from "antd";
+import { getGroupById } from "../../../services/Groups.js";
 
 //CALL API NHOM QUYEN
 const options = [
@@ -34,9 +35,14 @@ function tagRender(props) {
   );
 }
 
-export default function EditGroup(props) {
+function EditGroup(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [initValue, setInitValue] = useState({});
+  const initForm = {
+    name: initValue.name,
+    description: initValue.description,
+    jurisdiction: initValue.jurisdiction,
+  };
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -52,6 +58,11 @@ export default function EditGroup(props) {
   const onFinish = (values) => {
     console.log(values);
   };
+  useEffect(async () => {
+    const response = await getGroupById(props.id);
+    await setInitValue(response);
+  }, [props]);
+  console.log(initForm);
   return (
     <>
       <Button
@@ -59,7 +70,7 @@ export default function EditGroup(props) {
         type={props.type}
         ghost
         onClick={showModal}
-       style={props.style}
+        style={props.style}
       ></Button>
       <Modal
         title="Sửa thông tin nhóm"
@@ -67,23 +78,26 @@ export default function EditGroup(props) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form layout="vertical" name="nest-messages" onFinish={onFinish}>
-          <Form.Item label="Tên nhóm">
-            <Input />
+        <Form
+        
+          layout="vertical"
+          name="nest-messages"
+          initialValue={initForm}
+          onFinish={onFinish}
+        >
+          <Form.Item name="name" label="Tên nhóm">
+            <Input name="name" value="ded" />
           </Form.Item>
 
-          <Form.Item name="moTa" label="Mô tả nhóm">
-            <Input.TextArea style={{ height: "200px" }} />
+          <Form.Item name="description" label="Mô tả nhóm">
+            <Input.TextArea name="description" style={{ height: "200px" }} />
           </Form.Item>
           <Form.Item>
             <Select
               mode="multiple"
               showArrow
               tagRender={tagRender}
-              defaultValue={[
-                { value: "#f759ab", label: "Cấp 5" },
-                { value: "#eb2f96", label: "Cấp 6" },
-              ]}
+              name="jurisdiction"
               style={{ width: "100%" }}
               options={options}
             />
@@ -93,3 +107,4 @@ export default function EditGroup(props) {
     </>
   );
 }
+export default EditGroup;

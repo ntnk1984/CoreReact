@@ -1,34 +1,42 @@
-import React from "react";
-import { Button, Checkbox, Table, Tag, Row, Col, Typography,Dropdown,Menu } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Checkbox,
+  Table,
+  Tag,
+  Row,
+  Col,
+  Typography,
+  Dropdown,
+  Menu,
+} from "antd";
 import { UnorderedListOutlined } from "@ant-design/icons";
 
 const menu = (
-  
   <Menu>
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="#">
-      Phân chia
+        Phân chia
       </a>
     </Menu.Item>
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="#">
-   Sửa đơn
+        Sửa đơn
       </a>
     </Menu.Item>
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="#">
-      Hủy đơn
+        Hủy đơn
       </a>
     </Menu.Item>
   </Menu>
 );
 
-
 const { Text, Link } = Typography;
 const columns = [
   {
     title: "#",
-    render: (text, record, index) => <Checkbox value={text}></Checkbox>,
+    render: (text, record, index) => <Checkbox value={text.id}></Checkbox>,
   },
   {
     title: "Mã đơn hàng ",
@@ -54,7 +62,6 @@ const columns = [
         <Row>
           <Col span={24}>{text.nguoiNhan}</Col>
           <Col span={24}>
-            {" "}
             <Text disabled>{text.soDienThoaiNguoiNhan}</Text>
           </Col>
         </Row>
@@ -67,7 +74,6 @@ const columns = [
       <Row>
         <Col span={24}>{"10:19"}</Col>
         <Col span={24}>
-          {" "}
           <Text disabled>{"20/10/2020"}</Text>
         </Col>
       </Row>
@@ -133,27 +139,34 @@ const columns = [
   {
     title: " Thao tác",
     render: (text, record, index) => {
-      return<Dropdown overlay={menu} placement="bottomLeft">
-        <Button type="link" icon={<UnorderedListOutlined />}>
-      
-        </Button>
-      </Dropdown>;
+      return (
+        <Dropdown overlay={menu} placement="bottomLeft">
+          <Button type="link" icon={<UnorderedListOutlined />}></Button>
+        </Dropdown>
+      );
     },
   },
 ];
 
 export default function TableDonHang(props) {
-  const dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
-  console.log("FIFIF",process.env.NAME)
+  let dataTemp = [];
+  if (props.value == undefined || props.value == "") {
+    dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
+  } else {
+    dataTemp = props?.data
+      ?.filter((item) => {
+        return item.maDonHang.indexOf(props.value) > -1;
+      })
+      ?.map((item, index) => ({ ...item, key: index }));
+  }
+
   return (
     <>
-      <Checkbox.Group style={{ width: "100%" }}>
-        <Table
-          style={{ margin: "0 auto" }}
-          columns={columns}
-          dataSource={dataTemp}
-        />
-      </Checkbox.Group>
+      <Table
+        style={{ margin: "0 auto" }}
+        columns={columns}
+        dataSource={dataTemp}
+      />
     </>
   );
 }
