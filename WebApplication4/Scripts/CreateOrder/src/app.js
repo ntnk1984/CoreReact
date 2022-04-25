@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useRef } from "react";
-import { message, Steps } from "antd";
+import { message, Steps,Form } from "antd";
 // import CreateOrderThree from "./components/CreateOrderThree";
 import CreateOrderOne from "./components/CreateOrderOne";
 import CreateOrderTwo from "./components/CreateOrderTwo.js";
@@ -73,11 +73,11 @@ const createOrderReducer =  (state = initialState, action) => {
       return { ...state, listOrder: [...state.listOrder, []] };
     }
     case "ADD_INFO_SENDER": {
-      message.success("Thêm thành công!");
+    
       return { ...state, sender: action.payload };
     }
     case "ADD_INFO_RECEIVER": {
-      message.success("Thêm thành công!");
+  
       return { ...state, receiver: action.payload };
     }
     case "POST_ORDER_API": {
@@ -136,24 +136,19 @@ export default function App() {
 
   return (
     <contextValue.Provider value={store}>
-      <div
-        className="main  mt-4 "
-        style={{ margin: "0 auto", width: "1000px" }}
-      >
-        <Steps
-          style={{ margin: "0 auto" }}
-          className="w-75"
-          size="small"
-          current={createOrder.progress}
-        >
-          <Step title="Người gửi" />
-          <Step title="Người nhận" />
-          <Step title="Đơn hàng" />
-        </Steps>
-      
-
-        {handleProgress(createOrder.progress)}
+      <Form  layout="vertical" >
+      <div className="row">
+        
+        <div className="col-9">
+        <CreateOrderThree/>
+        </div>
+        <div className="col-3">
+          <CreateOrderOne/>
+          <CreateOrderTwo/>
+        </div>
+       
       </div>
+      </Form>
     </contextValue.Provider>
   );
 }

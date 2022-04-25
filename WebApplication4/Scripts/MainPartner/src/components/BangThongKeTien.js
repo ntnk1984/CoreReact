@@ -56,9 +56,10 @@ Chart.register(
   Tooltip
 );
 const { Text, Link } = Typography;
+const rand=()=>(Math.round(Math.random()*4000+500))
 function BangThongKeTien() {
   return (
-    <div style={{width:600,height:330}} className=" bg-white p-3 rounded-2 shadow m-2">
+    <div  className=" bg-white p-3 rounded-2 shadow ms-4 my-3">
        <Text className="text-center" strong>Thống kê tiền</Text>
       <Bar
         data={{
@@ -70,30 +71,24 @@ function BangThongKeTien() {
             "Tháng 5",
             "Tháng 6",
             "Tháng 7",
+            "Tháng 8",
+            "Tháng 9",
           ],
           datasets: [
             {
               label: "Đã trả tiền (vnđ)",
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-              data: [
-                2478, 267, 734, 784, 433, 5267, 234, 784, 2433, 234, 1784, 243,
-              ],
+              backgroundColor: "#d9f7be",
+              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
             },
             {
               label: "Chưa trả tiền (vnđ)",
-              backgroundColor: "#fff1b8",
-              data: [
-                2478, 267, 734, 784, 1433, 9267, 734, 984, 1433, 2234, 3784,
-                4243,
-              ],
+              backgroundColor: "#95de64",
+              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
             },
             {
               label: "Chưa đối soát (vnđ)",
-              backgroundColor: "rgba(53, 162, 235, 0.5)",
-              data: [
-                2478, 5267, 734, 784, 1433, 5267, 734, 784, 6433, 2234, 1784,
-                4243,
-              ],
+              backgroundColor: "#52c41a",
+              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
             },
           ],
         }}

@@ -78,7 +78,7 @@ export default function BangThongKeSanLuong() {
   return (
     <div
       style={{ width: 310, height: 330 }}
-      className=" bg-white p-3 rounded-2 shadow m-2"
+      className=" bg-white p-3 rounded shadow m-2"
     >
   
       <Text className="text-center" strong>

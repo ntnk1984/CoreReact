@@ -14,16 +14,16 @@ const initialTodos = {
 const userPartnerReducer = (state = initialTodos, action) => {
   switch (action.type) {
     case "GET_TINHTHANH_API": {
-      console.log(action)
-      return { ...state, tinhThanhData: action.payload.results };
+
+      return { ...state, tinhThanhData: action.payload };
     }
     case "GET_QUANHUYEN_API": {
-      console.log(action);
-      return { ...state, quanHuyenData: action.payload.results };
+
+      return { ...state, quanHuyenData: action.payload };
     }
     case "GET_PHUONGXA_API": {
-      console.log(action);
-      return { ...state, phuongXaData: action.payload.results };
+
+      return { ...state, phuongXaData: action.payload };
     }
     case "GET_ALL_USER_API": {
      
@@ -36,6 +36,7 @@ const userPartnerReducer = (state = initialTodos, action) => {
 };
 
 export default function App() {
+  console.log(process.env.HOST)
   const [userPartner, dispatch] = useReducer(userPartnerReducer, initialTodos);
   const store = {
     userPartner,
@@ -53,7 +54,7 @@ export default function App() {
   
   return (
     <contextValue.Provider value={store}>
-      <div className="w-75 " style={{ margin: "0 auto" }}>
+      <div  style={{ margin: "0 auto",width:1600 }}>
         <ListUser />
       </div>
     </contextValue.Provider>

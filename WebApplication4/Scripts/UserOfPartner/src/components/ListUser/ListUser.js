@@ -236,7 +236,7 @@ export default function ListUser() {
 
   return (
     <>
-      <h3 className="text-center mt-3">DANH SÁCH THÀNH VIÊN</h3>
+     
       <Row>
         <Col span={16} className="d-flex">
           <AddUser />

@@ -1,27 +1,50 @@
 import React from "react";
-import { Typography, Space,Button } from 'antd';
-import {
-    FieldTimeOutlined,
-  } from "@ant-design/icons";
-const { Text, Link } = Typography;
+import { Typography, Space, Button } from "antd";
+import { FieldTimeOutlined } from "@ant-design/icons";
+const { Text, Link, Title } = Typography;
 
 export default function BangTongTien() {
   return (
-    <div style={{width:310,height:330}} className=" bg-white p-3 rounded-2 shadow m-2">
-     
-      <div className=" mt-1">
-          <Text className="text-center" strong>Tổng tiền</Text>
-        <div className=" border border-1  rounded-2 text p-2 m-4">
-          <Button type="link"  style={{borderRadius:100,backgroundColor:"#52c41a",color:"white"}}  icon={<FieldTimeOutlined />}></Button>
-          &nbsp; <Text strong> Đã trả tiền :1.000.000</Text>
+  
+    <div className="row px-2">
+      <div className="col-md-3 text-center  ">
+        <div
+          className="bg-white  rounded p-3 shadow  "
+          style={{ margin: "0 auto" }}
+        >
+          <Title level={4} type="secondary"  >Đã trả tiền</Title>
+          <Title className="my-1" level={3}>99.934.100 </Title>
+          <div className="text-end"><small>Đơn vị : VNĐ</small></div>
         </div>
-        <div className=" border border-1 rounded-2  p-2 m-4">
-        <Button type="link" style={{borderRadius:100,backgroundColor:"#52c41a",color:"white"}}  icon={<FieldTimeOutlined />}></Button>
-          &nbsp; <Text strong> Chưa trả tiền :1.000.000</Text>
+      </div>
+      <div className="col-md-3 text-center  ">
+        <div
+          className="bg-white  rounded p-3 shadow  "
+          style={{ margin: "0 auto" }}
+        >
+          <Title level={4} type="secondary">Chưa trả tiền</Title>
+          <Title type="link" className="my-1" level={3}>23.912.000 </Title>
+          <div className="text-end"><small>Đơn vị : VNĐ</small></div>
         </div>
-        <div className=" border border-1 rounded-2  p-2 m-4">
-        <Button type="link" style={{borderRadius:100,backgroundColor:"#52c41a",color:"white"}}  icon={<FieldTimeOutlined />}></Button>
-          &nbsp; <Text strong> Chưa đối soát :1.000.000</Text>
+      </div>
+      <div className="col-md-3 text-center  ">
+        <div
+          className="bg-white  rounded p-3 shadow  "
+          style={{ margin: "0 auto" }}
+        >
+          <Title level={4} type="secondary">Đơn gôm</Title>
+          <Title className="my-1" level={3}>1.453 </Title>
+          <div className="text-end"><small>Đơn vị : Đơn hàng</small></div>
+        </div>
+      </div>
+      <div className="col-md-3 text-center  ">
+        <div
+          className="bg-white  rounded p-3 shadow  "
+          style={{ margin: "0 auto" }}
+        >
+          <Title level={4} type="secondary">Đơn phát</Title>
+          <Title className="my-1" level={3}>3.293</Title>
+          <div className="text-end"><small>Đơn vị : Đơn hàng</small></div>
         </div>
       </div>
     </div>

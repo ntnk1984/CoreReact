@@ -25,32 +25,45 @@ export default function CreateOrderThree() {
   
   return (
     <Spin  spinning={OpenSpin}>
+       <Row className="mt-4 mb-2 ">
+         
+         <Button
+           size="large"
+           className="mx-2"
+           onClick={() => {
+             dispatch({ type: "ADD_BUU_GUI" });
+           }}
+         
+         >
+           Tạo đơn bưu gửi
+         </Button>
+         <Button
+           size="large"
+           type="primary"
+           onClick={() => {
+             setOpenSpin(true)
+
+             postOrder(createOrder).then(data => {
+               message.success("Thành công!")
+               setOpenSpin(false)
+             }).catch(err=>{
+               message.error("Thất bại!")
+               setOpenSpin(false)
+             })
+
+             
+           }}
+         >
+           Hoàn tất
+         </Button>
+       </Row>
       <Form
         layout="vertical"
         className="mt-4 rounded rounded-3 p-3 shadow-sm"
         style={{ background: "white" }}
       >
-        <Row justify="center" className="mb-3 px-2">
-          <Col span={11} className="border p-2 mx-2">
-            <Text strong>Thông tin người gửi</Text>
-            <br></br>
-            <Text>Họ tên: {sendername}</Text> &nbsp;&nbsp;
-            <Text>Số điện thoại: {senderphone}</Text>
-            <br></br>
-            <Text>Địa chỉ: {senderaddress}</Text>
-          </Col>
-          <Col span={11} className="border p-2 mx-2">
-            <Text strong>Thông tin người gửi</Text>
-            <br></br>
-            <Text>Họ tên: {receivername}</Text> &nbsp;&nbsp;
-            <Text>Số điện thoại: {receiverphone}</Text>
-            <br></br>
-            <Text>Địa chỉ: {receiveraddress}</Text>
-          </Col>
-        </Row>
-        <Row>
-          <h4 className="text-secondary mx-2">THÔNG TIN BƯU GỬI</h4>
-        </Row>
+        
+        
 
         {/* render card collpase */}
         <Collapse>
@@ -81,46 +94,7 @@ export default function CreateOrderThree() {
         </Collapse>
         {/* render card collpase */}
 
-        <Form.Item className="mt-4 mb-2 ">
-          <Button
-            size="large"
-            type=""
-            onClick={() => {
-              context.dispatch({ type: "SET_PROGRESS_BACK" });
-            }}
-          >
-            Trở lại
-          </Button>
-          <Button
-            size="large"
-            className="mx-2"
-            onClick={() => {
-              dispatch({ type: "ADD_BUU_GUI" });
-            }}
-          
-          >
-            Tạo đơn bưu gửi
-          </Button>
-          <Button
-            size="large"
-            type="primary"
-            onClick={() => {
-              setOpenSpin(true)
-
-              postOrder(createOrder).then(data => {
-                message.success("Thành công!")
-                setOpenSpin(false)
-              }).catch(err=>{
-                message.error("Thất bại!")
-                setOpenSpin(false)
-              })
-
-              
-            }}
-          >
-            Hoàn tất
-          </Button>
-        </Form.Item>
+       
       </Form>
     </Spin>
   );

@@ -1,3 +1,8 @@
+import React, { useEffect, useState } from "react";
+import { getAllGroup, removeGroupById } from "../../services/Groups.js";
+import AddGroup from "./ChildListGroup/AddGroup.js";
+import EditGroup from "./ChildListGroup/EditGroup.js";
+import ListUserGroup from "./ChildListGroup/ListUserGroup.js";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -11,41 +16,14 @@ import {
   Drawer,
   Modal,
   Row,
-  Select,
   Space,
   Table,
-  Tag,
-  Tooltip,
   Checkbox,
   Typography,
 } from "antd";
-import React, { useEffect, useState } from "react";
-import { getAllGroup, removeGroupById } from "../../services/Groups.js";
-import AddGroup from "./ChildListGroup/AddGroup.js";
-import EditGroup from "./ChildListGroup/EditGroup.js";
-import ListUserGroup from "./ChildListGroup/ListUserGroup.js";
 
-const { Option } = Select;
-const { Text, Link } = Typography;
+const { Text } = Typography;
 export default function ListGroup() {
-  //SELECT CHECKBOX
-  const [listCheckBox, setListCheckBox] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [dataGroup, setDataGroup] = useState([]);
-  const [search, setSearch] = useState("");
-  const dataTable = dataGroup.filter((item) => {
-    if (search == "") {
-      return true;
-    } else {
-      return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
-    }
-  });
-
-  const handleRefeshData = async () => {
-    const res = await getAllGroup();
-    await setDataGroup(res);
-  };
-
   // 4.12.2020-tin tuong - confirm remove group
   function confirmRemoveGroup(ID) {
     Modal.confirm({
@@ -74,21 +52,38 @@ export default function ListGroup() {
         await listCheckBox.forEach(async (item) => {
           await removeGroupById(item);
         });
-
         await handleRefeshData();
       },
     });
   }
-  //cal API search group in partner
-  const onSearch = (searchText) => {
-   setSearch(searchText)
+
+  /* Danh sách các checkbox đã chọn */
+  const [listCheckBox, setListCheckBox] = useState([]);
+
+  /* Từ khóa tìm kiếm */
+  const [search, setSearch] = useState("");
+
+  /* Danh sách bảng nhóm */
+  const [dataGroup, setDataGroup] = useState([]);
+  const dataTable = dataGroup.filter((item) => {
+    if (search == "") return true;
+    else return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
+  });
+
+  /* Refesh lại bảng sau khi đã xử lý */
+  const handleRefeshData = async () => {
+    const res = await getAllGroup();
+    await setDataGroup(res);
   };
 
-  //set drawer
-  const [visible, setVisible] = useState(false);
-  const showDrawer = () => {
-    setVisible(true);
+  //set lại từ khóa tìm kiếm
+  const onSearch = (searchText) => {
+    setSearch(searchText);
   };
+
+  //Ẩn hiện bảng tạo mới group
+  const [visible, setVisible] = useState(false);
+
   const onClose = () => {
     setVisible(false);
   };
@@ -182,7 +177,6 @@ export default function ListGroup() {
 
   return (
     <>
-      {/* <h3 className="text-center mt-3">DANH SÁCH NHÓM</h3> */}
       <Row>
         <Col span={4}>
           <AddGroup handle={handleRefeshData} />
@@ -198,7 +192,6 @@ export default function ListGroup() {
 
         <Col span={4} offset={16} className="d-flex justify-content-end">
           <AutoComplete
-            options={options}
             style={{ width: 200 }}
             onSearch={onSearch}
             placeholder="Nhập tên cần tìm..."

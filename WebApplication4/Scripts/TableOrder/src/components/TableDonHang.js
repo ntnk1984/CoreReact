@@ -56,7 +56,33 @@ const columns = [
     },
   },
   {
+    title: "Địa chỉ ",
+    render: (text, record, index) => {
+      return (
+        <Row>
+      
+          <Col span={24}>
+            <Text >{"TP.Hồ Chí Minh - Quận Thủ Đức - Phường Tam Bình"}</Text>
+          </Col>
+        </Row>
+      );
+    },
+  },
+  {
     title: "Người nhận ",
+    render: (text, record, index) => {
+      return (
+        <Row>
+    
+          <Col span={24}>
+          <Text >{"TP.Hồ Chí Minh - Quận Thủ Đức - Phường Tam Bình"}</Text>
+          </Col>
+        </Row>
+      );
+    },
+  },
+  {
+    title: "Địa chỉ ",
     render: (text, record, index) => {
       return (
         <Row>

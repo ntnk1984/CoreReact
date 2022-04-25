@@ -55,14 +55,7 @@ export default function CreateOrderTwo() {
 
 
   return (
-    <Form
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    initialValues={initForm}
-      layout="vertical"
-      className="mt-4 rounded rounded-3 p-3 shadow-sm"
-      style={{ background: "white" }}
-    >
+<>
       <h4 className="text-secondary mx-2">THÔNG TIN NGƯỜI NHẬN</h4>
       <Row>
         <Col span={12}>
@@ -160,7 +153,7 @@ export default function CreateOrderTwo() {
         </Col>
       </Row>
       <Row>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item rules={[validate.checkRequire()]}  name="receivercountry"  className="mx-2" label="Quốc gia" required>
             <Select
               name="receivercountry"
@@ -177,7 +170,7 @@ export default function CreateOrderTwo() {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item rules={[validate.checkRequire()]}  name="receivercity" className="mx-2" label="Thành phố/Tỉnh" required>
             <Select
               name="receivercity"
@@ -193,7 +186,7 @@ export default function CreateOrderTwo() {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item rules={[validate.checkRequire()]}  name="receiverdistrict" className="mx-2" label="Quận/Huyện" required>
             <Select
               name="receiverdistrict"
@@ -210,7 +203,7 @@ export default function CreateOrderTwo() {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item rules={[validate.checkRequire()]} name="receiverward" className="mx-2" label="Phường/Xã" required>
             <Select
               name="receiverward"
@@ -228,7 +221,7 @@ export default function CreateOrderTwo() {
           </Form.Item>
         </Col>
       </Row>
-      <Row justify="end">
+      {/* <Row justify="end">
       <Form.Item className="my-2 ">
       <Button size="large" type=""  onClick={() => {
           
@@ -247,7 +240,7 @@ export default function CreateOrderTwo() {
         </Button>
        
       </Form.Item>
-      </Row>
-    </Form>
+      </Row> */}
+   </>
   );
 }

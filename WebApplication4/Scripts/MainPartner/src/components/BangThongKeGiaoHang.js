@@ -54,6 +54,8 @@ Chart.register(
   Tooltip
 );
 
+const rand=()=>(Math.round(Math.random()*4000-500))
+
 const data = {
   labels: [
     "Tháng 1",
@@ -63,27 +65,27 @@ const data = {
     "Tháng 5",
     "Tháng 6",
     "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
   ],
   datasets: [
     {
       label: "Giao hàng",
-      data: [2478, 267, 3734, 784, 433, 2267, 234, 1784, 2433, 5234, 1784, 243],
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
+      data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+      borderColor: "#ffc069",
+      backgroundColor: "#ffc069",
     },
     {
       label: "Gôm hàng",
-      data: [
-        1478, 1267, 734, 784, 9433, 5267, 734, 984, 1433, 2234, 3784, 4243,
-      ],
-      borderColor: "#fff1b8",
-      backgroundColor: "#fff1b8",
+      data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+      borderColor: "#69c0ff",
+      backgroundColor: "#69c0ff",
     },
     {
       label: "Hủy đơn",
-      data: [1478, 1267, 734, 764, 433, 5267, 734, 4984, 1433, 234, 4784, 2243],
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
+      data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+      borderColor: "#ff85c0",
+      backgroundColor: "#ff85c0",
     },
   ],
 };
@@ -92,8 +94,8 @@ const { Text, Link } = Typography;
 function BangThongKeGiaoHang() {
   return (
     <div
-      style={{ width: 600, height: 330 }}
-      className="bg-white p-3 rounded-2 shadow m-2"
+     
+      className="bg-white p-3 rounded  shadow me-4 my-3"
     >
       <Text className="text-center" strong>
         Thống kê đơn hàng
