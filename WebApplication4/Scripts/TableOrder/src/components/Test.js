@@ -1,7 +1,7 @@
-import { Table, Input, Button, Space } from "antd";
-import Highlighter from "react-highlight-words";
-import { SearchOutlined } from "@ant-design/icons";
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { Input, Table ,Popover,Button} from "antd";
+import { SearchOutlined } from '@ant-design/icons';
+import "antd/dist/antd.css";
 
 const data = [
   {
@@ -16,151 +16,66 @@ const data = [
     age: 42,
     address: "London No. 1 Lake Park",
   },
-  {
-    key: "3",
-    name: "Jim Green",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
 ];
 
-class Test extends Component {
-  state = {
-    searchText: "",
-    searchedColumn: "",
-  };
+export default function App() {
+  const [dataSource, setDataSource] = useState(data);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
 
-  getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={(node) => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, confirm, dataIndex)
-          }
-          style={{ marginBottom: 8, display: "block" }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => this.handleReset(clearFilters)}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        : "",
-    onFilterDropdownVisibleChange: (visible) => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
-  });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
-
-  handleReset = (clearFilters) => {
-    clearFilters();
-    this.setState({ searchText: "" });
-  };
-
-  render() {
-    const columns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        width: "30%",
-        ...this.getColumnSearchProps("name"),
-      },
-      {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
-        width: "20%",
-        ...this.getColumnSearchProps("age"),
-      },
-      {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-        ...this.getColumnSearchProps("address"),
-        sorter: (a, b) => a.address.length - b.address.length,
-        sortDirections: ["descend", "ascend"],
-      },
-    ];
-    return <Table columns={columns} dataSource={data} />;
+  const FilterByNameInput = (
+    <div className="d-flex justify-content-end">
+    <Popover content={ <Input
+        placeholder="Search Name"
+        value={name}
+        onChange={(e) => {
+          const currValue = e.target.value;
+          setName(currValue);
+          const filteredData = data.filter((entry) =>
+            entry.name.includes(currValue)
+          );
+          setDataSource(filteredData);
+        }}
+      />} title="Title">
+     
+     <SearchOutlined/>
+    
+          
+    
+    
+  </Popover> </div>
    
-  }
+  );
+
+  const FilterByAddress = (
+    <Input
+    
+      placeholder="Search address"
+      value={address}
+      onChange={(e) => {
+        const currValue = e.target.value;
+        setAddress(currValue);
+        const filteredData = data.filter((entry) =>
+          entry.address.includes(currValue)
+        );
+        setDataSource(filteredData);
+      }}
+    />
+  );
+
+  const columns = [
+    {
+      title: FilterByNameInput,
+      dataIndex: "name",
+      key: "1",
+      filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    },
+    {
+      title: FilterByAddress,
+      dataIndex: "address",
+      key: "2",
+    },
+  ];
+
+  return <Table columns={columns} dataSource={dataSource} />;
 }
-export default Test;
-
-
