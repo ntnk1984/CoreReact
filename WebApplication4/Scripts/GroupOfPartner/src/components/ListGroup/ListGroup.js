@@ -40,7 +40,7 @@ export default function ListGroup() {
     });
   }
   // 4.12.2020-tin tuong - confirm remove group
-  function confirmRemoveMultiGroup() {
+  function confirmRemoveMultiGroup(data) {
     Modal.confirm({
       title: "Xác nhận xóa nhiều nhóm",
       icon: <ExclamationCircleOutlined />,
@@ -49,16 +49,15 @@ export default function ListGroup() {
       cancelText: "Trở lại",
       onOk: async () => {
         /*call API tạo user cho partner*/
-        await listCheckBox.forEach(async (item) => {
-          await removeGroupById(item);
-        });
+        await data.forEach(item=>{
+           removeGroupById(item.id);
+        })
         await handleRefeshData();
       },
     });
   }
 
-  /* Danh sách các checkbox đã chọn */
-  const [listCheckBox, setListCheckBox] = useState([]);
+
 
   /* Từ khóa tìm kiếm */
   const [search, setSearch] = useState("");
@@ -69,6 +68,9 @@ export default function ListGroup() {
     if (search == "") return true;
     else return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
   });
+  const dataTableMap=dataTable.map((item,index)=>{
+    return {...item,key:index}
+  })
 
   /* Refesh lại bảng sau khi đã xử lý */
   const handleRefeshData = async () => {
@@ -89,11 +91,7 @@ export default function ListGroup() {
   };
 
   const columns = [
-    {
-      title: "#",
 
-      render: (text, record, index) => <Checkbox value={text.id}></Checkbox>,
-    },
     {
       title: "Name",
       dataIndex: "name",
@@ -174,6 +172,18 @@ export default function ListGroup() {
   useEffect(async () => {
     await handleRefeshData();
   }, []);
+  const [list,setList]=useState([])
+  const [selectedRowKeys,setSelectedRowKeys]=useState([])
+  const onSelectChange = (selectedRowKey,item) => {
+   
+    setSelectedRowKeys( selectedRowKey );
+    setList(item)
+  };
+
+  const rowSelection = {
+    selectedRowKeys:selectedRowKeys,
+    onChange: onSelectChange,
+  };
 
   return (
     <>
@@ -184,7 +194,7 @@ export default function ListGroup() {
           <Button
             className="mx-2"
             onClick={() => {
-              confirmRemoveMultiGroup();
+              confirmRemoveMultiGroup(list);
             }}
             icon={<DeleteOutlined />}
           ></Button>
@@ -199,15 +209,9 @@ export default function ListGroup() {
         </Col>
       </Row>
       <div>
-        <Checkbox.Group
-          style={{ width: "100%" }}
-          onChange={(e) => {
-            setListCheckBox(e);
-          }}
-          value={listCheckBox}
-        >
-          <Table className="mt-3" columns={columns} dataSource={dataTable} />
-        </Checkbox.Group>
+       
+          <Table className="mt-3" rowSelection={rowSelection} columns={columns} dataSource={dataTableMap} pagination={{ pageSize: 13 }} />
+  
       </div>
       <Drawer placement="right" onClose={onClose} visible={visible}>
         <ListUserGroup />

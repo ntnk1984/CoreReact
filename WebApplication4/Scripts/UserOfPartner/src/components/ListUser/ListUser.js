@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Table,
   Tag,
-  Space,
   Button,
   Select,
-  Popover,
   Row,
   Col,
   AutoComplete,
@@ -16,14 +14,12 @@ import {
 } from "antd";
 import {
   ExclamationCircleOutlined,
-  EditOutlined,
   DeleteOutlined,
   DownOutlined,
   StopOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import AddUser from "./ChildListUser/AddUser.js";
-
 import EditUser from "./ChildListUser/EditUser.js";
 import { contextValue } from "../../App.js";
 import {
@@ -32,6 +28,11 @@ import {
 } from "../../services/UserService.js";
 
 export default function ListUser() {
+  //remove user multi check box
+  const [list, setList] = useState([]);
+ 
+  const [listIndex, setListIndex] = useState([]);
+
   const [options, setOptions] = useState([]);
   const { userPartner, dispatch } = useContext(contextValue);
   //search table
@@ -49,7 +50,7 @@ export default function ListUser() {
     ?.map((item, index) => {
       return {
         key: index,
-        name: `${item.HoTen}+${item.Ten}`,
+        name: `${item.HoTen} ${item.Ten}`,
         username: item.TaiKhoan,
         address: item.DiaChi,
         group: item.Nhom,
@@ -108,7 +109,7 @@ export default function ListUser() {
         // console.log(data);
         /*call API remove all user cho partner*/
         await data.forEach((item) => {
-          removeUserById(item);
+          removeUserById(item.id);
         });
 
         //reset data table
@@ -116,17 +117,15 @@ export default function ListUser() {
           type: "GET_ALL_USER_API",
           payload: await getAllUserOfPartner(),
         });
+        //reset lai checkbox
+        await setSelectedRowKeys([])
+
       },
     });
   }
 
   const { Option } = Select;
   const columns = [
-    {
-      title: "#",
-      width: "40px",
-      render: (text, record, index) => <Checkbox value={text.id}></Checkbox>,
-    },
     {
       title: "Name",
       dataIndex: "name",
@@ -151,7 +150,7 @@ export default function ListUser() {
       width: "190px",
 
       render: (text, record, index) => {
-        return <Tag color="green">{record.group}</Tag>;
+        return <p className="mt-3">{record.group}</p>;
       },
     },
     {
@@ -160,10 +159,7 @@ export default function ListUser() {
       width: "190px",
 
       render: (text, record, index) => (
-        <Tag style={{ cursor: "pointer" }} color="cyan">
-          {/* HAN MUC CÁ NHÂN */}
-          {parseInt(text.hangmuc).toLocaleString()}
-        </Tag>
+        <p className="mt-3">{parseInt(text.hangmuc).toLocaleString()}</p>
       ),
     },
     {
@@ -172,10 +168,7 @@ export default function ListUser() {
       width: "190px",
 
       render: (text, record, index) => (
-        <Tag style={{ cursor: "pointer" }} color="gold">
-          {/* HAN MUC CÁ NHÂN */}
-          {parseInt(text.congno).toLocaleString()}
-        </Tag>
+        <p className="mt-3">{parseInt(text.congno).toLocaleString()}</p>
       ),
     },
     {
@@ -184,9 +177,9 @@ export default function ListUser() {
       render: (text, record, index) => (
         <p>
           {record.active ? (
-            <DownOutlined style={{ color: "#4E89FF" }} />
+            <DownOutlined style={{ color: "#52c41a" }} />
           ) : (
-            <StopOutlined style={{ color: "#f5222d" }} />
+            <StopOutlined style={{ color: "#bfbfbf" }} />
           )}
         </p>
       ),
@@ -230,13 +223,21 @@ export default function ListUser() {
   const onSearch = (searchText) => {
     setSearch(searchText);
   };
+  //select checkbox
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  //remove user multi check box
-  const [list, setList] = useState([]);
+  const onSelectChange =async (selectedRowKeys,item) => {
+    await setSelectedRowKeys(selectedRowKeys);
+    await setList(item)
+   
+  };
 
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: onSelectChange,
+  };
   return (
     <>
-     
       <Row>
         <Col span={16} className="d-flex">
           <AddUser />
@@ -258,15 +259,16 @@ export default function ListUser() {
         </Col>
       </Row>
       <div>
-        <Checkbox.Group
-          style={{ width: "100%" }}
-          value={list}
-          onChange={(e) => {
-            setList(e);
-          }}
-        >
-          <Table className="mt-3" columns={columns} dataSource={data} />
-        </Checkbox.Group>
+        
+          <Table
+            
+            className="mt-3"
+            columns={columns}
+            dataSource={data}
+            pagination={{ pageSize: 13 }}
+            rowSelection={rowSelection}
+          />
+
       </div>
     </>
   );

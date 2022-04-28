@@ -13,9 +13,17 @@ import {
 } from "antd";
 import dataUserTest from "../../../assets/dataTest/dataUser.json";
 import { useAsync } from "react-async-hook";
-import { getPhuongXa, getQuanHuyen, getTinhThanh } from "../../../services/Province.js";
+import {
+  getPhuongXa,
+  getQuanHuyen,
+  getTinhThanh,
+} from "../../../services/Province.js";
 import { contextValue } from "../../../App.js";
-import { createUserOfPartner, getAllUserOfPartner } from "../../../services/UserService.js";
+import {
+  createUserOfPartner,
+  getAllUserOfPartner,
+} from "../../../services/UserService.js";
+import * as XLSX from "xlsx";
 
 const { Option } = Select;
 export default function AddUser() {
@@ -23,7 +31,6 @@ export default function AddUser() {
 
   //initValue create user
   const [createUser, setCreateUser] = useState({
-
     TaiKhoan: undefined,
     MatKhau: undefined,
     MaGoiNho: undefined,
@@ -46,8 +53,8 @@ export default function AddUser() {
     NgayHeThong: "24/04/2022", // db tạo
     Group: undefined,
     IDDoiTac: 1,
-    CongNo:undefined,
-    HangMuc:undefined //lấy từ token login partner
+    CongNo: undefined,
+    HangMuc: undefined, //lấy từ token login partner
   });
 
   const handleChangeValue = (e) => {
@@ -59,14 +66,14 @@ export default function AddUser() {
     setIsModalVisible(true);
   };
 
-  const handleOk =async () => {
+  const handleOk = async () => {
     //call api thêm user
-    
-    await createUserOfPartner(createUser)
+
+    await createUserOfPartner(createUser);
     //reset data table
     dispatch({
       type: "GET_ALL_USER_API",
-      payload:await getAllUserOfPartner(),
+      payload: await getAllUserOfPartner(),
     });
     //hide
     await setIsModalVisible(false);
@@ -80,23 +87,60 @@ export default function AddUser() {
     console.log(values);
   };
 
-  const {userPartner, dispatch} = useContext(contextValue);
+  const { userPartner, dispatch } = useContext(contextValue);
+//file mẫu excel import ở thư mục assets
+  const handleImport = (e) => {
+    const [file] = e.target.files;
+    const reader = new FileReader();
 
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+      
+      //xử lý file và call api thêm user
+      data.split("\n").forEach((item,index)=>{
+        if(index!=0){
+        //  let arr=item.split(",")
+        //  let obj={
+        //    TaiKhoan:arr[0],
+        //    MatKhau:arr[1],
+        //    Ten:arr[2],
+        //    HoTen:arr[3],
+        //    SoDienThoai:arr[4],
+        //    Email:arr[5]
+        //  }
+          //call api add từng user
+         
+        }
+        
+      })
 
-
+    };
+    reader.readAsBinaryString(file);
+  };
 
   return (
     <>
-      <Row>
+           <Row >
         <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
           Tạo user mới
         </Button>
-        <Form.Item name="upload" valuePropName="fileList">
-          <Upload name="logo" listType="picture">
-            <Button className="mx-2" icon={<UploadOutlined />} type="">
+        <Form.Item name="upload" valuePropName="fileList" className="mx-2 my-0">
+          <Button className="upload-wrap">
+            <input
+              type="file"
+              name="file"
+              id="file"
+              onChange={handleImport}
+              className="inputfile"
+            />
+            <label className="labelfile" for="file">
               Import nhiều user
-            </Button>
-          </Upload>
+            </label>
+          </Button>
         </Form.Item>
       </Row>
       <Modal
@@ -107,7 +151,7 @@ export default function AddUser() {
         onCancel={handleCancel}
       >
         <Form layout="vertical" onFinish={onFinish}>
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="TaiKhoan" label="Tài khoản">
                 <Input name="TaiKhoan" onChange={handleChangeValue} />
@@ -131,7 +175,7 @@ export default function AddUser() {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Ten" label="Tên">
                 <Input name="Ten" onChange={handleChangeValue} />
@@ -153,7 +197,7 @@ export default function AddUser() {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Email" label="Email">
                 <Input name="Email" onChange={handleChangeValue} />
@@ -175,25 +219,23 @@ export default function AddUser() {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="MaQuocGia" label="Quốc gia">
-              <Select
+                <Select
                   defaultValue="Vui lòng chọn"
                   style={{ width: "100%" }}
-                  
                   name="MaQuocGia"
-                  onChange={async (id)=>{
-
-                    setCreateUser({...createUser,MaQuocGia:id})
+                  onChange={async (id) => {
+                    setCreateUser({ ...createUser, MaQuocGia: id });
 
                     dispatch({
-                      type:"GET_TINHTHANH_API",
-                      payload:await getTinhThanh()
-                    })
+                      type: "GET_TINHTHANH_API",
+                      payload: await getTinhThanh(),
+                    });
                   }}
                 >
-                 <Option value="VN">Việt Nam</Option>
+                  <Option value="VN">Việt Nam</Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -207,50 +249,56 @@ export default function AddUser() {
                   defaultValue="Vui lòng chọn"
                   name="MaTinhThanh"
                   style={{ width: "100%" }}
-                  onChange={async (val)=>{
-                    setCreateUser({...createUser,MaTinhThanh:val})
+                  onChange={async (val) => {
+                    setCreateUser({ ...createUser, MaTinhThanh: val });
                     dispatch({
-                      type:"GET_QUANHUYEN_API",
-                      payload:await getQuanHuyen(val)
-                    })
+                      type: "GET_QUANHUYEN_API",
+                      payload: await getQuanHuyen(val),
+                    });
                   }}
-               
                 >
-                  {userPartner?.tinhThanhData?.map(item=><Option value={item.code}>{item.name}</Option>)}
+                  {userPartner?.tinhThanhData?.map((item) => (
+                    <Option value={item.code}>{item.name}</Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item className="mx-2" name="MaQuanHuyen" label="Quận/Huyện">
-              <Select
+                <Select
                   defaultValue="Vui lòng chọn"
                   name="MaQuanHuyen"
                   style={{ width: "100%" }}
-                  onChange={async (val)=>{
-                    setCreateUser({...createUser,MaQuanHuyen:val})
+                  onChange={async (val) => {
+                    setCreateUser({ ...createUser, MaQuanHuyen: val });
                     dispatch({
-                      type:"GET_PHUONGXA_API",
-                      payload:await getPhuongXa(val)
-                    })
+                      type: "GET_PHUONGXA_API",
+                      payload: await getPhuongXa(val),
+                    });
                   }}
-                 
                 >
-                  {userPartner?.quanHuyenData.map(item=><Option value={item.code}>{item.name}</Option>)}
+                  {userPartner?.quanHuyenData.map((item) => (
+                    <Option value={item.code}>{item.name}</Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={8}>
+           
+          </Row>
+               <Row className="my-4">
+          <Col span={8}>
               <Form.Item className="mx-2" name="MaPhuongXa" label="Phường/Xã">
-              <Select
+                <Select
                   defaultValue="Vui lòng chọn"
                   style={{ width: "100%" }}
-                  
                   name="MaPhuongXa"
-                  onChange={(val)=>{
-                    setCreateUser({...createUser,MaPhuongXa:val})
+                  onChange={(val) => {
+                    setCreateUser({ ...createUser, MaPhuongXa: val });
                   }}
                 >
-                  {userPartner?.phuongXaData.map(item=><Option value={item.code}>{item.name}</Option>)}
+                  {userPartner?.phuongXaData.map((item) => (
+                    <Option value={item.code}>{item.name}</Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>

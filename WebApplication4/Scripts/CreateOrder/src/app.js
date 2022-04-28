@@ -136,8 +136,8 @@ export default function App() {
 
   return (
     <contextValue.Provider value={store}>
-      <Form  layout="vertical" >
-      <div className="row">
+      
+      <div className="row" style={{width:1600,margin:"0 auto"}}>
         
         <div className="col-9">
         <CreateOrderThree/>
@@ -148,7 +148,7 @@ export default function App() {
         </div>
        
       </div>
-      </Form>
+    
     </contextValue.Provider>
   );
 }

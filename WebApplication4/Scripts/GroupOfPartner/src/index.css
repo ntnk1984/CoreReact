@@ -14,3 +14,43 @@
 .ant-drawer-header-close-only {
     display: none;
 }
+
+.ant-list-item-meta-content {
+    margin-top: 9px;
+}
+
+tbody>tr>td {
+    padding: 10px !important;
+}
+
+.ant-spin-container {
+    position: relative;
+    height: 937px;
+    z-index: 100;
+}
+
+.ant-pagination {
+    position: absolute !important;
+    right: 50% !important;
+    bottom: 50px !important;
+    z-index: 100;
+    transform: translateX(50%);
+}
+
+.ant-pagination-options {
+    display: none !important;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile+.labelfile {
+    display: inline-block;
+    cursor: pointer;
+}

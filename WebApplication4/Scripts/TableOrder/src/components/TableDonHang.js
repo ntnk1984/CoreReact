@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -10,37 +10,39 @@ import {
   Dropdown,
   Menu,
   Input,
-  Space
+  Popover,
 } from "antd";
-import { UnorderedListOutlined,SearchOutlined  } from "@ant-design/icons";
-
+import { UnorderedListOutlined, SearchOutlined } from "@ant-design/icons";
+//antd
+const { Text, Link } = Typography;
+//menu cho nút thao tác trên bảng đơn hàng
 const menu = (
   <Menu>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="#">
-        Phân chia
-      </a>
+      <a href="#">Phân chia</a>
     </Menu.Item>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="#">
-        Sửa đơn
-      </a>
+      <a href="#">Sửa đơn</a>
     </Menu.Item>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="#">
+      <a rel="noopener noreferrer" href="#">
         Hủy đơn
       </a>
     </Menu.Item>
   </Menu>
 );
 
-const { Text, Link } = Typography;
-
-
-
-
 export default function TableDonHang(props) {
+  //dữ liệu của bảng đơn hàng
   let dataTemp = [];
+  const [dataSource, setDataSource] = useState(dataTemp);
+  const [search, setSearch] = useState({
+    senderAdress: undefined,
+    revicerAdress: undefined,
+    senderName:undefined,
+    revicerName:undefined,
+  });
+
   if (props.value == undefined || props.value == "") {
     dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
   } else {
@@ -51,23 +53,94 @@ export default function TableDonHang(props) {
       ?.map((item, index) => ({ ...item, key: index }));
   }
 
-  //tim kiem tren title table
+  //tìm kiếm theo địa chỉ giao nhận, người nhận
 
+  const FilterByNameInput = (name, tinh, huyen, phuong, key, title) => (
+    <Row>
+      <Col span={18} className="text-start">
+        {title}
+      </Col>
+      <Col span={6} className="text-end">
+        <Popover
+          placement="bottomRight"
+          trigger="click"
+          content={
+            <Input
+              placeholder="Nhập nội dung..."
+              value={search[name]}
+              onChange={(e) => {
+                const currValue = e.target.value;
+                setSearch({
+                  ...search,
+                  [key]: currValue,
+                });
 
- 
+                const filteredData = dataTemp.filter((entry) => {
+                  const address =
+                    entry[tinh] + " " + entry[huyen] + " " + entry[phuong];
+                  return address
+                    .toLowerCase()
+                    .includes(currValue.toLowerCase());
+                });
+                setDataSource(filteredData);
+              }}
+            />
+          }
+        >
+          <SearchOutlined style={{ color: "#d9d9d9" }} />
+        </Popover>
+      </Col>
+    </Row>
+  );
 
-  //column table
+  //tìm kiếm theo tên giao nhận, người nhận
+
+  const FilterByName = (name, key, title) => (
+    <Row>
+      <Col span={18} className="text-start">
+        {title}
+      </Col>
+      <Col span={6} className="text-end">
+        <Popover
+          placement="bottomRight"
+          trigger="click"
+          content={
+            <Input
+              placeholder="Nhập nội dung..."
+              value={search[key]}
+              onChange={(e) => {
+                const currValue = e.target.value;
+                setSearch({
+                  ...search,
+                  [key]: currValue,
+                });
+
+                const filteredData = dataTemp.filter((entry) => {
+                
+                  return entry[name]
+                    .toLowerCase()
+                    .includes(currValue.toLowerCase());
+                });
+                setDataSource(filteredData);
+              }}
+            />
+          }
+        >
+          <SearchOutlined style={{ color: "#d9d9d9" }} />
+        </Popover>
+      </Col>
+    </Row>
+  );
+
+  //danh sách cột của bảng
   const columns = [
-    {
-      title: "#",
-      render: (text, record, index) => <Checkbox value={text.id}></Checkbox>,
-    },
+    
     {
       title: "Mã đơn hàng ",
       dataIndex: "maDonHang",
     },
     {
-      title: "Người gửi",
+      title: FilterByName("nguoiGui","senderName","Người giao"),
       render: (text, record, index) => {
         return (
           <Row>
@@ -80,33 +153,32 @@ export default function TableDonHang(props) {
       },
     },
     {
-      title: "Địa chỉ ",
+      title: FilterByNameInput(
+        "nguoiGui",
+        "tinhNguoiGui",
+        "huyenNguoiGui",
+        "phuongNguoiGui",
+        "senderAdress",
+        "Địa chỉ"
+      ),
       render: (text, record, index) => {
         return (
           <Row>
-      
             <Col span={24}>
-            <Text >{"TP.Hồ Chí Minh - Quận Thủ Đức - Phường Tam Bình"}</Text>
+              <Text>
+                {text.tinhNguoiGui +
+                  "-" +
+                  text.huyenNguoiGui +
+                  "-" +
+                  text.phuongNguoiGui}
+              </Text>
             </Col>
           </Row>
         );
       },
     },
     {
-      title: "Người nhận ",
-      render: (text, record, index) => {
-        return (
-          <Row>
-      
-            <Col span={24}>
-            <Text >{"TP.Hồ Chí Minh - Quận Thủ Đức - Phường Tam Bình"}</Text>
-            </Col>
-          </Row>
-        );
-      },
-    },
-    {
-      title: "Địa chỉ ",
+      title: FilterByName("nguoiNhan","revicerName","Người nhận"),
       render: (text, record, index) => {
         return (
           <Row>
@@ -118,6 +190,32 @@ export default function TableDonHang(props) {
         );
       },
     },
+    {
+      title: FilterByNameInput(
+        "nguoiNhan",
+        "tinhNguoiNhan",
+        "huyenNguoiNhan",
+        "phuongNguoiNhan",
+        "revicerAdress",
+        "Địa chỉ"
+      ),
+      render: (text, record, index) => {
+        return (
+          <Row>
+            <Col span={24}>
+              <Text>
+                {text.tinhNguoiNhan +
+                  " - " +
+                  text.huyenNguoiNhan +
+                  " - " +
+                  text.phuongNguoiNhan}
+              </Text>
+            </Col>
+          </Row>
+        );
+      },
+    },
+
     {
       title: "Thời gian lập",
       render: () => (
@@ -133,7 +231,7 @@ export default function TableDonHang(props) {
       title: "Loại hàng",
       dataIndex: "loaiHang",
     },
-  
+
     {
       title: "Thu Hộ",
       render: (text, record, index) => record.thuHo.toLocaleString(),
@@ -142,47 +240,12 @@ export default function TableDonHang(props) {
       title: "Tổng cước",
       render: (text, record, index) => record.tongCuoc.toLocaleString(),
     },
-  
+
     {
       title: "Trạng thái",
       render: (text, record, index) => {
-        const trangThaiColor = (status) => {
-          switch (status) {
-            case "Mới tạo": {
-              return "magenta";
-            }
-            case "Chờ lấy": {
-              return "red";
-            }
-            case "Đã lấy": {
-              return "volcano";
-            }
-            case "Đang vận chuyển": {
-              return "orange";
-            }
-            case "Đang giao": {
-              return "gold";
-            }
-            case "Giao thành công": {
-              return "green";
-            }
-            case "Chờ xử lý": {
-              return "cyan";
-            }
-            case "Đã duyệt hoàn": {
-              return "geekblue";
-            }
-            case "Đã trả": {
-              return "blue";
-            }
-            case "Đã hủy": {
-              return "lime";
-            }
-          }
-        };
-  
         return (
-          <Tag color={trangThaiColor(record.trangThai)}>{record.trangThai}</Tag>
+          <Tag color="blue">{record.trangThai}</Tag>
         );
       },
     },
@@ -197,15 +260,32 @@ export default function TableDonHang(props) {
       },
     },
   ];
+  //select checkbox
 
+  const [selectedRowKeys,setSelectedRowKeys]=useState([])
 
+  const onSelectChange =async (selectedRowKeys,item) => {
+  
+   await setSelectedRowKeys(selectedRowKeys );
+   await props.handleSetList(item)
+   
+  };
+ 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  //render
   return (
     <>
       <Table
         style={{ margin: "0 auto" }}
         columns={columns}
-        dataSource={dataTemp}
+        dataSource={dataSource.length == 0 ? dataTemp : dataSource}
         
+        pagination={{ pageSize: 9 }}
+        rowSelection={rowSelection}
+       
       />
     </>
   );

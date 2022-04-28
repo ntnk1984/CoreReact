@@ -66,7 +66,7 @@ export default function AddGroup(props) {
         onCancel={handleCancel}
       >
         <Form layout="vertical" name="nest-messages">
-          <Form.Item name="name" label="Tên nhóm">
+          <Form.Item  name="name" label="Tên nhóm">
             <Input
               name="name"
               onChange={(e) => {

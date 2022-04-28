@@ -69,7 +69,7 @@ export default function EditUser(props) {
         onCancel={handleCancel}
       >
         <Form layout="vertical" onFinish={onFinish}>
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="TaiKhoan" label="Tài khoản">
                 <Input name="TaiKhoan" onChange={handleChangeValue} />
@@ -91,7 +91,7 @@ export default function EditUser(props) {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Ten" label="Tên">
                 <Input name="Ten" onChange={handleChangeValue} />
@@ -113,7 +113,7 @@ export default function EditUser(props) {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Email" label="Email">
                 <Input name="Email" onChange={handleChangeValue} />
@@ -135,7 +135,7 @@ export default function EditUser(props) {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="MaQuocGia" label="Quốc gia">
                 <Input name="MaQuocGia" onChange={handleChangeValue} />
@@ -153,7 +153,7 @@ export default function EditUser(props) {
             </Col>
           </Row>
 
-          <Row>
+               <Row className="my-4">
             <Col span={8}>
               <Form.Item
                 className="mx-2"

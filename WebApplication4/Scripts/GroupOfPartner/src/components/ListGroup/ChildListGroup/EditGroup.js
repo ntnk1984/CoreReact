@@ -56,13 +56,13 @@ function EditGroup(props) {
   };
 
   const onFinish = (values) => {
-    console.log(values);
+    
   };
   useEffect(async () => {
     const response = await getGroupById(props.id);
     await setInitValue(response);
   }, [props]);
-  console.log(initForm);
+ 
   return (
     <>
       <Button

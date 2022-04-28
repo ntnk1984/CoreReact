@@ -55,7 +55,7 @@ export default function CreateOrderTwo() {
 
 
   return (
-<>
+    <Form  layout="vertical" >
       <h4 className="text-secondary mx-2">THÔNG TIN NGƯỜI NHẬN</h4>
       <Row>
         <Col span={12}>
@@ -241,6 +241,6 @@ export default function CreateOrderTwo() {
        
       </Form.Item>
       </Row> */}
-   </>
+   </Form>
   );
 }
