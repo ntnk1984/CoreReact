@@ -160,11 +160,7 @@ export default function App() {
 
             <Col className="form-app" xl={24}>
               <CreateOrderThree />
-              {/* <CreateOrderThree onSubmit={handleSubmit} /> */}
               <div className="button-center" style={{ margin: "0 auto" }}>
-                {/* <button onClick={handleSubmit} type="submit">
-                  Tsst
-                </button> */}
                 <Button
                   className="mx-2"
                   onClick={() => {

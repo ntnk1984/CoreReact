@@ -1,0 +1,41 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.App-Form {
+  background-color: #F2f2f2;
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+.App-Form .ant-form-item {
+  /* margin-bottom: 25px; */
+}
+.App-Form h4{
+ font-size: 21px;
+ text-align: center;
+}
+.totalOrder .ant-input-number {
+  width: 100%;
+
+}
+.App-Form .main .Scroll-Left{
+  scroll-snap-type: y mandatory;
+  /* max-width: 400px; */
+  height: 100vh;
+  overflow-y: auto;
+
+  padding-right: 10px;
+  scroll-padding: 2rem;
+}
+.App-Form .main .Scroll-Left::-webkit-scrollbar{
+  width: 6px;
+  
+}
+.App-Form .main .Scroll-Left::-webkit-scrollbar-thumb{
+  background-color: #C1C1C1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.App-Form .main .Scroll-Left::-webkit-scrollbar-track{
+  background-color: #F2f2f2;
+}
