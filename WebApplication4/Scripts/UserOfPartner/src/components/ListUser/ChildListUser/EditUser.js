@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
-import { Form, Input, InputNumber, Button, Modal, Row, Col } from "antd";
+import React, { useState ,memo} from "react";
+import { Form, Input, Button, Modal, Row, Col } from "antd";
 import dataUserTest from "../../../assets/dataTest/dataUser.json";
 
-export default function EditUser(props) {
+ function EditUser(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   //initValue create user
@@ -56,7 +55,7 @@ export default function EditUser(props) {
   };
 
 
-  console.log(props)
+ 
   return (
     <>
 
@@ -181,3 +180,4 @@ export default function EditUser(props) {
     </>
   );
 }
+export default memo(EditUser)

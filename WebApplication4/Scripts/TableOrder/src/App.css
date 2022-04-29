@@ -23,3 +23,22 @@
 .print {
     position: fixed !important;
 }
+
+.print-layout {
+    width: 248px;
+    height: 174px;
+    page-break-before: always;
+    background-color: aqua;
+}
+
+@media print {
+    .page {
+        page-break-after: always;
+    }
+}
+
+@media print {
+    .print-layout {
+        page-break-before: always;
+    }
+}

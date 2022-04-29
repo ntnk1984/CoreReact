@@ -1,18 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import {
-  Form,
-  Input,
-  InputNumber,
-  Button,
-  Modal,
-  Row,
-  Col,
-  Upload,
-  Select,
-} from "antd";
-import dataUserTest from "../../../assets/dataTest/dataUser.json";
-import { useAsync } from "react-async-hook";
+import React, { useContext, useState, memo } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Modal, Row, Col, Select } from "antd";
+
 import {
   getPhuongXa,
   getQuanHuyen,
@@ -25,8 +14,11 @@ import {
 } from "../../../services/UserService.js";
 import * as XLSX from "xlsx";
 
+
 const { Option } = Select;
-export default function AddUser() {
+
+function AddUser() {
+  //ẩn hiện modal
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   //initValue create user
@@ -45,28 +37,29 @@ export default function AddUser() {
     MaBuuChinh: undefined,
     NguoiLienHe: undefined,
     SoDienThoaiNguoiLienHe: undefined,
-    KichHoat: 0, //auto 0
-    IDNguoiTao: 1, //lấy từ token login partner
-    IDNguoiCapNhat: 1, //lấy từ token login partner
-    NgayTao: "21/02/2022", // db tạo
-    NgayCapNhat: "17/04/2022", // db tạo
-    NgayHeThong: "24/04/2022", // db tạo
+    KichHoat: 0,
+    IDNguoiTao: 1, 
+    IDNguoiCapNhat: 1, 
+    NgayTao: "21/02/2022", 
+    NgayCapNhat: "17/04/2022", 
+    NgayHeThong: "24/04/2022", 
     Group: undefined,
     IDDoiTac: 1,
     CongNo: undefined,
-    HangMuc: undefined, //lấy từ token login partner
+    HangMuc: undefined, 
   });
-
-  const handleChangeValue = (e) => {
+  //set dữ liệu từ form d
+  const handleChangeValue =(e)=>{
     const { name, value } = e.target;
     setCreateUser({ ...createUser, [name]: value });
-  };
-
+  }
+  //hiện modal
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = async () => {
+    console.log(createUser)
     //call api thêm user
 
     await createUserOfPartner(createUser);
@@ -88,7 +81,7 @@ export default function AddUser() {
   };
 
   const { userPartner, dispatch } = useContext(contextValue);
-//file mẫu excel import ở thư mục assets
+  //file mẫu excel import ở thư mục assets
   const handleImport = (e) => {
     const [file] = e.target.files;
     const reader = new FileReader();
@@ -99,32 +92,29 @@ export default function AddUser() {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-      
-      //xử lý file và call api thêm user
-      data.split("\n").forEach((item,index)=>{
-        if(index!=0){
-        //  let arr=item.split(",")
-        //  let obj={
-        //    TaiKhoan:arr[0],
-        //    MatKhau:arr[1],
-        //    Ten:arr[2],
-        //    HoTen:arr[3],
-        //    SoDienThoai:arr[4],
-        //    Email:arr[5]
-        //  }
-          //call api add từng user
-         
-        }
-        
-      })
 
+      //xử lý file và call api thêm user
+      data.split("\n").forEach((item, index) => {
+        if (index != 0) {
+          //  let arr=item.split(",")
+          //  let obj={
+          //    TaiKhoan:arr[0],
+          //    MatKhau:arr[1],
+          //    Ten:arr[2],
+          //    HoTen:arr[3],
+          //    SoDienThoai:arr[4],
+          //    Email:arr[5]
+          //  }
+          //call api add từng user
+        }
+      });
     };
     reader.readAsBinaryString(file);
   };
 
   return (
     <>
-           <Row >
+      <Row>
         <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
           Tạo user mới
         </Button>
@@ -151,7 +141,7 @@ export default function AddUser() {
         onCancel={handleCancel}
       >
         <Form layout="vertical" onFinish={onFinish}>
-               <Row className="my-4">
+          <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="TaiKhoan" label="Tài khoản">
                 <Input name="TaiKhoan" onChange={handleChangeValue} />
@@ -175,7 +165,7 @@ export default function AddUser() {
             </Col>
           </Row>
 
-               <Row className="my-4">
+          <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Ten" label="Tên">
                 <Input name="Ten" onChange={handleChangeValue} />
@@ -197,7 +187,7 @@ export default function AddUser() {
             </Col>
           </Row>
 
-               <Row className="my-4">
+          <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="Email" label="Email">
                 <Input name="Email" onChange={handleChangeValue} />
@@ -219,7 +209,7 @@ export default function AddUser() {
             </Col>
           </Row>
 
-               <Row className="my-4">
+          <Row className="my-4">
             <Col span={8}>
               <Form.Item className="mx-2" name="MaQuocGia" label="Quốc gia">
                 <Select
@@ -283,10 +273,9 @@ export default function AddUser() {
                 </Select>
               </Form.Item>
             </Col>
-           
           </Row>
-               <Row className="my-4">
-          <Col span={8}>
+          <Row className="my-4">
+            <Col span={8}>
               <Form.Item className="mx-2" name="MaPhuongXa" label="Phường/Xã">
                 <Select
                   defaultValue="Vui lòng chọn"
@@ -330,3 +319,5 @@ export default function AddUser() {
     </>
   );
 }
+
+export default memo(AddUser);

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, memo, useMemo } from "react";
 import {
   Button,
-  Checkbox,
   Table,
   Tag,
   Row,
@@ -14,7 +13,8 @@ import {
 } from "antd";
 import { UnorderedListOutlined, SearchOutlined } from "@ant-design/icons";
 //antd
-const { Text, Link } = Typography;
+const { Text } = Typography;
+
 //menu cho nút thao tác trên bảng đơn hàng
 const menu = (
   <Menu>
@@ -32,30 +32,33 @@ const menu = (
   </Menu>
 );
 
-export default function TableDonHang(props) {
+function TableDonHang(props) {
   //dữ liệu của bảng đơn hàng
   let dataTemp = [];
   const [dataSource, setDataSource] = useState(dataTemp);
   const [search, setSearch] = useState({
     senderAdress: undefined,
     revicerAdress: undefined,
-    senderName:undefined,
-    revicerName:undefined,
+    senderName: undefined,
+    revicerName: undefined,
   });
-
-  if (props.value == undefined || props.value == "") {
-    dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
-  } else {
-    dataTemp = props?.data
-      ?.filter((item) => {
-        return item.maDonHang.indexOf(props.value) > -1;
-      })
-      ?.map((item, index) => ({ ...item, key: index }));
-  }
+  //xử lý dữ liệu cho từ bảng tránh bảng render lại khi tìm kiếm
+  useMemo(() => {
+    if (props.value == undefined || props.value == "") {
+      dataTemp = props?.data?.map((item, index) => ({ ...item, key: index }));
+    } else {
+      dataTemp = props?.data
+        ?.filter((item) => {
+          return item.maDonHang.indexOf(props.value) > -1;
+        })
+        ?.map((item, index) => ({ ...item, key: index }));
+    }
+    return dataTemp;
+  }, [props]);
 
   //tìm kiếm theo địa chỉ giao nhận, người nhận
 
-  const FilterByNameInput = (name, tinh, huyen, phuong, key, title) => (
+  const FilterByAddress = (name, tinh, huyen, phuong, key, title) => (
     <Row>
       <Col span={18} className="text-start">
         {title}
@@ -116,7 +119,6 @@ export default function TableDonHang(props) {
                 });
 
                 const filteredData = dataTemp.filter((entry) => {
-                
                   return entry[name]
                     .toLowerCase()
                     .includes(currValue.toLowerCase());
@@ -134,13 +136,12 @@ export default function TableDonHang(props) {
 
   //danh sách cột của bảng
   const columns = [
-    
     {
       title: "Mã đơn hàng ",
       dataIndex: "maDonHang",
     },
     {
-      title: FilterByName("nguoiGui","senderName","Người giao"),
+      title: FilterByName("nguoiGui", "senderName", "Người giao"),
       render: (text, record, index) => {
         return (
           <Row>
@@ -153,7 +154,7 @@ export default function TableDonHang(props) {
       },
     },
     {
-      title: FilterByNameInput(
+      title: FilterByAddress(
         "nguoiGui",
         "tinhNguoiGui",
         "huyenNguoiGui",
@@ -178,7 +179,7 @@ export default function TableDonHang(props) {
       },
     },
     {
-      title: FilterByName("nguoiNhan","revicerName","Người nhận"),
+      title: FilterByName("nguoiNhan", "revicerName", "Người nhận"),
       render: (text, record, index) => {
         return (
           <Row>
@@ -191,7 +192,7 @@ export default function TableDonHang(props) {
       },
     },
     {
-      title: FilterByNameInput(
+      title: FilterByAddress(
         "nguoiNhan",
         "tinhNguoiNhan",
         "huyenNguoiNhan",
@@ -244,9 +245,7 @@ export default function TableDonHang(props) {
     {
       title: "Trạng thái",
       render: (text, record, index) => {
-        return (
-          <Tag color="blue">{record.trangThai}</Tag>
-        );
+        return <Tag color="blue">{record.trangThai}</Tag>;
       },
     },
     {
@@ -262,31 +261,28 @@ export default function TableDonHang(props) {
   ];
   //select checkbox
 
-  const [selectedRowKeys,setSelectedRowKeys]=useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange =async (selectedRowKeys,item) => {
-  
-   await setSelectedRowKeys(selectedRowKeys );
-   await props.handleSetList(item)
-   
+  const onSelectChange = async (selectedRowKeys, item) => {
+    await setSelectedRowKeys(selectedRowKeys);
+    await props.handleSetList(item);
   };
- 
+
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
   //render
+
   return (
-    <>
-      <Table
-        style={{ margin: "0 auto" }}
-        columns={columns}
-        dataSource={dataSource.length == 0 ? dataTemp : dataSource}
-        
-        pagination={{ pageSize: 9 }}
-        rowSelection={rowSelection}
-       
-      />
-    </>
+    <Table
+      style={{ margin: "0 auto" }}
+      columns={columns}
+      dataSource={dataSource.length == 0 ? dataTemp : dataSource}
+      pagination={{ pageSize: 9 }}
+      rowSelection={rowSelection}
+    />
   );
 }
+
+export default memo(TableDonHang);

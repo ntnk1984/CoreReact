@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Select, Button, Row } from "antd";
 const { Option } = Select;
 export default function GomHang(props) {
+  console.log("d2")
   return (
     <Form layout="vertical">
       <Form.Item label="Chọn đối tác gôm hàng">

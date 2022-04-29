@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Select, Row, Button } from "antd";
+import { Form, Select, Row, Button } from "antd";
 const { Option } = Select;
 export default function GiaoHangLoat(props) {
 

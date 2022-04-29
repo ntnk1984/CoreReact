@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getAllGroup, removeGroupById } from "../../services/Groups.js";
 import AddGroup from "./ChildListGroup/AddGroup.js";
 import EditGroup from "./ChildListGroup/EditGroup.js";
@@ -18,10 +18,9 @@ import {
   Row,
   Space,
   Table,
-  Checkbox,
   Typography,
 } from "antd";
-
+import { useDebouncedCallback } from "use-debounce";
 const { Text } = Typography;
 export default function ListGroup() {
   // 4.12.2020-tin tuong - confirm remove group
@@ -49,28 +48,28 @@ export default function ListGroup() {
       cancelText: "Trở lại",
       onOk: async () => {
         /*call API tạo user cho partner*/
-        await data.forEach(item=>{
-           removeGroupById(item.id);
-        })
+        await data.forEach((item) => {
+          removeGroupById(item.id);
+        });
         await handleRefeshData();
       },
     });
   }
-
-
 
   /* Từ khóa tìm kiếm */
   const [search, setSearch] = useState("");
 
   /* Danh sách bảng nhóm */
   const [dataGroup, setDataGroup] = useState([]);
+
   const dataTable = dataGroup.filter((item) => {
     if (search == "") return true;
     else return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
   });
-  const dataTableMap=dataTable.map((item,index)=>{
-    return {...item,key:index}
-  })
+  const dataTableMap = dataTable.map((item, index) => {
+    return { ...item, key: index };
+  });
+
 
   /* Refesh lại bảng sau khi đã xử lý */
   const handleRefeshData = async () => {
@@ -79,9 +78,9 @@ export default function ListGroup() {
   };
 
   //set lại từ khóa tìm kiếm
-  const onSearch = (searchText) => {
+  const onSearch = useDebouncedCallback((searchText) => {
     setSearch(searchText);
-  };
+  }, 500);
 
   //Ẩn hiện bảng tạo mới group
   const [visible, setVisible] = useState(false);
@@ -91,7 +90,6 @@ export default function ListGroup() {
   };
 
   const columns = [
-
     {
       title: "Name",
       dataIndex: "name",
@@ -172,16 +170,15 @@ export default function ListGroup() {
   useEffect(async () => {
     await handleRefeshData();
   }, []);
-  const [list,setList]=useState([])
-  const [selectedRowKeys,setSelectedRowKeys]=useState([])
-  const onSelectChange = (selectedRowKey,item) => {
-   
-    setSelectedRowKeys( selectedRowKey );
-    setList(item)
+  const [list, setList] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const onSelectChange = (selectedRowKey, item) => {
+    setSelectedRowKeys(selectedRowKey);
+    setList(item);
   };
 
   const rowSelection = {
-    selectedRowKeys:selectedRowKeys,
+    selectedRowKeys: selectedRowKeys,
     onChange: onSelectChange,
   };
 
@@ -209,9 +206,13 @@ export default function ListGroup() {
         </Col>
       </Row>
       <div>
-       
-          <Table className="mt-3" rowSelection={rowSelection} columns={columns} dataSource={dataTableMap} pagination={{ pageSize: 13 }} />
-  
+        <Table
+          className="mt-3"
+          rowSelection={rowSelection}
+          columns={columns}
+          dataSource={dataTableMap}
+          pagination={{ pageSize: 13 }}
+        />
       </div>
       <Drawer placement="right" onClose={onClose} visible={visible}>
         <ListUserGroup />

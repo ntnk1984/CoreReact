@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,memo } from "react";
 import {
   Table,
   Tag,
@@ -26,19 +26,18 @@ import {
   getAllUserOfPartner,
   removeUserById,
 } from "../../services/UserService.js";
+import {  useDebouncedCallback } from "use-debounce";
 
-export default function ListUser() {
+ function ListUser() {
   //remove user multi check box
   const [list, setList] = useState([]);
- 
-  const [listIndex, setListIndex] = useState([]);
 
   const [options, setOptions] = useState([]);
   const { userPartner, dispatch } = useContext(contextValue);
   //search table
 
   const [search, setSearch] = useState("");
-
+  //dữ liệu của bảng
   const data = userPartner?.userData
     ?.filter((value) => {
       if (search == "") {
@@ -118,13 +117,12 @@ export default function ListUser() {
           payload: await getAllUserOfPartner(),
         });
         //reset lai checkbox
-        await setSelectedRowKeys([])
-
+        await setSelectedRowKeys([]);
       },
     });
   }
 
-  const { Option } = Select;
+  //cột của bảng
   const columns = [
     {
       title: "Name",
@@ -219,17 +217,16 @@ export default function ListUser() {
     },
   ];
 
-  //call api search gán vào state
-  const onSearch = (searchText) => {
+  //debounced search 500ms
+  const onSearch = useDebouncedCallback((searchText) => {
     setSearch(searchText);
-  };
+  }, 500);
   //select checkbox
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange =async (selectedRowKeys,item) => {
+  const onSelectChange = async (selectedRowKeys, item) => {
     await setSelectedRowKeys(selectedRowKeys);
-    await setList(item)
-   
+    await setList(item);
   };
 
   const rowSelection = {
@@ -259,17 +256,15 @@ export default function ListUser() {
         </Col>
       </Row>
       <div>
-        
-          <Table
-            
-            className="mt-3"
-            columns={columns}
-            dataSource={data}
-            pagination={{ pageSize: 13 }}
-            rowSelection={rowSelection}
-          />
-
+        <Table
+          className="mt-3"
+          columns={columns}
+          dataSource={data}
+          pagination={{ pageSize: 13 }}
+          rowSelection={rowSelection}
+        />
       </div>
     </>
   );
 }
+export default memo(ListUser)

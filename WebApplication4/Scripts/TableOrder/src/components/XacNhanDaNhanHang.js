@@ -1,6 +1,5 @@
+import { Button, Form, Row } from "antd";
 import React from "react";
-import { Form, Input, Select, Row, Button } from "antd";
-const { Option } = Select;
 export default function XacNhanDaNhanHang(props) {
 
   return (

@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, Input, Select,Button,Row,Col } from "antd";
-const { Option } = Select;
+import { Form,Button,Row } from "antd";
+
 export default function HuyDon(props) {
   return (
     <Form layout="vertical">

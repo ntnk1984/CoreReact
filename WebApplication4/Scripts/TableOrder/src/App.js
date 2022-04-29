@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-
-import { Tabs, Row, Button, Col, Checkbox, Modal, Select } from "antd";
+import { Tabs, Row, Col, Modal, Select } from "antd";
 import TableDonHang from "./components/TableDonHang.js";
-import { DeleteOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { getAllOrderApi, removeOrderByIdApi } from "./Services/Order.js";
-import "./App.css";
 import ModalTableOrder from "../HOC/ModalTableOrder.js";
 import GiaoHangLoat from "./components/GiaoHangLoat.js";
 import GomHang from "./components/GomHang.js";
@@ -14,17 +12,20 @@ import HuyDon from "./components/HuyDon.js";
 import XacNhanDaNhanHang from "./components/XacNhanDaNhanHang.js";
 import XacNhanDaGomHang from "./components/XacNhanDaGomHang.js";
 import XoaHangLoat from "./components/XoaHangLoat.js";
-import ReactToPrint, { useReactToPrint } from "react-to-print";
+import { useReactToPrint } from "react-to-print";
 import Printorder from "./components/PrintOrder.js";
+import { useDebouncedCallback } from "use-debounce";
+import "./App.css";
+
 const { Option } = Select;
 const { TabPane } = Tabs;
-const ids = ["1"];
+
 const App = () => {
-   //print đơn hàng
-   const componentRef = useRef();
-   const handlePrint = useReactToPrint({
-     content: () => componentRef.current,
-   });
+  //print đơn hàng
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   //hiện modal xác nhận xóa nhiều hàng
   function confirmDeleteMulti(list) {
     Modal.confirm({
@@ -57,8 +58,6 @@ const App = () => {
 
     await setData(response);
   }, []);
-  //danh sách các checkbox được chọn
-  const [listSelectCheckBox, setListSelectCheckBox] = useState(null);
 
   //modal chọn thao tác
   const [optionModal, setOptionModal] = useState({
@@ -66,24 +65,21 @@ const App = () => {
     width: undefined,
     content: undefined,
   });
-  //list checkbox
+  //list checkbox / list dùng để thao tác
   const [list, setList] = useState([]);
   const handleSetList = (value) => {
     setList(value);
   };
- 
 
   return (
-  
+   
     <div style={{ width: "1600px", margin: "0 auto" }}>
       <div>
-      <div className="d-none">
-      <div ref={componentRef} >
-        <Printorder/>
-      </div>
-      </div>
-  
-       
+        <div className="d-none">
+          <div ref={componentRef}>
+            <Printorder listPrint={list}/>
+          </div>
+        </div>
       </div>
       <Row className="mb-3" style={{ zIndex: 0 }}>
         <Col span={9} offset={3}>
@@ -97,7 +93,7 @@ const App = () => {
                   setOptionModal({
                     title: "Giao hàng loạt",
                     width: 500,
-                    content: <GiaoHangLoat setVisible={setVisible} />,
+                    content: <GiaoHangLoat list={list}  setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -105,7 +101,7 @@ const App = () => {
                   setOptionModal({
                     title: "Xác nhận thanh toán",
                     width: 500,
-                    content: <XacNhanThanhToan setVisible={setVisible} />,
+                    content: <XacNhanThanhToan list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -113,7 +109,7 @@ const App = () => {
                   setOptionModal({
                     title: "Hủy đơn hàng loạt",
                     width: 500,
-                    content: <HuyDon setVisible={setVisible} />,
+                    content: <HuyDon list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -121,7 +117,7 @@ const App = () => {
                   setOptionModal({
                     title: "Phân đơn hàng giao",
                     width: 500,
-                    content: <PhatHang setVisible={setVisible} />,
+                    content: <PhatHang list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -129,7 +125,7 @@ const App = () => {
                   setOptionModal({
                     title: "Phân đơn hàng gôm",
                     width: 500,
-                    content: <GomHang setVisible={setVisible} />,
+                    content: <GomHang list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -137,7 +133,7 @@ const App = () => {
                   setOptionModal({
                     title: "Xác nhận đã nhận hàng",
                     width: 500,
-                    content: <XacNhanDaNhanHang setVisible={setVisible} />,
+                    content: <XacNhanDaNhanHang list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
@@ -145,23 +141,24 @@ const App = () => {
                   setOptionModal({
                     title: "Xác nhận đã gom hàng",
                     width: 500,
-                    content: <XacNhanDaGomHang setVisible={setVisible} />,
+                    content: <XacNhanDaGomHang list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
                 case "7": {
-                  handlePrint()
+                  handlePrint();
                   break;
                 }
                 case "8": {
                   setOptionModal({
                     title: "Xác nhận xóa hàng loạt đơn hàng!",
                     width: 500,
-                    content: <XoaHangLoat setVisible={setVisible} />,
+                    content: <XoaHangLoat list={list} setVisible={setVisible} />,
                   });
                   break;
                 }
-                default :""
+                default:
+                  "";
               }
 
               setVisible(true);
@@ -187,153 +184,146 @@ const App = () => {
           />
         </Col>
       </Row>
-
-    
-        <Tabs
-          onChange={() => {
-            setListSelectCheckBox(null);
-            setList([]);
-          }}
-          tabPosition="left"
+      <Tabs
+        tabPosition="left"
+      >
+        <TabPane tab={`Tất cả (${dataTable.length})`} key="all">
+          <TableDonHang handleSetList={handleSetList} data={dataTable} />
+        </TabPane>
+        <TabPane
+          tab={`Mới tạo (${
+            dataTable.filter((item) => item.trangThai == "1").length
+          })`}
+          key="1"
         >
-          <TabPane tab={`Tất cả (${dataTable.length})`} key="all">
-            <TableDonHang handleSetList={handleSetList} data={dataTable} />
-          </TabPane>
-          <TabPane
-            tab={`Mới tạo (${
-              dataTable.filter((item) => item.trangThai == "1").length
-            })`}
-            key="1"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "1")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Chờ xử lý (${
-              dataTable.filter((item) => item.trangThai == "2").length
-            })`}
-            key="2"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "2")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Chờ lấy (${
-              dataTable.filter((item) => item.trangThai == "3").length
-            })`}
-            key="3"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "3")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đã lấy (${
-              dataTable.filter((item) => item.trangThai == "4").length
-            })`}
-            key="4"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "4")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đang vận chuyển (${
-              dataTable.filter((item) => item.trangThai == "5").length
-            })`}
-            key="5"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "5")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đang giao (${
-              dataTable.filter((item) => item.trangThai == "6").length
-            })`}
-            key="6"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "6")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Giao thành công (${
-              dataTable.filter((item) => item.trangThai == "7").length
-            })`}
-            key="7"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "7")}
-            />
-          </TabPane>
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "1")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Chờ xử lý (${
+            dataTable.filter((item) => item.trangThai == "2").length
+          })`}
+          key="2"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "2")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Chờ lấy (${
+            dataTable.filter((item) => item.trangThai == "3").length
+          })`}
+          key="3"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "3")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đã lấy (${
+            dataTable.filter((item) => item.trangThai == "4").length
+          })`}
+          key="4"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "4")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đang vận chuyển (${
+            dataTable.filter((item) => item.trangThai == "5").length
+          })`}
+          key="5"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "5")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đang giao (${
+            dataTable.filter((item) => item.trangThai == "6").length
+          })`}
+          key="6"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "6")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Giao thành công (${
+            dataTable.filter((item) => item.trangThai == "7").length
+          })`}
+          key="7"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "7")}
+          />
+        </TabPane>
 
-          <TabPane
-            tab={`Đã duyệt hoàn (${
-              dataTable.filter((item) => item.trangThai == "8").length
-            })`}
-            key="8"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "8")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đang hoàn chuyển (${
-              dataTable.filter((item) => item.trangThai == "9").length
-            })`}
-            key="9"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "9")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Phát tiếp (${
-              dataTable.filter((item) => item.trangThai == "10").length
-            })`}
-            key="10"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "10")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đã trả (${
-              dataTable.filter((item) => item.trangThai == "11").length
-            })`}
-            key="11"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "11")}
-            />
-          </TabPane>
-          <TabPane
-            tab={`Đã hủy (${
-              dataTable.filter((item) => item.trangThai == "13").length
-            })`}
-            key="13"
-          >
-            <TableDonHang
-              handleSetList={handleSetList}
-              data={dataTable.filter((item) => item.trangThai == "13")}
-            />
-          </TabPane>
-        </Tabs>
- 
+        <TabPane
+          tab={`Đã duyệt hoàn (${
+            dataTable.filter((item) => item.trangThai == "8").length
+          })`}
+          key="8"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "8")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đang hoàn chuyển (${
+            dataTable.filter((item) => item.trangThai == "9").length
+          })`}
+          key="9"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "9")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Phát tiếp (${
+            dataTable.filter((item) => item.trangThai == "10").length
+          })`}
+          key="10"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "10")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đã trả (${
+            dataTable.filter((item) => item.trangThai == "11").length
+          })`}
+          key="11"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "11")}
+          />
+        </TabPane>
+        <TabPane
+          tab={`Đã hủy (${
+            dataTable.filter((item) => item.trangThai == "13").length
+          })`}
+          key="13"
+        >
+          <TableDonHang
+            handleSetList={handleSetList}
+            data={dataTable.filter((item) => item.trangThai == "13")}
+          />
+        </TabPane>
+      </Tabs>
     </div>
   );
 };
