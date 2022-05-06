@@ -2,10 +2,12 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, Row, Col } from "antd";
 import { contextValue } from "../../App";
 import { DeleteOutlined } from "@ant-design/icons";
+
 const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
+
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
@@ -16,35 +18,6 @@ const EditableRow = ({ index, ...props }) => {
 };
 
 const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-  const checkShowTypeInput = (dataInd) => {
-    if (
-      dataInd === "VietNameseName" ||
-      dataInd === "CountryManufacturedCode" ||
-      dataInd === "Unit" ||
-      dataInd === "Currency"
-    ) {
-      return (
-        <Input
-          ref={inputRef}
-          onPressEnter={save}
-          onBlur={() => {
-            save();
-          }}
-        />
-      );
-    } else if (dataInd === "Value" || dataInd === "Weight" || dataInd === "Quantity") {
-      return (
-        <InputNumber
-          ref={inputRef}
-          onPressEnter={save}
-          onBlur={() => {
-            save();
-          }}
-        />
-      );
-    }
-  };
-
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
   const form = useContext(EditableContext);
@@ -61,10 +34,34 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
     });
   };
 
-  const save = async () => {
+  const save = async (e) => {
     try {
       const values = await form.validateFields();
       toggleEdit();
+      console.log(e.target.id);
+      switch (e.target.id) {
+        case "length":
+          record.dimension.length = +e.target.value;
+          handleSave({ ...record, ...values });
+          break;
+
+        case "width":
+          record.dimension.width = +e.target.value;
+          handleSave({ ...record, ...values });
+          break;
+
+        case "height":
+          record.dimension.height = +e.target.value;
+          handleSave({ ...record, ...values });
+          break;
+
+        case "weight":
+          record.dimension.weight = +e.target.value;
+          handleSave({ ...record, ...values });
+          break;
+        default:
+          break;
+      }
       handleSave({ ...record, ...values });
 
       message.success("Cập Nhật Thành Công");
@@ -89,7 +86,13 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
           },
         ]}
       >
-        {checkShowTypeInput(dataIndex)}
+        <InputNumber
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={(e) => {
+            save(e);
+          }}
+        />
       </Form.Item>
     ) : (
       <div className="editable-cell-value-wrap" onClick={toggleEdit}>
@@ -101,131 +104,68 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
   return <td {...restProps}>{childNode}</td>;
 };
 
-function EditableTableFuc() {
+function LPackageLineItems() {
   const context = useContext(contextValue);
   const { listOrder } = context?.createOrder;
-  const dataSourceStore = listOrder?.MerchandiseItems;
-  // console.log(dataSourceStore, "Data store 111");
+  const dataSourceStore = listOrder?.RequestedPackageLineItems;
+
   const [dataSources, setDataSources] = useState({
     dataSource: dataSourceStore,
     count: 1,
   });
-  useEffect(() => {
-    context.dispatch({ type: "ADD_MERCHANDISE_ITEMS", payload: dataSources.dataSource });
-  }, [dataSources]);
+
+  // useEffect(() => {
+  //   context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
+  //   console.log("123 126");
+  // }, [dataSources]);
+
+  const addPackageLine = () => {
+    context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
+    console.log("123 126");
+  };
+  console.log(dataSourceStore, "Data store 130");
   const columns = [
     {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Tên Tiếng Việt">
-            <span>Tên VN</span>
-          </Tooltip>
-        );
-      },
-      dataIndex: "VietNameseName",
+      title: "Chiều Dài",
+      dataIndex: "length",
       align: "center",
+      render: (_, record) => record.dimension.length,
       width: "20%",
       editable: true,
     },
-    // {
-    //   title: () => {
-    //     return (
-    //       <Tooltip placement="topLeft" title="Tên Tiếng Anh">
-    //         <span>T tiếng Anh</span>
-    //       </Tooltip>
-    //     );
-    //   },
-    //   dataIndex: "EnglishName",
-    //   // width: "30%",
-    //   editable: true,
-    // },
     {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Mã Quốc Gia Sản Xuất">
-            <span> Mã QGSX</span>
-          </Tooltip>
-        );
-      },
-      dataIndex: "CountryManufacturedCode",
+      title: "Chiều Rộng",
+      dataIndex: `width`,
       align: "center",
-      width: "15%",
+      render: (_, record) => record.dimension.width,
+      width: "20%",
       editable: true,
     },
     {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Đơn Vị Sản Phẩm: hộp - thùng - lốc . . .">
-            <span>Đơn vị SP</span>
-          </Tooltip>
-        );
-      },
-      dataIndex: "Unit",
+      title: "Chiều Cao",
+      dataIndex: "height",
       align: "center",
-      width: "15%",
+      render: (_, record) => record.dimension.height,
+      width: "20%",
       editable: true,
     },
     {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Đơn vị tiền tệ">
-            <span>ĐVTT</span>
-          </Tooltip>
-        );
-      },
-      dataIndex: "Currency",
+      title: "Cân Nặng",
       align: "center",
-      width: "10%",
-      editable: true,
-    },
-    {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Giá trị mặt hàng">
-            <span>Giá Trị</span>
-          </Tooltip>
-        );
-      },
-      width: "12%",
-      align: "center",
-      editable: true,
-      dataIndex: "Value",
-    },
-    {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Số Lượng">
-            <span>SL</span>
-          </Tooltip>
-        );
-      },
-      width: "7%",
-      align: "center",
-      editable: true,
-      dataIndex: "Quantity",
-    },
-    {
-      title: () => {
-        return (
-          <Tooltip placement="topLeft" title="Khối Lượng: mg">
-            <span>KL</span>
-          </Tooltip>
-        );
-      },
-      dataIndex: "Weight",
-      align: "center",
-      width: "7%",
+      dataIndex: "weight",
+      render: (_, record) => record.dimension.weight,
+      width: "20%",
       editable: true,
     },
     {
       title: "Xóa",
       dataIndex: "operation",
       align: "center",
-      width: "5%",
+      width: "10%",
       render: (_, record) =>
         dataSources.dataSource.length >= 1 ? (
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-            <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
+            <DeleteOutlined style={{ color: "red", fontSize: "20px" }} />
           </Popconfirm>
         ) : null,
     },
@@ -233,19 +173,18 @@ function EditableTableFuc() {
 
   const handleAdd = () => {
     const { count, dataSource } = dataSources;
-    let randString = (Math.random() + 1).toString(36).substring(7);
     const newData = {
       key: `${count}`,
       SequenceNumber: count,
-      HSCode: randString,
-      VietNameseName: `Tên Tiếng Việt ${count}`,
-      EnglishName: `Tên Tiếng Anh ${count}`,
-      CountryManufacturedCode: `Mã Quốc Gia ${count}`,
-      Unit: `Lốc  ${count}`,
-      Currency: "VND",
-      Value: count,
-      Weight: count,
-      Quantity: count,
+      dimension: {
+        length: 10 + count,
+        width: 10 + count,
+        height: 10 + count,
+        weight: 10 + count,
+      },
+      currency: "VND",
+      COD: count,
+      packagetype: 1,
     };
     setDataSources({
       dataSource: [...dataSource, newData],
@@ -257,7 +196,7 @@ function EditableTableFuc() {
     const newData = [...dataSources.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    // console.log(row, "row");
+    console.log(row, "row");
     newData.splice(index, 1, { ...item, ...row });
     setDataSources({
       ...dataSources,
@@ -272,6 +211,7 @@ function EditableTableFuc() {
       dataSource: dataSourceTemp.filter((item) => item.key !== key),
     });
   };
+
   const { dataSource } = dataSources;
   const components = {
     body: {
@@ -283,7 +223,7 @@ function EditableTableFuc() {
     if (!col.editable) {
       return col;
     }
-
+    // console.log(col, " colll");
     return {
       ...col,
       onCell: (record) => ({
@@ -301,19 +241,23 @@ function EditableTableFuc() {
         <Row>
           <Col span={8}></Col>
           <Col span={8}>
-            <h4 style={{ textAlign: "center", padding: "0" }} className="text-secondary ">
-              Hàng Hóa
-            </h4>
+            <h3 style={{ textAlign: "center", padding: "0" }} className="text-secondary ">
+              Bưu Gửi
+            </h3>
           </Col>
-          <Col span={8}>
+          <Col
+            style={{ paddingRight: "24px", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
+            span={8}
+          >
             <Button
+              size="small"
               onClick={handleAdd}
               type="primary"
               style={{
                 marginBottom: 5,
               }}
             >
-              Thêm Sản Phẩm
+              Thêm Bưu Gửi
             </Button>
           </Col>
         </Row>
@@ -321,16 +265,20 @@ function EditableTableFuc() {
 
       <Table
         components={components}
+        style={{ minHeight: "140px" }}
         rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}
         columns={columns1}
         size="small"
-        scroll={{ y: 240 }}
+        scroll={{ y: 140 }}
         pagination={false}
       />
+      <Button id="LPackageLineId" style={{ display: "none" }} type="dashed" onClick={addPackageLine}>
+        Submit
+      </Button>
     </div>
   );
 }
 
-export default () => <EditableTableFuc />;
+export default () => <LPackageLineItems />;

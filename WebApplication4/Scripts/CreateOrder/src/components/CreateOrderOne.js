@@ -23,7 +23,7 @@ export default function CreateOrderOne() {
     senderdistrict: temp.senderdistrict,
     senderward: temp.senderward,
   });
-  console.log(senderInfo, senderInfo.sendercountry);
+  // console.log(senderInfo, senderInfo.sendercountry);
   const handleChangeVal = (e) => {
     let { name, value } = e.target;
     setSenderInfo({ ...senderInfo, [name]: value });
@@ -161,7 +161,7 @@ export default function CreateOrderOne() {
         </Col>
       </Row>
       <Row>
-        <Col md={12} lg={6} xl={12} xxl={6}>
+        <Col md={12} xl={12} xxl={6}>
           <Form.Item name="sendercountry" rules={[validate.checkRequire()]} className="mx-2" label="Quốc gia" required>
             <Select
               name="sendercountry"
@@ -178,7 +178,7 @@ export default function CreateOrderOne() {
             </Select>
           </Form.Item>
         </Col>
-        <Col md={12} lg={6} xl={12} xxl={6}>
+        <Col md={12} xl={12} xxl={6}>
           <Form.Item
             name="sendercity"
             rules={[validate.checkRequire()]}
@@ -201,7 +201,7 @@ export default function CreateOrderOne() {
             </Select>
           </Form.Item>
         </Col>
-        <Col md={12} lg={6} xl={12} xxl={6}>
+        <Col md={12} xl={12} xxl={6}>
           <Form.Item
             rules={[validate.checkRequire()]}
             name="senderdistrict"
@@ -224,7 +224,7 @@ export default function CreateOrderOne() {
             </Select>
           </Form.Item>
         </Col>
-        <Col md={12} lg={6} xl={12} xxl={6}>
+        <Col md={12} xl={12} xxl={6}>
           <Form.Item rules={[validate.checkRequire()]} name="senderward" className="mx-2" label="Phường/Xã" required>
             <Select
               name="senderward"

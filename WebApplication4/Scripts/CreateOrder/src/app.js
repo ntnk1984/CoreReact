@@ -1,10 +1,11 @@
-import { Col, message, Row, Steps } from "antd";
+import { Button, Col, message, Row, Steps } from "antd";
 import React, { useReducer } from "react";
 import CreateOrderFour from "./components/CreateOrderFour";
 // import CreateOrderThree from "./components/CreateOrderThree";
 import CreateOrderOne from "./components/CreateOrderOne";
 import CreateOrderThree from "./components/CreateOrderThree.js";
 import CreateOrderTwo from "./components/CreateOrderTwo.js";
+import LPackageLineItems from "./components/DetailOrder/LPackageLineItems";
 import "./components/Style/CustomForm.css";
 import { postOrder } from "./Service.js";
 
@@ -44,7 +45,46 @@ const initialState = {
     type: "",
   },
   listOrder: {
-    arrOrder: [{ visibility: true, data: [] }, { visibility: false }],
+    MerchandiseItems: [
+      // {
+      //   SequenceNumber: 1,
+      //   HSCode: undefined,
+      //   VietNameseName: undefined,
+      //   EnglishName: undefined,
+      //   CountryManufacturedCode: undefined,
+      //   Unit: undefined,
+      //   Currency: undefined,
+      //   Value: 2,
+      //   Quantity: 2,
+      //   Weight: 2,
+      // },
+    ],
+    RequestedPackageLineItems: [
+      {
+        SequenceNumber: 1,
+        dimension: {
+          length: 222,
+          width: 333,
+          height: 444,
+          weight: 5555,
+        },
+        COD: 1111,
+        currency: "VND",
+        packagetype: 1,
+      },
+      {
+        SequenceNumber: 1,
+        dimension: {
+          length: 200,
+          width: 300,
+          height: 400,
+          weight: 500,
+        },
+        COD: 1111,
+        currency: "VND",
+        packagetype: 1,
+      },
+    ],
   },
 
   visibility: true,
@@ -76,11 +116,15 @@ const createOrderReducer = (state = initialState, action) => {
 
       return { ...state };
     }
-    case "SET_VISIBILITY_LISTOREDER": {
-      const index = action.payload;
-      state.listOrder.arrOrder[index].visibility = !state.listOrder.arrOrder[index].visibility;
-
-      return { ...state };
+    case "ADD_MERCHANDISE_ITEMS": {
+      return {
+        ...state,
+        listOrder: { ...state.listOrder, MerchandiseItems: action.payload },
+      };
+    }
+    case "ADD_PACKAGE_LINE_ITEMS": {
+      message.success("Thêm bưu gửi thành công!");
+      return { ...state, listOrder: { ...state.listOrder, RequestedPackageLineItems: action.payload } };
     }
     case "SET_VISIBILITY": {
       return { ...state, visibility: !state.visibility };
@@ -88,14 +132,7 @@ const createOrderReducer = (state = initialState, action) => {
     case "SET_PROGRESS": {
       return { ...state, progress: ++state.progress };
     }
-    case "ADD_BUU_GUI": {
-      let cloneArrOrder = { ...state.listOrder };
-      // cloneListOder.arrOrder;
-      // cloneArrOrder.arrOrder.push({ visibility: true })
-      state.listOrder.arrOrder.push({ visibility: true });
-      message.success("Thêm bưu gửi thành công!");
-      return { ...state };
-    }
+
     case "ADD_INFO_SENDER": {
       message.success("Thêm thông tin thành công!");
       return { ...state, sender: action.payload };
@@ -143,10 +180,11 @@ export default function App() {
 
   const handelSubmit = () => {
     console.log("Subit");
-    const formOne = document.getElementById("FormOne");
     document.getElementById("FormOne").click();
     document.getElementById("FormTwo").click();
     document.getElementById("FormThree").click();
+
+    postOrder(createOrder);
   };
 
   return (
@@ -164,7 +202,7 @@ export default function App() {
                 </Col>
 
                 <Col style={{ width: "100%" }} xl={24}>
-                  <CreateOrderFour handelSubmit={handelSubmit} />
+                  <CreateOrderFour />
                 </Col>
               </Row>
             </Col>
@@ -177,21 +215,4 @@ export default function App() {
       </div>
     </contextValue.Provider>
   );
-}
-{
-  /* <Row gutter={[16, 24]}>
-            <Col xs={24} sm={24} md={24} lg={10}>
-              <Row>
-                <Col span={24}>
-                  <CreateOrderOne />
-                </Col>
-                <Col span={24}>
-                  <CreateOrderTwo />
-                </Col>
-              </Row>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={14}>
-              <CreateOrderThree handelSubmit={handelSubmit} />
-            </Col>
-          </Row> */
 }

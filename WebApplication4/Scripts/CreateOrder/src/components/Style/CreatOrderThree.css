@@ -1,0 +1,29 @@
+.creatOrderThree-Main {
+  position: relative;
+  /* min-height: 100vh; */
+}
+.creatOrderThree-Main .form-orderThree .sizeForm-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.creatOrderThree-Main .form-orderThree .sizeForm-div .input-size {
+  width: 44px;
+  font-size: 10px;
+  
+}
+.creatOrderThree-Main .form-orderThree .sizeForm-div .ant-input {
+  padding: 5px 4px;
+  font-size: 12px;
+}
+
+.creatOrderThree-Main .form-orderThree .customs-font .ant-form-item-label > label  {
+  
+  font-size: 12px !important;
+}
+.creatOrderThree-Main  .btn-Submit{
+  position: absolute;
+  bottom: -10%;
+  right: 0;
+}
