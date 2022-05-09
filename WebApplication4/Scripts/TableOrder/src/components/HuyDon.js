@@ -1,26 +1,38 @@
-import React from "react";
-import { Form,Button,Row } from "antd";
+import React, { useState } from "react";
+import { Form, Button, Row, Modal } from "antd";
+import { checkQuyen } from "../athor/Authoraziton.js";
 
 export default function HuyDon(props) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
-    <Form layout="vertical">
-      
-      <Form.Item >
-        <p>Bạn đồng ý hủy đơn hàng loạt!</p>
-        <Row justify="end" className="mt-3">
-          <div>
-            <Button
-              onClick={() => {
-                props.setVisible(false)
-              }}
-              className="mx-2"
-            >
-              Hủy
-            </Button>
-            <Button type="primary">Đồng ý</Button>
-          </div>
-        </Row>
-      </Form.Item>
-    </Form>
+    <>
+      <Button type="link" onClick={showModal} disabled={checkQuyen()!=1}>
+        Hủy đơn hàng loạt
+      </Button>
+      <Modal
+        title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form layout="vertical">
+          <Form.Item>
+            <p>Bạn đồng ý hủy đơn hàng loạt!</p>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 }

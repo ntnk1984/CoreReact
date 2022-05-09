@@ -1,10 +1,35 @@
-import React from "react";
-import { Form, Select, Row, Button } from "antd";
+import React, { useState } from "react";
+import { Form, Select, Row, Button ,Modal} from "antd";
+import { checkQuyen } from "../athor/Authoraziton.js";
 const { Option } = Select;
 export default function GiaoHangLoat(props) {
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+ 
   return (
-    <Form layout="vertical">
+    <>
+    <Button type="link" onClick={showModal} disabled={checkQuyen()!=1}>
+      Giao đơn hàng loạt
+    </Button>
+    <Modal
+      title="Basic Modal"
+      visible={isModalVisible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+    >
+     <Form layout="vertical">
       <Form.Item label="Kho xuất hàng">
         <Select
           defaultValue="Địa điểm mặc định"
@@ -29,19 +54,10 @@ export default function GiaoHangLoat(props) {
         </Select>
         
       </Form.Item>
-      <Row justify="end" className="mt-3">
-          <div>
-            <Button
-              onClick={() => {
-                props.setVisible(false)
-              }}
-              className="mx-2"
-            >
-              Hủy
-            </Button>
-            <Button type="primary">Đồng ý</Button>
-          </div>
-        </Row>
+     
     </Form>
+    </Modal>
+  </>
+    
   );
 }

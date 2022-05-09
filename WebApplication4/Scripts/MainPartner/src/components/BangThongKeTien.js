@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-import { Typography, Space } from 'antd';
+import { Typography, Space } from "antd";
 
 import {
   Chart,
@@ -56,11 +56,13 @@ Chart.register(
   Tooltip
 );
 const { Text, Link } = Typography;
-const rand=()=>(Math.round(Math.random()*4000+500))
+const rand = () => Math.round(Math.random() * 4000 + 500);
 function BangThongKeTien() {
   return (
-    <div  className=" bg-white p-3 rounded-2 shadow ms-4 my-3">
-       <Text className="text-center" strong>Thống kê tiền</Text>
+    <div className=" bg-white p-3 rounded-2 shadow ms-4 ">
+      <Text className="text-center" strong>
+        Thống kê tiền
+      </Text>
       <Bar
         data={{
           labels: [
@@ -73,30 +75,74 @@ function BangThongKeTien() {
             "Tháng 7",
             "Tháng 8",
             "Tháng 9",
+            "Tháng 10",
+            "Tháng 11",
+            "Tháng 12",
           ],
           datasets: [
             {
               label: "Đã trả tiền (vnđ)",
-              backgroundColor: "#d9f7be",
-              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+              backgroundColor: "#91d5ff",
+              data: [
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+              ],
             },
             {
               label: "Chưa trả tiền (vnđ)",
-              backgroundColor: "#95de64",
-              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+              backgroundColor: "#40a9ff",
+              data: [
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+              ],
             },
             {
               label: "Chưa đối soát (vnđ)",
-              backgroundColor: "#52c41a",
-              data: [rand(), rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()],
+              backgroundColor: "#096dd9",
+              data: [
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+                rand(),
+              ],
             },
           ],
         }}
+        height="104px"
         options={{
           legend: { display: false },
           title: {
             display: true,
             text: "Predicted world population (millions) in 2050",
+            maintainAspectRatio: false,
           },
         }}
       />

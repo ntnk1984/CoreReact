@@ -2,14 +2,14 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 
+let env = "";
 
-let env=""
-
-if(process.env.NODE_ENV=="development  "){
-  env="./.development.env"
-}else{
-  env="./.production.env"
+if (process.env.NODE_ENV == "development  ") {
+  env = "./.development.env";
+} else {
+  env = "./.production.env";
 }
+
 
 
 module.exports = {
@@ -37,11 +37,13 @@ module.exports = {
     }),
     new Dotenv({
       path: env,
-      // 
+      //
     }),
   ],
   devServer: {
     port: 7230,
     historyApiFallback: true,
   },
+
+  
 };

@@ -4,4 +4,9 @@
 
 body {
     background-color: rgb(230, 230, 230);
+    font-family: 'Roboto', sans-serif;
+}
+
+.ant-divider {
+    margin: 10px 0px;
 }

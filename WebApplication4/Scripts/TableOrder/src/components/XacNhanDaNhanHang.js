@@ -1,26 +1,40 @@
-import { Button, Form, Row } from "antd";
-import React from "react";
+import { Button, Form, Row,Modal } from "antd";
+import React, { useState } from "react";
+import { checkQuyen } from "../athor/Authoraziton.js";
 export default function XacNhanDaNhanHang(props) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
-    <Form layout="vertical">
+    <>
+    <Button type="link" onClick={showModal} disabled={checkQuyen()!=1}>
+      Xác nhận đã nhận
+    </Button>
+    <Modal
+      title="Basic Modal"
+      visible={isModalVisible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+    >
+     <Form layout="vertical">
      
-      <Form.Item label="Đơn vị giao hàng">
-        <p>Bạn đồng ý xác nhận đơn hàng đã nhận thành công!</p>
-        <Row justify="end" className="mt-3">
-          <div>
-            <Button
-              onClick={() => {
-                props.setVisible(false)
-              }}
-              className="mx-2"
-            >
-              Hủy
-            </Button>
-            <Button type="primary">Đồng ý</Button>
-          </div>
-        </Row>
-      </Form.Item>
-    </Form>
+     <Form.Item label="Đơn vị giao hàng">
+       <p>Bạn đồng ý xác nhận đơn hàng đã nhận thành công!</p>
+     
+     </Form.Item>
+   </Form>
+    </Modal>
+  </>
+   
   );
 }

@@ -1,0 +1,8 @@
+body {
+    background-color: rgba(243, 243, 243, 0.562) !important;
+}
+
+.ant-divider-horizontal {
+    margin-top: 12px !important;
+    margin-bottom: 12px !important
+}
