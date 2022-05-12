@@ -1,0 +1,122 @@
+.app-main {
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: #F5F5F5;
+}
+.CustomFormInput .ant-form-item {
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: none;
+}
+.CustomFormInput .ant-form-vertical .ant-form-item-label{
+  padding: 0 0 2px;
+}
+.CustomFormInput .ant-form-item-explain, .ant-form-item-extra {
+  font-size: 10px;
+  line-height: 1.5715;
+
+}
+.CustomFormInput .ant-form-item-with-help .ant-form-item-explain {
+  position: absolute;
+  bottom: -50% ;
+  right: 0;
+  min-height: 15px;
+  text-align: end;
+}
+.CustomFormInput .ant-form-item-has-error{
+  /* margin-bottom: 0px !important; */
+  position: relative;
+  
+}
+.CustomFormInput .ant-form-item-has-success .ant-form-item-explain {
+  transition: none !important;
+  animation-name: nhanhoa;
+  animation-delay: 0s;
+  position: absolute;
+  /* opacity: 0; */
+  bottom: 0;
+  right: 0;
+  
+  z-index: 1;
+}
+.CustomFormInput .ant-form-item-has-success {
+  z-index: 10;
+}
+.CustomFormInput .showForm{
+  
+}
+@keyframes nhatnhoa {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.75;
+    background-color: blue;
+    font-size: 100px;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75%{
+    opacity: 0.25;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 992px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .app-main .app-tabs{
+    /* width: 100%; */
+    min-width: 100%;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 15px;
+    height: initial;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 10px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 10px;
+    padding: 3px 9px;
+    height: initial;
+  }
+
+}
+
+@media screen and (max-width: 576px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 9px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 9px;
+    padding: 2px 4px;
+    height: initial;
+  }
+  .app-tabs .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0 0 0 12px;
+  }
+}

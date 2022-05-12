@@ -32,10 +32,19 @@ export default function CreateOrderThree({ handelSubmit }) {
     heightTotal: 0,
     weightTotal: 0,
   });
+  const [obj, setObj] = useState({
+    currency: "USD",
+    COD: 0,
+    packagetype: 3,
+    service: "Đ-D-V",
+  });
   useEffect(() => {
     cloneListOrder();
     // console.log("1 lần");
   }, [arrData]);
+  useEffect(() => {
+    updateData();
+  }, [obj]);
   const cloneListOrder = () => {
     let lengthTotal = 0;
     let widthTotal = 0;
@@ -56,6 +65,18 @@ export default function CreateOrderThree({ handelSubmit }) {
   };
   // console.log(totalSize, "total State");
   // console.log(totalSize.weightTotal);
+
+  const updateData = () => {
+    const cloneData = arrData;
+    let termData = [];
+    cloneData.map((item) => {
+      termData.push({ ...item, ...obj });
+    });
+    context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: termData });
+
+    console.log(termData);
+  };
+
   return (
     <Spin spinning={OpenSpin}>
       <div className="creatOrderThree-Main">
@@ -77,7 +98,7 @@ export default function CreateOrderThree({ handelSubmit }) {
           <Row>
             <Col span={20}>
               <Form.Item name="weight" label="Khối Lượng" className="mt-4 mb-2 ">
-                <Input disabled placeholder={totalSize.weightTotal + " Mg"} />
+                <Input disabled placeholder={totalSize.weightTotal + " g"} />
               </Form.Item>
             </Col>
             <Col span={4}></Col>
@@ -86,16 +107,25 @@ export default function CreateOrderThree({ handelSubmit }) {
           <Row gutter={[16]}>
             <Col span={20}>
               <Form.Item name="service" label="Dịch vụ" className="mt-4 mb-2 ">
-                <Select defaultValue="MD">
+                <Select
+                  defaultValue="MD"
+                  onChange={(e) => {
+                    setObj({ ...obj, service: e });
+                  }}
+                >
                   <Select.Option value="CPN">Chuyển Phát Nhanh</Select.Option>
                   <Select.Option value="MD">Mặc Định</Select.Option>
-                  <Select.Option value="BD">Bưu Điện</Select.Option>
+                  <Select.Option value="BĐ">Bưu Điện</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
 
             <Col span={4}>
-              <Form.Item style={{ textAlign: "center", alignItems: "center" }} name="package" className="mt-4 mb-2 ">
+              <Form.Item
+                style={{ textAlign: "center", alignItems: "center" }}
+                name="settingIcon"
+                className="mt-4 mb-2 "
+              >
                 <SettingFilled style={{ fontSize: "16px", cursor: "pointer" }} />
               </Form.Item>
             </Col>
@@ -103,11 +133,16 @@ export default function CreateOrderThree({ handelSubmit }) {
 
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="package" label="Bưu Kiện" className="mt-4 mb-2 ">
-                <Select defaultValue="MD">
-                  <Select.Option value="CPN">Chuyển Phát Nhanh</Select.Option>
-                  <Select.Option value="MD">Mặc Định</Select.Option>
-                  <Select.Option value="BD">Bưu Điện</Select.Option>
+              <Form.Item name="packagetype" label="Loại" className="mt-4 mb-2 ">
+                <Select
+                  defaultValue="Đ-D-V"
+                  onChange={(e) => {
+                    setObj({ ...obj, packagetype: e });
+                  }}
+                >
+                  <Select.Option value="Đ-T">Điện Tử</Select.Option>
+                  <Select.Option value="Đ-D-V">Đồ Dễ Vỡ</Select.Option>
+                  <Select.Option value="Đ-A">Đồ Ăn</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -166,6 +201,23 @@ export default function CreateOrderThree({ handelSubmit }) {
                   <Select.Option value="none">Không Có</Select.Option>
                   <Select.Option value="every">Rơi vỡ - Thất Lạc</Select.Option>
                 </Select>
+              </Form.Item>
+            </Col>
+
+            <Col span={4}></Col>
+          </Row>
+          <Row gutter={[16]}>
+            <Col span={20}>
+              <Form.Item name="COD" label="C.O.D" className="mt-4 mb-2  w-100">
+                <InputNumber
+                  onChange={(e) => {
+                    setObj({ ...obj, COD: e });
+                  }}
+                  min="0"
+                  className="w-100"
+                  name="COD"
+                  defaultValue={obj.COD}
+                />
               </Form.Item>
             </Col>
 

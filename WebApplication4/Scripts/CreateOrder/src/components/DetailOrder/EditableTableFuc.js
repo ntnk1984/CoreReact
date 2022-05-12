@@ -19,6 +19,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
   const checkShowTypeInput = (dataInd) => {
     if (
       dataInd === "VietNameseName" ||
+      dataInd === "EnglishName" ||
       dataInd === "CountryManufacturedCode" ||
       dataInd === "Unit" ||
       dataInd === "Currency"
@@ -127,23 +128,24 @@ function EditableTableFuc() {
       width: "20%",
       editable: true,
     },
-    // {
-    //   title: () => {
-    //     return (
-    //       <Tooltip placement="topLeft" title="Tên Tiếng Anh">
-    //         <span>T tiếng Anh</span>
-    //       </Tooltip>
-    //     );
-    //   },
-    //   dataIndex: "EnglishName",
-    //   // width: "30%",
-    //   editable: true,
-    // },
     {
       title: () => {
         return (
-          <Tooltip placement="topLeft" title="Mã Quốc Gia Sản Xuất">
-            <span> Mã QGSX</span>
+          <Tooltip placement="topLeft" title="Tên Tiếng Anh">
+            <span>Tên T.Anh</span>
+          </Tooltip>
+        );
+      },
+      dataIndex: "EnglishName",
+      width: "20%",
+      align: "center",
+      editable: true,
+    },
+    {
+      title: () => {
+        return (
+          <Tooltip placement="topLeft" title="Mã Quốc Gia Sản Xuất - C/O">
+            <span> Nước SX</span>
           </Tooltip>
         );
       },
@@ -156,7 +158,7 @@ function EditableTableFuc() {
       title: () => {
         return (
           <Tooltip placement="topLeft" title="Đơn Vị Sản Phẩm: hộp - thùng - lốc . . .">
-            <span>Đơn vị SP</span>
+            <span>Loại</span>
           </Tooltip>
         );
       },

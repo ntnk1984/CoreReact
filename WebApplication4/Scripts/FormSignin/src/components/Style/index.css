@@ -1,0 +1,66 @@
+.DeliveryResults{
+  margin: auto;
+width: 90%;
+transition: all 0.3s linear;
+}
+.DeliveryResults .ant-form-item {
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: none;
+}
+.DeliveryResults .ant-form-vertical .ant-form-item-label{
+  padding: 0 0 2px;
+}
+.DeliveryResults .ant-form-item-explain, .ant-form-item-extra {
+  font-size: 10px;
+  line-height: 1.5715;
+
+}
+.DeliveryResults .ant-form-item-with-help .ant-form-item-explain {
+  position: absolute;
+  bottom: -50% ;
+  right: 0;
+  min-height: 15px;
+  text-align: end;
+}
+.DeliveryResults .ant-form-item-has-error{
+  /* margin-bottom: 0px !important; */
+  position: relative;
+  
+}
+.DeliveryResults .ant-form-item-has-success .ant-form-item-explain {
+  transition: none !important;
+  animation-name: nhanhoa;
+  animation-delay: 0s;
+  position: absolute;
+  /* opacity: 0; */
+  bottom: 0;
+  right: 0;
+  
+  z-index: 1;
+}
+.DeliveryResults .ant-form-item-has-success {
+  z-index: 10;
+}
+.DeliveryResults .showForm{
+  
+}
+@keyframes nhatnhoa {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.75;
+    background-color: blue;
+    font-size: 100px;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75%{
+    opacity: 0.25;
+  }
+  100%{
+    opacity: 0;
+  }
+}

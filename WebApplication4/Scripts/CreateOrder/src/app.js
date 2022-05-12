@@ -60,30 +60,32 @@ const initialState = {
       // },
     ],
     RequestedPackageLineItems: [
-      {
-        SequenceNumber: 1,
-        dimension: {
-          length: 222,
-          width: 333,
-          height: 444,
-          weight: 5555,
-        },
-        COD: 1111,
-        currency: "VND",
-        packagetype: 1,
-      },
-      {
-        SequenceNumber: 1,
-        dimension: {
-          length: 200,
-          width: 300,
-          height: 400,
-          weight: 500,
-        },
-        COD: 1111,
-        currency: "VND",
-        packagetype: 1,
-      },
+      // {
+      //   key: 1,
+      //   SequenceNumber: 1,
+      //   dimension: {
+      //     length: 222,
+      //     width: 333,
+      //     height: 444,
+      //     weight: 5555,
+      //   },
+      //   COD: 0,
+      //   currency: "VND",
+      //   packagetype: 1,
+      // },
+      // {
+      //   key: 2,
+      //   SequenceNumber: 2,
+      //   dimension: {
+      //     length: 200,
+      //     width: 300,
+      //     height: 400,
+      //     weight: 500,
+      //   },
+      //   COD: 0,
+      //   currency: "VND",
+      //   packagetype: 1,
+      // },
     ],
   },
 
@@ -123,7 +125,7 @@ const createOrderReducer = (state = initialState, action) => {
       };
     }
     case "ADD_PACKAGE_LINE_ITEMS": {
-      message.success("Thêm bưu gửi thành công!");
+      // message.success("Thêm bưu gửi thành công!");
       return { ...state, listOrder: { ...state.listOrder, RequestedPackageLineItems: action.payload } };
     }
     case "SET_VISIBILITY": {

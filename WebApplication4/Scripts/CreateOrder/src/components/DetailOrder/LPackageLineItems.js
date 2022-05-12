@@ -39,6 +39,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       const values = await form.validateFields();
       toggleEdit();
       console.log(e.target.id);
+      // if(e.target.value !== ""){}
       switch (e.target.id) {
         case "length":
           record.dimension.length = +e.target.value;
@@ -64,7 +65,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       }
       handleSave({ ...record, ...values });
 
-      message.success("Cập Nhật Thành Công");
+      // message.success("Cập Nhật Thành Công");
     } catch (errInfo) {
       console.log("Save failed:", errInfo);
       message.error("Sửa Thất Bại");
@@ -87,6 +88,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
         ]}
       >
         <InputNumber
+          min="0"
           ref={inputRef}
           onPressEnter={save}
           onBlur={(e) => {
@@ -111,7 +113,7 @@ function LPackageLineItems() {
 
   const [dataSources, setDataSources] = useState({
     dataSource: dataSourceStore,
-    count: 1,
+    count: 3,
   });
 
   // useEffect(() => {
@@ -121,9 +123,9 @@ function LPackageLineItems() {
 
   const addPackageLine = () => {
     context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
-    console.log("123 126");
+    message.success("Thêm bưu gửi thành công!");
   };
-  console.log(dataSourceStore, "Data store 130");
+  console.log(dataSourceStore, "Data store 127");
   const columns = [
     {
       title: "Chiều Dài",
@@ -177,13 +179,13 @@ function LPackageLineItems() {
       key: `${count}`,
       SequenceNumber: count,
       dimension: {
-        length: 10 + count,
-        width: 10 + count,
-        height: 10 + count,
-        weight: 10 + count,
+        length: 1,
+        width: 1,
+        height: 1,
+        weight: 1,
       },
       currency: "VND",
-      COD: count,
+      COD: 0,
       packagetype: 1,
     };
     setDataSources({
@@ -196,7 +198,7 @@ function LPackageLineItems() {
     const newData = [...dataSources.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    console.log(row, "row");
+    // console.log(row, "row");
     newData.splice(index, 1, { ...item, ...row });
     setDataSources({
       ...dataSources,
