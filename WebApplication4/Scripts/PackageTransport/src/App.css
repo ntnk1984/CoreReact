@@ -1,0 +1,34 @@
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+.ant-steps-dot {
+    height: 560px;
+    overflow-y: scroll;
+}
+
+.accordion-body {
+    height: 408px;
+    overflow-y: scroll;
+}
+
+.ant-pagination-options {
+    display: none !important;
+}
+
+.ant-spin-container {
+    position: relative;
+    height: 937px;
+    z-index: 100;
+}
+
+.ant-pagination {
+    position: absolute !important;
+    right: 50% !important;
+    bottom: 100px !important;
+    z-index: 100;
+    transform: translateX(50%);
+}

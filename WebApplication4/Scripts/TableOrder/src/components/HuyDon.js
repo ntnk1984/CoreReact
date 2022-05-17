@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Row, Modal } from "antd";
+import { Form, Button, Row, Modal, Input } from "antd";
 import { checkQuyen } from "../athor/Authoraziton.js";
 
 export default function HuyDon(props) {
@@ -18,12 +18,12 @@ export default function HuyDon(props) {
   };
   return (
     <>
-      <Button type="link" onClick={showModal} disabled={checkQuyen()!=1}>
+      <Button type="link" onClick={showModal} disabled={checkQuyen() != 1}>
         Hủy đơn hàng loạt
       </Button>
       <Modal
         title="Basic Modal"
-        visible={isModalVisible}
+        visible={false}
         onOk={handleOk}
         onCancel={handleCancel}
       >

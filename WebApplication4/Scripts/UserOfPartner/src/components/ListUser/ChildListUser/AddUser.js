@@ -85,6 +85,7 @@ function AddUser() {
   const handleImport = (e) => {
     const [file] = e.target.files;
     const reader = new FileReader();
+    console.log(file,"file");
 
     reader.onload = (evt) => {
       const bstr = evt.target.result;
@@ -95,19 +96,21 @@ function AddUser() {
 
       //xử lý file và call api thêm user
       data.split("\n").forEach((item, index) => {
-        if (index != 0) {
-          //  let arr=item.split(",")
-          //  let obj={
-          //    TaiKhoan:arr[0],
-          //    MatKhau:arr[1],
-          //    Ten:arr[2],
-          //    HoTen:arr[3],
-          //    SoDienThoai:arr[4],
-          //    Email:arr[5]
-          //  }
-          //call api add từng user
-        }
+        // if (index != 0) {
+        //   //  let arr=item.split(",")
+        //   //  let obj={
+        //   //    TaiKhoan:arr[0],
+        //   //    MatKhau:arr[1],
+        //   //    Ten:arr[2],
+        //   //    HoTen:arr[3],
+        //   //    SoDienThoai:arr[4],
+        //   //    Email:arr[5]
+        //   //  }
+        //   //call api add từng user
+        // }
+      
       });
+ 
     };
     reader.readAsBinaryString(file);
   };

@@ -14,91 +14,30 @@ import {
 import { UnorderedListOutlined, SearchOutlined } from "@ant-design/icons";
 import { fetchChangeStatusOrder } from "../api/Order.js";
 import { checkQuyen } from "../athor/Authoraziton.js";
+import ModalChangeStatus from "./ModalChangeStatus.js";
+import DetailOrder from "./DetailOrder.js";
 //antd
 const { Text } = Typography;
 
-//menu cho nút thao tác trên bảng đơn hàng
-const menu = (item) => {
-
-  let statusList = [
-    { key: 1, code: "DRAFT", label: "Mới tạo" },
-    { key: 2, code: "CREATE_WAITING", label: "Chờ xử lý" },
-    { key: 3, code: "PICKUP_WAITING", label: "Chờ lấy" },
-    { key: 4, code: "PICKUPED", label: "Đã lấy" },
-    { key: 5, code: "SHIPPING", label: "Đang vận chuyển" },
-    { key: 6, code: "DELIVERY", label: "Đang giao" },
-    { key: 7, code: "DELIVERY_SUCCESS", label: "Giao thành công" },
-    { key: 8, code: "RETURN_APPROVED", label: "Đã duyệt hoàn" },
-    { key: 9, code: "RETURN_SHIPPING", label: "Đang chuyển hoàn" },
-    { key: 10, code: "DELIVERY_CONT", label: "Phát tiếp" },
-    { key: 11, code: "RETURN_SUCCESS", label: "Đã trả" },
-    { key: 12, code: "CANCELED", label: "Đã hủy" },
-  ];
-
-  return (
-    <Menu
-      onClick={async (e) => {
-        if (e.keyPath.length < 2) {
-        } else {
-          await fetchChangeStatusOrder(
-            [item.id],
-            statusList.find((val) => val.key == e.key).code
-          );
-        }
-      }}
-      items={[
-        {
-          key: "1",
-          disabled:(checkQuyen()!=1),
-          label: "Chuyển tiếp",
-          children: [
-            ...statusList.filter(
-              (val) => parseInt(item.deliverystatus) < parseInt(val.key)
-            ),
-          ],
-        },
-        {
-          key: "2",
-          label: "Sửa",
-          disabled:(checkQuyen()!=1),
-        },
-        {
-          key: "3",
-          label: "Xóa",
-          disabled:(checkQuyen()!=1),
-        },
-      ]}
-    />
-  );
-};
-// const menu = (item) => (
-
-//   <Menu>
-//     <Menu.Item key="1">
-
-//       <a
-//         onClick={async () => {
-//           const response = await fetchChangeStatusOrder(
-//             item.id,
-//             "CREATED_WAITING"
-//           );
-//         }}
-//       >
-//         Chuyển tiếp
-//       </a>
-//     </Menu.Item>
-//     <Menu.Item key="2">
-//       <a>Sửa đơn</a>
-//     </Menu.Item>
-//     <Menu.Item key="3">
-//       <a rel="noopener noreferrer">Hủy đơn</a>
-//     </Menu.Item>
-//   </Menu>
-// );
+const menu = (id,text) => (
+  <Menu>
+    <Menu.Item key="1">
+      <ModalChangeStatus id={id}/>
+    </Menu.Item>
+    <Menu.Item key="2">
+      <a>Sửa đơn</a>
+    </Menu.Item>
+    <Menu.Item key="4">
+     <DetailOrder data={text}/>
+    </Menu.Item>
+    <Menu.Item key="3">
+      <a rel="noopener noreferrer">Hủy đơn</a>
+    </Menu.Item>
+  </Menu>
+);
 
 function TableDonHang(props) {
-  //data
-  console.log(props.data);
+  
   //dữ liệu của bảng đơn hàng
   let dataTemp = [];
   const [dataSource, setDataSource] = useState(dataTemp);
@@ -330,7 +269,7 @@ function TableDonHang(props) {
       title: " Thao tác",
       render: (text, record, index) => {
         return (
-          <Dropdown overlay={menu(text)} placement="bottomLeft">
+          <Dropdown overlay={menu(text.id,text)} placement="bottomLeft">
             <Button type="link" icon={<UnorderedListOutlined />}></Button>
           </Dropdown>
         );

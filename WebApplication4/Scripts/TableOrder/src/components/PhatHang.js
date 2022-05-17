@@ -8,10 +8,11 @@ import {
   Col,
   Modal,
   notification,
+  Divider,
 } from "antd";
 const { Option } = Select;
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { fetchChangeStatusOrder, getAllOrderApi } from "../api/Order.js";
+import { fetchChangeStatusOrder, fetchAllOrderApi } from "../api/Order.js";
 import { checkQuyen } from "../athor/Authoraziton.js";
 
 let statusList = [
@@ -34,8 +35,9 @@ export default function PhatHang(props) {
       message: "Vui lòng chọn lại",
     });
   };
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [key, setKey] = useState(null);
+
+  const [status, setStatus] = useState({});
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -59,47 +61,56 @@ export default function PhatHang(props) {
     if (!flag) {
       openNotificationWithIcon("error");
     } else {
+     
+
       await fetchChangeStatusOrder(
         listId,
         statusList.find((val) => {
-          return val.key == key;
-        }).code
+          return val.code == status.actionType;
+        }).code,
+        status.noteType
       );
-      const response = await getAllOrderApi();
-      console.log("props",props)
-      await props.setData(response.responses);
-    }
-    setIsModalVisible(false);
-  };
+      // const response = await getAllOrderApi();
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+      // await props.setData(response.responses);
+    }
+    props.close();
   };
 
   return (
     <>
-      <Button type="link" onClick={showModal} disabled={checkQuyen()!=1}>
-        Chuyển tiếp
-      </Button>
-      <Modal
-        title="Chuyển tiếp"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Select
-          className="mt-3"
-          defaultValue="Vui lòng chọn "
-          style={{ width: "100%" }}
-          onChange={async (e) => {
-            await setKey(e);
-          }}
-        >
-          {statusList.map((item) => (
-            <Option value={item.key}>{item.label}</Option>
-          ))}
-        </Select>
-      </Modal>
+      <Form layout="vertical">
+        <Form.Item name="status" label="Trạng thái">
+          <Select
+            onChange={async (e) => {
+              await setStatus({ ...status, actionType: e });
+            }}
+            placeholder="Vui lòng chọn trạng thái"
+          >
+            {statusList.map((item, index) => (
+              <Option value={item.code}>{item.label}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="note" label="Ghi chú" className="mt-2">
+          <Input.TextArea
+            name="note"
+            rows={4}
+            onChange={async (e) => {
+              await setStatus({ ...status, noteType: e.target.value });
+            }}
+          ></Input.TextArea>
+        </Form.Item>
+        <Divider />
+        <Form.Item className="mt-3">
+          <Button type="primary" onClick={handleOk}>
+            Xác nhận
+          </Button>
+          <Button className="mx-2" onClick={props.close}>
+            Cancel
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 }

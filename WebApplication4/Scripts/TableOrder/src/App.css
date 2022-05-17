@@ -42,3 +42,27 @@
         page-break-before: always;
     }
 }
+
+.ant-divider-horizontal {
+    width: 90% !important
+}
+
+.ant-steps-dot {
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+.listOrder {
+    height: 170px;
+    overflow-y: scroll;
+}
+
+.ant-modal-body {
+    padding-top: 8px !important;
+}
