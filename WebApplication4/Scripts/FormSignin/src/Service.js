@@ -1,78 +1,64 @@
-export const postOrder = async (data) => {
-  let { listOrder, receiver, sender } = data;
-
-  //xu li total order
-  const temp = [];
-  const handleTotalOrder = () => {
-    listOrder.map((item) => {
-      const temp2 = {
-        length: 1,
-        width: 2,
-        height: 3,
-        weight: 4,
-        COD: 100,
-        currency: "VND",
-        packagetype: 3,
-        MerchandiseInfomation: [],
-      };
-      item.map((value) => {
-        let temp3 = {
-          HSCode: value.maSP,
-          VietNameseName: value.nameSP,
-          EnglishName: value.nameEngSP,
-          CountryManufacturedCode: value.maQuocGia,
-          Unit: value.donViTienTe,
-          Currency: value.maSP,
-          Value: parseFloat(value.donGia),
-          Quantity: parseFloat(value.soLuong),
-          Weight: parseFloat(value.canNang),
-        };
-        temp2.MerchandiseInfomation.push(temp3);
-      });
-      temp.push(temp2);
-    });
-  };
-
-  handleTotalOrder();
-
-  let dataPostJson = {
-    orderShippingItems: [
-      {
-        SenderName: sender.sendername,
-        SenderPhone: sender.senderphone,
-        SenderCountryCode: sender.sendercountry,
-        SenderCityCode: sender.sendercity,
-        SenderDistrictCode: sender.senderdistrict,
-        SenderWardCode: sender.senderward,
-        SenderPostalCode: sender.phoneregioncode,
-        SenderAddress: sender.senderaddress,
-        ReceiverName: receiver.receivername,
-        ReceiverPhone: receiver.receiverphone,
-        ReceiverAddress: receiver.receiveraddress,
-        ReceiverCountryCode: receiver.receivercountry,
-        ReceiverCityCode: receiver.receivercity,
-        ReceiverDistrictCode: receiver.receiverdistrict,
-        ReceiverWardCode: receiver.receiverward,
-        ReceiverPostalCode: receiver.phoneregioncode,
-        OrderInfomation: [...temp],
-      },
-    ],
-  };
-  dataPostJson = JSON.stringify(dataPostJson);
-  console.log('dataPostJson',dataPostJson)
-
-  fetch(`http://localhost:5020/api/OrderShipping/add-orderShipping`, {
+export const CreateAccountApi = async (data, successFuc, ErrorFuc) => {
+  const dataPostJson = JSON.stringify({ accounts: data });
+  console.log(dataPostJson, "dataJson Service");
+  let res = await fetch(`${process.env.API}/api/account/create`, {
     method: "POST",
     body: dataPostJson,
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((res) => res.json().then((rel) => console.log(rel)))
-    .catch((err) => console.log(err));
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+    },
+  });
+  if (res.status < 400) {
+    res = await res.json();
+    successFuc();
+  } else {
+    res = await res.json();
+    ErrorFuc(res.message);
+  }
+};
 
-  //   if (res.status === 200) {
-  //     res = await res.json();
-  //     console.log("Thành công!");
-  //   } else {
-  //     console.log("thất  bại!");
-  //   }
+export const GetAccountApi = async (data) => {
+  const dataPostJson = JSON.stringify(data);
+  let res = await fetch(`${process.env.API}/api/account/find`, {
+    method: "POST",
+    body: dataPostJson,
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+    },
+  });
+  if (res.status < 400) {
+    res = await res.json();
+    console.log(res);
+    return res;
+  } else {
+    res = await res.json();
+    console.log(res);
+    return res;
+  }
+};
+
+export const UpdateAccountApi = async (data) => {
+  const dataPostJson = JSON.stringify(data);
+  let res = await fetch(`${process.env.API}/api/account/update`, {
+    method: "POST",
+    body: dataPostJson,
+    headers: {
+      "Content-Type": "application/json",
+      // Authorization:
+      //   "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+    },
+  });
+  if (res.status < 400) {
+    res = await res.json();
+    console.log(res);
+    return res;
+  } else {
+    res = await res.json();
+    console.log(res);
+    return res;
+  }
 };

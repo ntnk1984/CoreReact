@@ -7,11 +7,12 @@
   min-height: 100vh;
   padding-bottom: 20px;
 }
-.App-Form .ant-form-item {
-  /* margin-bottom: 25px; */
-}
+/* .App-Form .ant-form-item {
+  
+} */
 .App-Form h4{
  font-size: 21px;
+ 
  text-align: center;
 }
 .totalOrder .ant-input-number {
@@ -79,9 +80,9 @@
 .CustomFormInput .ant-form-item-has-success {
   z-index: 10;
 }
-.CustomFormInput .showForm{
+/* .CustomFormInput .showForm{
   
-}
+} */
 @keyframes nhatnhoa {
   0% {
     opacity: 1;

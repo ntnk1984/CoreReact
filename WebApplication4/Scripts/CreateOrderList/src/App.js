@@ -1,12 +1,10 @@
-import { Button, Input, message, Modal } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Input, message } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
-import { FileExcelTwoTone, UploadOutlined } from "@ant-design/icons";
-import CreateAccount from "./components";
-import "./components/Style/App.css";
 import * as XLSX from "xlsx";
-import TableAccount from "./components/TableAccount";
+import Sender from "./components/Sender";
 import "./components/Style/App.css";
-import { CreateAccountApi, GetAccountApi } from "./Service";
+import TableListOrder from "./components/TableListOrder";
 // const { TabPane } = Tabs;
 
 export const contextValue = React.createContext();
@@ -14,28 +12,37 @@ export const contextValue = React.createContext();
 console.log(process.env.API);
 const initialState = {
   account: [],
-  importAccounts: [],
+  importOrderList: [],
   listAccount: [],
   visibleModal: false,
+  Sender: {
+    Name: undefined,
+    Phone: undefined,
+    Address: undefined,
+    CountryCode: undefined,
+    CityCode: undefined,
+    DistrictCode: undefined,
+    WardCode: undefined,
+    PostalCode: undefined,
+  },
 };
 
 //usereducer
-const createAccountReducer = (state = initialState, action) => {
+const createOrderListReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_ACCOUNT": {
-      return { ...state, account: [...state.account, action.payload] };
-    }
-    case "ADD_ACCOUNTS": {
+    // case "ADD_ACCOUNT": {
+    //   return { ...state, account: [...state.account, action.payload] };
+    // }
+    case "ADD_LIST_ORDER": {
       console.log(action.payload, "acction.payload");
-      return { ...state, importAccounts: action.payload };
+      return { ...state, importOrderList: action.payload };
     }
     case "CLOSE_VISIBLE_MODAL": {
       return { ...state, visibleModal: false };
     }
-    case "GET_LISTACCOUNT": {
-      return { ...state, listAccount: action.payload };
+    case "GET_LIST_ORDER": {
+      return { ...state };
     }
-
     default:
       return state;
   }
@@ -43,50 +50,26 @@ const createAccountReducer = (state = initialState, action) => {
 
 export default function App() {
   //set up reducer
-  const [createAccount, dispatch] = useReducer(createAccountReducer, initialState);
+  const [createOrderList, dispatch] = useReducer(createOrderListReducer, initialState);
   const store = {
-    createAccount,
+    createOrderList,
     dispatch,
   };
-  console.log(createAccount.listAccount, "store 52");
-  // modal signin
+
+  //State
   const [visible, setVisible] = useState(false);
-
+  // console.log(createOrderList.Sender.Name);
   const [nameFileExcel, setNameFileExcel] = useState("Vui Lòng Chọn File");
-  useEffect(async () => {
-    // call API
-    let data_request = {
-      Action_data: "",
-      Action_type: "ALL",
-    };
-    let response = await GetAccountApi(data_request);
+  const [senderName, setSenderName] = useState("Thông Tin người gửi ");
 
-    const data = response.responses;
-    const responseJson = data.map((row) => ({
-      key: row.account, // I added this line
-      account: row.account,
-      fullName: row.fullName,
-      email: row.email,
-      address: row.address,
-      phone: row.phone,
-      postalCode: row.postalCode,
-      rememberCode: row.rememberCode,
-    }));
-    // console.log(data, "app");
-    dispatch({ type: "GET_LISTACCOUNT", payload: responseJson });
+  //  /State
+  useEffect(() => {
+    // call API
+    const data = [];
+    dispatch({ type: "GET_LIST_ORDER", payload: data });
   }, []);
   // /
-
-  const successFuc = () => {
-    message.success("Tạo tài khoản thành công!");
-  };
-  const errorFuc = (err) => {
-    message.error(`Tạo tài khoản thất bại! ${err}`);
-    console.log(err);
-  };
-  //Format XLSX to Json
   const typeFileExcel = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
-
   const importExcel = (e) => {
     const file = e.target.files[0];
 
@@ -115,32 +98,28 @@ export default function App() {
           };
         });
         promise.then((data) => {
-          dispatch({ type: "ADD_ACCOUNTS", payload: [...data] });
-          CreateAccountApi(data, successFuc, errorFuc);
-          // console.log(data);
+          dispatch({ type: "ADD_LIST_ORDER", payload: [...data] });
           // console.log(data);
         });
-        message.success("Improt tài khoản thành công");
+        message.success("Improt thành công");
       } else {
         setNameFileExcel("Vui Lòng Chọn File");
         message.info("Vui lòng chọn file Excel");
       }
     } else {
       setNameFileExcel("Vui Lòng Chọn File");
-      console.log("VUi lòng chọn file");
+      console.log("Vui lòng chọn file");
       message.warning("Vui lòng chọn file");
     }
   };
-  // console.log(createAccount.importAccounts, "83");
+  const handleChangeValue = (e) => {};
+  // console.log(createOrderList.importAccounts, "83");
   return (
     <contextValue.Provider value={store}>
       <div className="app-main  pt-4 " style={{ width: "80%", margin: "auto" }}>
         <div className="d-flex wrapper justify-content-between">
           <div>
-            <div className="btnName" onClick={() => setVisible(true)}>
-              <ion-icon name="person-add-outline"></ion-icon>
-              <span>&nbsp;&nbsp;Tạo Tài Khoản</span>
-            </div>
+            <Sender />
           </div>
           <div>
             <Input
@@ -150,7 +129,6 @@ export default function App() {
               name="upload"
               className="w-25"
               type="file"
-              // onChange={importExcel}
               onChange={(e) => {
                 const fileName = e.target.value.split("\\").slice(-1).join();
                 setNameFileExcel(fileName);
@@ -168,21 +146,8 @@ export default function App() {
           </div>
         </div>
 
-        <Modal
-          // title="Modal 1000px width"
-          centered
-          visible={visible}
-          // onOk={() => setVisible(false)}
-          onCancel={() => setVisible(false)}
-          width={600}
-          footer={false}
-          style={{ height: "500px" }}
-        >
-          <CreateAccount />
-        </Modal>
-
         <div className="tableAccount pt-4">
-          <TableAccount />
+          <TableListOrder />
         </div>
       </div>
     </contextValue.Provider>

@@ -3,17 +3,8 @@ import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, 
 
 import { DeleteOutlined } from "@ant-design/icons";
 import { contextValue } from "../App";
+import { UpdateAccountApi } from "../Service";
 // const EditableContext = React.createContext(null);
-const originData = [];
-
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
@@ -43,17 +34,16 @@ const EditableCell = ({ editing, dataIndex, title, inputType, record, index, chi
 
 function TableAccount() {
   const context = useContext(contextValue);
-  const { importAccounts } = context?.createAccount;
-  // console.log(importAccounts, "account 123");
+  const { importAccounts, listAccount } = context?.createAccount;
 
   const [form] = Form.useForm();
   const [data, setData] = useState();
-  // console.log(data, "data");
+
   const [editingKey, setEditingKey] = useState("");
   useEffect(() => {
-    setData(importAccounts);
-  }, [importAccounts]);
-  const isEditing = (record) => record.key === editingKey;
+    setData(listAccount);
+  }, [listAccount]);
+  const isEditing = (record) => record.account === editingKey;
 
   const edit = (record) => {
     form.setFieldsValue({
@@ -62,7 +52,7 @@ function TableAccount() {
       password: "",
       ...record,
     });
-    setEditingKey(record.key);
+    setEditingKey(record.account);
   };
 
   const cancel = () => {
@@ -73,13 +63,15 @@ function TableAccount() {
     try {
       const row = await form.validateFields();
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => key === item.account);
 
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        console.log("row 81", { ...item, ...row });
+
+        const dataPost = { ...item, ...row };
         // Gửi lên  { ...item, ...row } API  để thay đổi
+        UpdateAccountApi(dataPost);
         setData(newData);
         setEditingKey("");
       } else {
@@ -94,57 +86,82 @@ function TableAccount() {
 
   const columns = [
     {
+      key: "account",
       title: "Tài Khoản",
-      dataIndex: "userName",
+      dataIndex: "account",
       align: "center",
       width: "20%",
       // editable: true,
-      sorter: (a, b) => a.userName.length - b.userName.length,
+      // sorter: (a, b) => a.FullName.length - b.FullName.length,
     },
     {
+      key: "fullName",
+      title: "Họ Tên",
+      dataIndex: "fullName",
+      align: "center",
+      width: "20%",
+      editable: true,
+      sorter: (a, b) => a.FullName.length - b.FullName.length,
+    },
+
+    {
+      key: "phone",
       title: "Số Điện Thoại",
-      dataIndex: "numberPhone",
+      dataIndex: "phone",
       width: "20%",
       align: "center",
       editable: true,
     },
     {
-      title: "Mật Khẩu",
-      dataIndex: "password",
+      key: "email",
+      title: "Email",
+      dataIndex: "email",
       align: "center",
       width: "15%",
       editable: true,
     },
     {
+      key: "address",
+      title: "Địa chỉ",
+      dataIndex: "address",
+      align: "center",
+      width: "15%",
+      editable: true,
+    },
+    {
+      key: "active",
       title: "Khóa Người Dùng",
       dataIndex: "active",
       width: "15%",
       align: "center",
 
       render: (_, record) => {
-        // console.log(record, "");
         let activeKey = record.key % 2 === 0;
         return (
           <>
             {activeKey ? (
-              <Tooltip title="Ấn Để Mở Khóa" color="red" key={record.key}>
+              <Tooltip title="Ấn Để Mở Khóa" color="red" key={record.account}>
                 <ion-icon
                   onClick={() => {
-                    console.log(record.key);
+                    // Status Set khóa người dùng,
+                    console.log(record.account);
                   }}
                   style={{ fontSize: " 24px", color: " #EB5353", cursor: "pointer" }}
                   name="lock-closed-outline"
                 ></ion-icon>
               </Tooltip>
             ) : (
-              <Tooltip title="Ấn Để Khóa" color="geekblue" key={record.key}>
-                <ion-icon
-                  onClick={() => {
-                    console.log(record.key);
-                  }}
-                  style={{ fontSize: " 24px", color: " #73777B", cursor: "pointer" }}
-                  name="lock-open-outline"
-                ></ion-icon>
+              <Tooltip title="Ấn Để Khóa" color="geekblue" key={record.account}>
+                <Popconfirm title="Bạn muốn Khóa" onConfirm={cancel}>
+                  <ion-icon
+                    onClick={() => {
+                      // Status Set khóa người dùng,
+                      console.log(record.account);
+                    }}
+                    style={{ fontSize: " 24px", color: " #73777B", cursor: "pointer" }}
+                    name="lock-open-outline"
+                  ></ion-icon>
+                </Popconfirm>
               </Tooltip>
             )}
           </>
@@ -152,6 +169,7 @@ function TableAccount() {
       },
     },
     {
+      key: "operation",
       title: "Chỉnh Sửa",
       dataIndex: "operation",
       width: "15%",
@@ -163,8 +181,7 @@ function TableAccount() {
           <span>
             <Typography.Link
               onClick={() => {
-                save(record.key);
-
+                save(record.account);
                 // GỬi Reacod để gọi api chỉnh sửa
               }}
               style={{
@@ -173,7 +190,7 @@ function TableAccount() {
             >
               Lưu
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm title="Bạn muốn hủy thao tác?" onConfirm={cancel}>
               <a>Thoát</a>
             </Popconfirm>
           </span>
@@ -213,9 +230,7 @@ function TableAccount() {
         dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
+        pagination={false}
       />
     </Form>
   );

@@ -1,6 +1,7 @@
 import { Button, Checkbox, Col, Form, Input, message, Row, Select, Tabs } from "antd";
 import React, { useContext, useRef, useState } from "react";
 import { contextValue } from "../App";
+import { CreateAccountApi } from "../Service";
 import { validate } from "../validate";
 import "./Style/index.css";
 
@@ -8,11 +9,11 @@ function CreateAccount(props) {
   const context = useContext(contextValue);
   const { account } = context.createAccount;
   const typingTimesOutRef = useRef(null);
-  // console.log(account, "context");
+
   const [dataSuccess, setDataSuccess] = useState({
-    userName: "",
-    numberPhone: "",
-    password: "",
+    Account: "",
+    Phone: "",
+    Password: "",
     confirmPassword: "",
     partner: undefined,
   });
@@ -30,24 +31,25 @@ function CreateAccount(props) {
 
   // antDesign custom
   const [form] = Form.useForm();
-
+  const successFuc = () => {
+    message.success("Tạo tài khoản thành công!");
+  };
+  const errorFuc = (err) => {
+    message.error(`Tạo tài khoản thất bại! ${err}`);
+  };
   const onFinish = () => {
-    console.log("THành Công");
     context.dispatch({ type: "ADD_ACCOUNT", payload: dataSuccess });
-    // console.log(dataSuccess, "dataSS");
-    message.success("Thêm tài khoản thành công!");
+    CreateAccountApi([dataSuccess], successFuc, errorFuc);
   };
 
   const onFinishFailed = (e) => {
     message.error("Vui lòng nhập đầy đủ thông tin!");
-    console.log("THất Bại", e);
   };
-  // console.log(account, "acc");
   return (
     <div className="DeliveryResults">
       <Form onFinish={onFinish} onFinishFailed={onFinishFailed} form={form} layout="vertical">
         <Form.Item
-          name="userName"
+          name="Account"
           label="Tên đăng nhập"
           rules={[
             {
@@ -56,10 +58,10 @@ function CreateAccount(props) {
             },
           ]}
         >
-          <Input onChange={handData} name="userName" placeholder="Tên đăng nhập" />
+          <Input onChange={handData} name="Account" placeholder="Tên đăng nhập" />
         </Form.Item>
         <Form.Item
-          name="numberPhone"
+          name="Phone"
           label="Số điện thoại"
           tooltip="Dùng để đặt lại mật khẩu"
           rules={[
@@ -69,10 +71,10 @@ function CreateAccount(props) {
             },
           ]}
         >
-          <Input onChange={handData} name="numberPhone" placeholder="Số điện thoại" />
+          <Input onChange={handData} name="Phone" placeholder="Số điện thoại" />
         </Form.Item>
         <Form.Item
-          name="password"
+          name="Password"
           label="Mật Khẩu"
           rules={[
             {
@@ -81,11 +83,11 @@ function CreateAccount(props) {
             },
           ]}
         >
-          <Input.Password name="password" onChange={handData} placeholder="Mật khẩu" />
+          <Input.Password name="Password" onChange={handData} placeholder="Mật khẩu" />
         </Form.Item>
         <Form.Item
           name="confirmPassword"
-          dependencies={["password"]}
+          dependencies={["Password"]}
           label="Xác nhận mật khẩu"
           rules={[
             {
@@ -94,7 +96,7 @@ function CreateAccount(props) {
             },
             ({ getFieldValue }) => ({
               validator(rule, value) {
-                if (!value || getFieldValue("password") === value) {
+                if (!value || getFieldValue("Password") === value) {
                   return Promise.resolve();
                 }
                 return Promise.reject("Mật khẩu không khớp!");
@@ -109,7 +111,6 @@ function CreateAccount(props) {
             name="partner"
             onClick={(e) => {
               setShowFormPartner(!!e.target.checked);
-              // console.log(e.target.checked);
             }}
           >
             Đối Tác

@@ -1,0 +1,146 @@
+
+{
+    "ShipmentRequest" : {
+        "DropoffType" : "1",
+        "ServiceType" : "1",
+        "Sender" : {
+            "Name" : "test1",
+            "Phone": "0123456789",
+            "Address": "thu duc, vn", 
+            "CountryCode":"VN"  ,
+            "CityCode":"71000" ,
+            "DistrictCode":"71010" ,
+            "WardCode":"71020" ,
+            "PostalCode":"71000"
+        },
+        "Receiver": {
+            "Name" : "test3",
+            "Phone": "0987654321",
+            "Address": "hanoi, vn", 
+            "CountryCode":"1"  ,
+            "CityCode":"1" ,
+            "DistrictCode":"1" ,
+            "WardCode":"1" ,
+            "PostalCode":"7451" 
+        },
+        "ShippingChargesPayment":{
+            "PaymentType": "Sender"
+        },
+        "SpecialServicesRequested" : {
+            "SpecialServiceType":"COD",
+            "CODDetail":{
+                "CodCollectionAmount": 100000
+                
+            }
+        },
+        "PackageRating": {
+            "RateType": "1a2b",
+            "TotalSurcharges": 20,
+            "TotalTaxes": 30,
+            "NetCharge": 40,  
+            "TotalRebates": 2,
+            "Discount": 20,
+            "Surcharges": {
+                "SurchargeType": "1a2b3c",
+                "Description": "Surcharges for 1b2b3c" ,
+                "Amount": 15,
+                "Taxes": 1.5
+            }
+        },
+        "RequestedPackageLineItems": [
+            {
+                "SequenceNumber" : 1,
+                "dimension" :{
+                    "length" : 1,
+                    "width" : 2,
+                    "height" : 3,
+                    "weight" : 4
+                },
+                "COD" : 100,
+                "currency" : "VND",
+                "packagetype" : 3
+            },
+            {
+                "SequenceNumber" : 2,
+                "dimension" : {
+                    "length" : 5,
+                    "width" : 6,
+                    "height" : 7,
+                    "weight" : 8
+                },
+                "COD" : 200,
+                "currency" : "VND",
+                "packagetype" : 2
+            }
+        ],
+        "MerchandiseItems" : [
+            {
+                "HSCode" : "123",
+                "VietNameseName" : "My pham",
+                "EnglishName" : "Cosmetic",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "hop",
+                "Currency": "VND",
+                "Value" : 500,
+                "Quantity" : 10,
+                "Weight" : 1
+            },
+            {
+                "HSCode" : "124",
+                "VietNameseName" : "Thuoc",
+                "EnglishName" : "Medicine",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "hop",
+                "Currency" : "VND",
+                "Value" : 1000,
+                "Quantity" : 20,
+                "Weight" : 2
+            },
+            {
+                "HSCode" : "125",
+                "VietNameseName" : "dung cu",
+                "EnglishName" : "tools",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "hop",
+                "Currency" : "VND",
+                "Value" : 200,
+                "Quantity" : 5,
+                "Weight" : 10
+            },
+            {
+                "HSCode" : "126",
+                "VietNameseName" : "do an",
+                "EnglishName" : "food",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "thung",
+                "Currency" : "VND",
+                "Value" : 5000,
+                "Quantity" : 10,
+                "Weight" : 30
+            },
+            {
+                "HSCode" : "127",
+                "VietNameseName" : "ao quan",
+                "EnglishName" : "clother",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "bao",
+                "Currency" : "VND",
+                "Value" : 2000,
+                "Quantity" : 30,
+                "Weight" : 50
+            },
+            {
+                "HSCode" : "128",
+                "VietNameseName" : "dung cu",
+                "EnglishName" : "tools",
+                "CountryManufacturedCode" : "VN",
+                "Unit" : "hop",
+                "Currency" : "VND",
+                "Value" : 200,
+                "Quantity" : 5,
+                "Weight" : 10
+            }
+        ]
+            
+    }
+}

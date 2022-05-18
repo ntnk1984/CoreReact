@@ -1,0 +1,13 @@
+.tableListOrder .ant-table   tr  td {
+  position: relative;
+  padding: 5px 0px !important;
+  overflow-wrap: break-word;
+}
+.tableListOrder .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
+  position: relative;
+  padding: 4px 0px ;
+  overflow-wrap: break-word;
+}
+.tableListOrder .ant-table-body{
+  margin-bottom: 30px;
+}
