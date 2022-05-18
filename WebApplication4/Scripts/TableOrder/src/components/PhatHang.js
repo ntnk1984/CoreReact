@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Form,
   Input,
@@ -14,6 +14,7 @@ const { Option } = Select;
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { fetchChangeStatusOrder, fetchAllOrderApi } from "../api/Order.js";
 import { checkQuyen } from "../athor/Authoraziton.js";
+import { contextValue, FETCH_ORDERS_TABLE_TIME } from "../App.js";
 
 let statusList = [
   { key: 1, code: "DRAFT", label: "Mới tạo" },
@@ -30,14 +31,10 @@ let statusList = [
   { key: 12, code: "CANCELED", label: "Đã hủy" },
 ];
 export default function PhatHang(props) {
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: "Vui lòng chọn lại",
-    });
-  };
+
 
   const [status, setStatus] = useState({});
-
+  const { tableReducer, dispatch } = useContext(contextValue);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -61,8 +58,6 @@ export default function PhatHang(props) {
     if (!flag) {
       openNotificationWithIcon("error");
     } else {
-     
-
       await fetchChangeStatusOrder(
         listId,
         statusList.find((val) => {
@@ -70,9 +65,16 @@ export default function PhatHang(props) {
         }).code,
         status.noteType
       );
-      // const response = await getAllOrderApi();
+      const res = await fetchAllOrderApi(
+        `${tableReducer.startDate[0]}-${tableReducer.startDate[1]}-${tableReducer.startDate[2]}`,
+        `${tableReducer.endDate[0]}-${tableReducer.endDate[1]}-${tableReducer.endDate[2]}`
+      );
 
-      // await props.setData(response.responses);
+      dispatch({
+        type: FETCH_ORDERS_TABLE_TIME,
+        payload: await res.responses,
+      });
+      openNotificationWithIcon("success");
     }
     props.close();
   };

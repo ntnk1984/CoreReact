@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Form, Select, Input } from "antd";
-import { fetchChangeStatusOrder } from "../api/Order.js";
+import { fetchAllOrderApi, fetchChangeStatusOrder } from "../api/Order.js";
+import { contextValue, FETCH_ORDERS_TABLE_TIME } from "../App.js";
+import { openNotificationWithIcon } from "../Notification.js";
 const { Option } = Select;
 const ModalChangeStatus = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -8,10 +10,25 @@ const ModalChangeStatus = (props) => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const {tableReducer,dispatch}=useContext(contextValue)
 
   const handleOk = async () => {
+
     await fetchChangeStatusOrder([status.id], status.actionType, status.noteType);
    await setIsModalVisible(false);
+    //call api bảng đơn hàng
+    const res = await fetchAllOrderApi(
+      `${tableReducer.startDate[0]}-${tableReducer.startDate[1]}-${tableReducer.startDate[2]}`,
+      `${tableReducer.endDate[0]}-${tableReducer.endDate[1]}-${tableReducer.endDate[2]}`
+    );
+
+    dispatch({
+      type: FETCH_ORDERS_TABLE_TIME,
+      payload: await res.responses,
+    });
+
+    openNotificationWithIcon("success")
+
   };
 
   const handleCancel = () => {

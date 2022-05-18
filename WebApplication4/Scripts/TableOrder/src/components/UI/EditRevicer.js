@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -13,24 +13,36 @@ import {
   Modal,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { contextValue, FETCH_SHIPMENT_BY_ID } from "../../App.js";
+import { fetchChangeRecieverShipmentId, fetchShipmentId } from "../../api/Order.js";
+import { openNotificationWithIcon } from "../../Notification.js";
 
-export default function EditRevicer(props) {
+export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [formReciever, setFormReciever] = useState({ ...data });
+  const { dispatch } = useContext(contextValue);
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = async() => {
+    const result = await fetchChangeRecieverShipmentId(formReciever);
     setIsModalVisible(false);
+    const res = await fetchShipmentId(idShipment, orderCodeShipment);
+    dispatch({
+      type: FETCH_SHIPMENT_BY_ID,
+      payload: res?.responses,
+    });
+    openNotificationWithIcon("success")
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  console.log(props.data)
-
+  
+  useEffect(() => {
+    setFormReciever({ ...data });
+  }, [isModalVisible]);
   return (
     <>
       <Button
@@ -44,7 +56,7 @@ export default function EditRevicer(props) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form initialValues={props.data} layout="vertical">
+        <Form initialValues={data} layout="vertical">
           <Row className="my-2">
             <Col span={12} >
               <Form.Item
@@ -58,6 +70,12 @@ export default function EditRevicer(props) {
                   name="receivername"
                   size="large"
                   placeholder="Vui lòng nhập"
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receivername: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -72,6 +90,12 @@ export default function EditRevicer(props) {
                   name="receiverphone"
                   size="large"
                   placeholder="Vui lòng nhập"
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiverphone: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -88,6 +112,12 @@ export default function EditRevicer(props) {
                   name="receiveremail"
                   size="large"
                   placeholder="Vui lòng nhập"
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiveremail: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -101,6 +131,12 @@ export default function EditRevicer(props) {
                   name="phoneregioncode"
                   size="large"
                   placeholder="Vui lòng nhập"
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      phoneregioncode: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -112,6 +148,12 @@ export default function EditRevicer(props) {
                   name="receiveraddress"
                   size="large"
                   placeholder="Vui lòng nhập"
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiveraddress: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
@@ -123,6 +165,12 @@ export default function EditRevicer(props) {
                   name="receivercountrycode"
                   size="large"
                   style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiveraddress: e,
+                    });
+                  }}
                 >
                   <Option value="VN">Việt Nam</Option>
                   <Option value="CAM">Campuchia</Option>
@@ -139,6 +187,12 @@ export default function EditRevicer(props) {
                   name="receivercitycode"
                   size="large"
                   style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receivercitycode: e,
+                    });
+                  }}
                 >
                   <Option value="P3">Phường 3</Option>
                   <Option value="P2">Phường 2</Option>
@@ -155,6 +209,12 @@ export default function EditRevicer(props) {
                   name="receiverdistrictcode"
                   size="large"
                   style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiverdistrictcode: e,
+                    });
+                  }}
                 >
                   <Option value="P3">Phường 3</Option>
                   <Option value="P2">Phường 2</Option>
@@ -172,6 +232,12 @@ export default function EditRevicer(props) {
                   name="receiverwardcode"
                   size="large"
                   style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setFormReciever({
+                      ...formReciever,
+                      receiverwardcode: e,
+                    });
+                  }}
                 >
                   <Option value="P3">Phường 3</Option>
                   <Option value="P2">Phường 2</Option>

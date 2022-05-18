@@ -85,18 +85,22 @@ export const fetchDeletePackageId = async (id) => {
 };
 
 export const fetchMerchandiseShipmentCode = async (code) => {
-  console.log(code, "code");
-  return await (
-    await fetch(`http://localhost:5020/api/merchandise/get?OrderCode=${code}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
-      },
-    })
-  ).json();
+
+  try{
+    return await (
+      await fetch(`http://localhost:5020/api/merchandise/get?OrderCode=${code}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+        },
+      })
+    ).json();
+  }catch(e){
+    console.log(e)
+  }
 };
 
 export const fetchDeleteMerchandiseId = async (id) => {
@@ -133,7 +137,7 @@ export const fetchUpdateMerchandiseId = async (item) => {
 };
 
 export const fetchUpdatePackage = async (item) => {
-  console.log(item);
+
   return await (
     await fetch("http://localhost:5020/api/package/edit-by-order-id", {
       method: "POST",
@@ -161,3 +165,126 @@ export const fetchUpdatePackage = async (item) => {
     })
   ).json();
 };
+
+export const fetchShipmentId = async (id, orderCode) => {
+  return await (
+    await fetch("http://localhost:5020/api/shipment/find", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+      },
+      body: JSON.stringify({
+        id,
+        orderCode,
+      }),
+    })
+  ).json();
+};
+
+export const fetchChangeSenderShipmentId = async ({
+  id,
+  sendername,
+  senderphone,
+  senderaddress,
+  sendercountrycode,
+  sendercitycode,
+  senderdistrictcode,
+  senderwardcode,
+  servicepostage,
+}) => {
+ 
+  return await (
+    await fetch("http://localhost:5020/api/shipment/edit", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+      },
+      body: JSON.stringify({
+        UpdateShipmentRequest: {
+          ID: id,
+          Sender: {
+            Name: sendername,
+            Phone: senderphone,
+            Address: senderaddress,
+            CountryCode: sendercountrycode,
+            CityCode: sendercitycode,
+            DistrictCode: senderdistrictcode,
+            WardCode: senderwardcode,
+            PostalCode: servicepostage.toString(),
+          },
+        },
+      }),
+    })
+  ).json();
+};
+
+export const fetchChangeRecieverShipmentId = async ({
+  id,
+  receivername,
+  receiverphone,
+  receiveraddress,
+  receivercountrycode,
+  receivercitycode,
+  receiverdistrictcode,
+  receiverwardcode,
+  servicepostage,
+}) => {
+ 
+  return await (
+    await fetch("http://localhost:5020/api/shipment/edit", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+      },
+      body: JSON.stringify({
+        UpdateShipmentRequest: {
+          ID: id,
+          Receiver: {
+            Name: receivername,
+            Phone: receiverphone,
+            Address: receiveraddress,
+            CountryCode: receivercountrycode,
+            CityCode: receivercitycode,
+            DistrictCode: receiverdistrictcode,
+            WardCode: receiverwardcode,
+            PostalCode: servicepostage.toString(),
+          },
+        },
+      }),
+    })
+  ).json();
+};
+
+// {
+//   "updateShipmentRequest": {
+//     "id": id,
+//     "sender": {
+//       "name": sendername,
+//       "phone": senderphone,
+//       "address": senderaddress,
+//       "countryCode": sendercountrycode,
+//       "cityCode": sendercitycode,
+//       "districtCode": senderdistrictcode,
+//       "wardCode": senderwardcode,
+//       "postalCode": servicepostage
+//     },
+//     "receiver": {
+//       "name": receivername,
+//       "phone": receiverphone,
+//       "address": receiveraddress,
+//       "countryCode": receivercountrycode,
+//       "cityCode": receivercitycode,
+//       "districtCode": receiverdistrictcode,
+//       "wardCode": receiverwardcode,
+//       "postalCode": receiverpostalcode
+//     }
+// }

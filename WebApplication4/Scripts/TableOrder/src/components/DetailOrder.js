@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Modal,
   Button,
@@ -21,21 +21,31 @@ import {
   fetchDeletePackageId,
   fetchMerchandiseShipmentCode,
   fetchPackageByShipmentId,
+  fetchShipmentId,
 } from "../api/Order.js";
 import EditSender from "./UI/EditSender.js";
 import EditRevicer from "./UI/EditRevicer.js";
 import EditMerchandise from "./UI/EditMerchandise.js";
 import EditPackage from "./UI/EditPackage.js";
+import {
+  contextValue,
+  FETCH_MERCHANDISE_BY_ID_SHIPMENT,
+  FETCH_PACKAGE_BY_ID_SHIPMENT,
+  FETCH_SHIPMENT_BY_ID,
+} from "../App.js";
 const { Step } = Steps;
 const { Option } = Select;
 const { Text } = Typography;
-const DetailOrder = (props) => {
+const DetailOrder = ({ idShipment, orderCodeShipment }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [status, setStatus] = useState({ id: props.id });
+  const [status, setStatus] = useState({ id: idShipment });
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const { tableReducer, dispatch } = useContext(contextValue);
 
+  const [packageShipment, setPackageShipment] = useState();
+  const [merchandise, setMerchandise] = useState();
   const handleOk = async () => {
     await fetchChangeStatusOrder(status.id, status.actionType, status.noteType);
     await setIsModalVisible(false);
@@ -82,7 +92,7 @@ const DetailOrder = (props) => {
     totalpostage,
     vat,
     weight,
-  } = props.data;
+  } = tableReducer?.shipmentDetail;
 
   let statusList = [
     { key: 1, code: "DRAFT", label: "Mới tạo" },
@@ -102,25 +112,44 @@ const DetailOrder = (props) => {
   async function confirmPackage(id) {
     const result = await (await fetchDeletePackageId(id)).json();
     await message.success(await result.message);
+    const response = await fetchPackageByShipmentId(idShipment);
+    dispatch({
+      type: FETCH_PACKAGE_BY_ID_SHIPMENT,
+      payload: response?.responses,
+    });
   }
 
   async function confirmMerchandise(id) {
     const result = await (await fetchDeleteMerchandiseId(id)).json();
     await message.success(await result.message);
+    const response = await fetchMerchandiseShipmentCode(orderCodeShipment);
+    dispatch({
+      type: FETCH_MERCHANDISE_BY_ID_SHIPMENT,
+      payload: response?.responses,
+    });
   }
 
   function cancel(e) {
     message.error("Cancel");
   }
 
-  const [packageShipment, setPackageShipment] = useState();
-  const [merchandise, setMerchandise] = useState();
   useEffect(async () => {
-    const result = await fetchPackageByShipmentId(id);
-    const response = await fetchMerchandiseShipmentCode(ordercode);
-    await setMerchandise(response?.responses);
-    await setPackageShipment(result?.responses);
-  }, [id]);
+    const result = await fetchPackageByShipmentId(idShipment);
+    const response = await fetchMerchandiseShipmentCode(orderCodeShipment);
+    const res = await fetchShipmentId(idShipment, orderCodeShipment);
+    dispatch({
+      type: FETCH_PACKAGE_BY_ID_SHIPMENT,
+      payload: result?.responses,
+    });
+    dispatch({
+      type: FETCH_MERCHANDISE_BY_ID_SHIPMENT,
+      payload: response?.responses,
+    });
+    dispatch({
+      type: FETCH_SHIPMENT_BY_ID,
+      payload: res?.responses,
+    });
+  }, [isModalVisible]);
 
   return (
     <>
@@ -143,7 +172,7 @@ const DetailOrder = (props) => {
                 {deliverystatus}
               </p>
               <p>
-                Tiền thu hộ : {cod.toLocaleString()} đ - Phí vận chuyển:{" "}
+                Tiền thu hộ : {cod?.toLocaleString()} đ - Phí vận chuyển:
                 {codpostage} đ - Khối lượng : {weight} kg
               </p>
             </div>
@@ -151,14 +180,19 @@ const DetailOrder = (props) => {
             <Row>
               <Col span={12}>
                 <h6 className="mb-3">
-                  Thông tin người gửi <EditSender data={props.data} />
+                  Thông tin người gửi
+                  <EditSender
+                    idShipment={idShipment}
+                    orderCodeShipment={orderCodeShipment}
+                    data={tableReducer?.shipmentDetail}
+                  />
                 </h6>
 
                 <p>
-                  <i className="bi bi-person-fill"></i> : {sendername} &nbsp; &nbsp;{" "}
-                  <i className="bi bi-telephone-fill"></i> : {senderphone} &nbsp;
-                  &nbsp; <i className="bi bi-envelope-fill"></i> :
-                  tintuong95@gmail.com
+                  <i className="bi bi-person-fill"></i> : {sendername} &nbsp;
+                  &nbsp; <i className="bi bi-telephone-fill"></i> :{senderphone}{" "}
+                  &nbsp; &nbsp;
+                  <i className="bi bi-envelope-fill"></i> : tintuong95@gmail.com
                 </p>
                 <p>
                   <i className="bi bi-house-fill"></i> : {senderaddress}
@@ -166,13 +200,18 @@ const DetailOrder = (props) => {
               </Col>
               <Col span={12}>
                 <h6 className="mb-3">
-                  Thông tin người nhận <EditRevicer data={props.data} />
+                  Thông tin người nhận
+                  <EditRevicer
+                    idShipment={idShipment}
+                    orderCodeShipment={orderCodeShipment}
+                    data={tableReducer?.shipmentDetail}
+                  />
                 </h6>
                 <p>
                   <i className="bi bi-person-fill"></i> : {receivername} &nbsp;
-                  &nbsp; <i className="bi bi-telephone-fill"></i> : {receiverphone}{" "}
-                  &nbsp; &nbsp; <i className="bi bi-envelope-fill"></i> :
-                  tintuong95@gmail.com
+                  &nbsp; <i className="bi bi-telephone-fill"></i> :
+                  {receiverphone} &nbsp; &nbsp;
+                  <i className="bi bi-envelope-fill"></i> : tintuong95@gmail.com
                 </p>
                 <p>
                   <i className="bi bi-house-fill"></i> : {receiveraddress}
@@ -182,8 +221,7 @@ const DetailOrder = (props) => {
             <Divider className="my-1 " />
             <h6 className="my-2">Thông tin gói hàng </h6>
             <ul className="list-group mx-3 listOrder">
-              {packageShipment?.map((item, index) => {
-              
+              {tableReducer?.packageList?.map((item, index) => {
                 return (
                   <li className="list-group-item d-flex flex-row row ">
                     <div className="col-2">{item.packagecode}</div>
@@ -199,7 +237,7 @@ const DetailOrder = (props) => {
                       </Text>
                     </div>
                     <div className="col-2 text-end">
-                      <EditPackage  data={item}/>
+                      <EditPackage idShipment={idShipment} data={item} />
                       &nbsp;
                       <Popconfirm
                         title="Bạn muốn xóa sản phẩm?"
@@ -245,9 +283,12 @@ const DetailOrder = (props) => {
                   </a>
                 </div>
               </li>
-              {merchandise?.map((item, index) => {
+              {tableReducer?.merChandiseList?.map((item, index) => {
                 return (
-                  <li key={index} className="list-group-item d-flex flex-row row ">
+                  <li
+                    key={index}
+                    className="list-group-item d-flex flex-row row "
+                  >
                     <div className="col-2">{item.vietnamesename}</div>
                     <div className="col-2 text-center">11 (kg)</div>
                     <div className="col-3 text-center">
@@ -261,8 +302,10 @@ const DetailOrder = (props) => {
                       </Text>
                     </div>
                     <div className="col-2 text-end">
-                      
-                      <EditMerchandise data={item}/>
+                      <EditMerchandise
+                        orderCodeShipment={orderCodeShipment}
+                        data={item}
+                      />
                       <Popconfirm
                         title="Bạn muốn xóa sản phẩm?"
                         onConfirm={() => {

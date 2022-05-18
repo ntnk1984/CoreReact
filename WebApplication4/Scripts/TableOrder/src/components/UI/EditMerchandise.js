@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Input, Button, Radio, Modal, Row, Col, InputNumber } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { fetchUpdateMerchandiseId } from "../../api/Order.js";
-const EditMerchandise = ({data}) => {
- 
+import { fetchMerchandiseShipmentCode, fetchUpdateMerchandiseId } from "../../api/Order.js";
+import { contextValue, FETCH_MERCHANDISE_BY_ID_SHIPMENT } from "../../App.js";
+import { openNotificationWithIcon } from "../../Notification.js";
+
+const EditMerchandise = ({ data, orderCodeShipment }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [initForm, setInitForm] = useState({
     id: data?.id,
@@ -21,18 +23,26 @@ const EditMerchandise = ({data}) => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const {tableReducer,dispatch} = useContext(contextValue);
+  
+  const handleOk = async () => {
+    const result = await fetchUpdateMerchandiseId(initForm);
 
-  const handleOk =async () => {
-      const result =await fetchUpdateMerchandiseId(initForm)
-     
     setIsModalVisible(false);
+    
+    const response = await fetchMerchandiseShipmentCode(orderCodeShipment);
+    dispatch({
+      type: FETCH_MERCHANDISE_BY_ID_SHIPMENT,
+      payload: response?.responses,
+    });
+
+    openNotificationWithIcon("success")
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
- 
   return (
     <>
       <a onClick={showModal}>
@@ -45,14 +55,17 @@ const EditMerchandise = ({data}) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form
-          layout="vertical"
-            initialValues={initForm}
-        >
+        <Form layout="vertical" initialValues={initForm}>
           <Row>
             <Col span={12}>
               <Form.Item name="hscode" label="HS code" className="m-2">
-                <Input name="hscode" placeholder="input placeholder" onChange={(e)=>{setInitForm({...initForm,hscode:e.target.value})}}/>
+                <Input
+                  name="hscode"
+                  placeholder="input placeholder"
+                  onChange={(e) => {
+                    setInitForm({ ...initForm, hscode: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -61,7 +74,16 @@ const EditMerchandise = ({data}) => {
                 label="Tên tiếng việt"
                 className="m-2"
               >
-                <Input name="vietnamesename" placeholder="input placeholder"  onChange={(e)=>{setInitForm({...initForm,vietnamesename:e.target.value})}}/>
+                <Input
+                  name="vietnamesename"
+                  placeholder="input placeholder"
+                  onChange={(e) => {
+                    setInitForm({
+                      ...initForm,
+                      vietnamesename: e.target.value,
+                    });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -70,7 +92,13 @@ const EditMerchandise = ({data}) => {
                 label="Tên tiếng anh"
                 className="m-2"
               >
-                <Input name="englishname" placeholder="input placeholder"   onChange={(e)=>{setInitForm({...initForm,englishname:e.target.value})}}/>
+                <Input
+                  name="englishname"
+                  placeholder="input placeholder"
+                  onChange={(e) => {
+                    setInitForm({ ...initForm, englishname: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -82,28 +110,60 @@ const EditMerchandise = ({data}) => {
                 <Input
                   name="countrymanufacturedcode"
                   placeholder="input placeholder"
-                  onChange={(e)=>{setInitForm({...initForm,countrymanufacturedcode:e.target.value})}}
+                  onChange={(e) => {
+                    setInitForm({
+                      ...initForm,
+                      countrymanufacturedcode: e.target.value,
+                    });
+                  }}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="unit" label="Loại hàng" className="m-2">
-                <Input name="unit" placeholder="input placeholder" onChange={(e)=>{setInitForm({...initForm,unit:e.target.value})}}/>
+                <Input
+                  name="unit"
+                  placeholder="input placeholder"
+                  onChange={(e) => {
+                    setInitForm({ ...initForm, unit: e.target.value });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="quantity" label="Số lượng" className="m-2">
-                <InputNumber  className="w-100" name="quantity" placeholder="input placeholder" onChange={(value)=>{setInitForm({...initForm,quantity:value})}} />
+                <InputNumber
+                  className="w-100"
+                  name="quantity"
+                  placeholder="input placeholder"
+                  onChange={(value) => {
+                    setInitForm({ ...initForm, quantity: value });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="weight" label="Cân nặng" className="m-2">
-                <InputNumber  className="w-100" name="weight" placeholder="input placeholder"  onChange={(value)=>{setInitForm({...initForm,weight:value})}}/>
+                <InputNumber
+                  className="w-100"
+                  name="weight"
+                  placeholder="input placeholder"
+                  onChange={(value) => {
+                    setInitForm({ ...initForm, weight: value });
+                  }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="value" label="Giá trị" className="m-2">
-                <InputNumber className="w-100" name="value" placeholder="input placeholder" onChange={(value)=>{setInitForm({...initForm,value:value})}}/>
+                <InputNumber
+                  className="w-100"
+                  name="value"
+                  placeholder="input placeholder"
+                  onChange={(value) => {
+                    setInitForm({ ...initForm, value: value });
+                  }}
+                />
               </Form.Item>
             </Col>
           </Row>

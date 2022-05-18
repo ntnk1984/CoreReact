@@ -19,7 +19,7 @@ import DetailOrder from "./DetailOrder.js";
 //antd
 const { Text } = Typography;
 
-const menu = (id,text) => (
+const menu = (id,ordercode) => (
   <Menu>
     <Menu.Item key="1">
       <ModalChangeStatus id={id}/>
@@ -28,7 +28,7 @@ const menu = (id,text) => (
       <a>Sửa đơn</a>
     </Menu.Item>
     <Menu.Item key="4">
-     <DetailOrder data={text}/>
+     <DetailOrder idShipment={id} orderCodeShipment={ordercode}/>
     </Menu.Item>
     <Menu.Item key="3">
       <a rel="noopener noreferrer">Hủy đơn</a>
@@ -269,7 +269,7 @@ function TableDonHang(props) {
       title: " Thao tác",
       render: (text, record, index) => {
         return (
-          <Dropdown overlay={menu(text.id,text)} placement="bottomLeft">
+          <Dropdown trigger={"click"} overlay={menu(text.id,text.ordercode)} placement="bottomLeft">
             <Button type="link" icon={<UnorderedListOutlined />}></Button>
           </Dropdown>
         );
