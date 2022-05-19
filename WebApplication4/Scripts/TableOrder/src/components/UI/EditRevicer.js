@@ -16,6 +16,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { contextValue, FETCH_SHIPMENT_BY_ID } from "../../App.js";
 import { fetchChangeRecieverShipmentId, fetchShipmentId } from "../../api/Order.js";
 import { openNotificationWithIcon } from "../../Notification.js";
+import { validate } from "../../validate/validate.js";
 
 export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -64,7 +65,10 @@ export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
                 name="receivername"
                 className="mx-2 "
                 label="Tên người nhận"
-                required
+                rules={[
+                  validate.checkCodePost(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="receivername"
@@ -84,7 +88,10 @@ export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
                 name="receiverphone"
                 className="mx-2"
                 label="Số điện thoại"
-                required
+                rules={[
+                  validate.checkPhone(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="receiverphone"
@@ -106,7 +113,10 @@ export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
                 name="receiveremail"
                 className="mx-2"
                 label="Email"
-                required
+                rules={[
+                  validate.checkMail(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="receiveremail"
@@ -126,6 +136,10 @@ export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
                 name="phoneregioncode"
                 className="mx-2"
                 label="Mã bưu chính"
+                rules={[
+                  validate.checkCodePost(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="phoneregioncode"
@@ -143,7 +157,7 @@ export default function EditRevicer({ idShipment, orderCodeShipment, data }) {
           </Row>
           <Row className="my-2">
             <Col span={24}>
-              <Form.Item name="receiveraddress" className="mx-2" label="Địa chỉ">
+              <Form.Item  name="receiveraddress" className="mx-2" label="Địa chỉ">
                 <Input
                   name="receiveraddress"
                   size="large"

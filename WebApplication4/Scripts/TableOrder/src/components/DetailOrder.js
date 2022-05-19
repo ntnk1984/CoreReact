@@ -158,12 +158,12 @@ const DetailOrder = ({ idShipment, orderCodeShipment }) => {
       </a>
       <Modal
         width={"1200px"}
-        title="Basic Modal"
+        // title="Basic Modal"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Row>
+        <Row className="mt-2">
           <Col span={18}>
             <div>
               <h6>Thông tin đơn hàng </h6>

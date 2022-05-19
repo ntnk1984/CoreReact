@@ -18,20 +18,14 @@ import {
 import TableDonHang from "./components/TableDonHang.js";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { fetchAllOrderApi, removeOrderByIdApi } from "./api/Order.js";
-import GiaoHangLoat from "./components/GiaoHangLoat.js";
-import GomHang from "./components/GomHang.js";
+
 import PhatHang from "./components/PhatHang.js";
-import XacNhanThanhToan from "./components/XacNhanThanhToan.js";
-import HuyDon from "./components/HuyDon.js";
-import XacNhanDaNhanHang from "./components/XacNhanDaNhanHang.js";
-import XacNhanDaGomHang from "./components/XacNhanDaGomHang.js";
-import XoaHangLoat from "./components/XoaHangLoat.js";
+
 import { useReactToPrint } from "react-to-print";
 import Printorder from "./components/PrintOrder.js";
 import "./App.css";
-import { ExportExcel } from "./components/ExportExcel.js";
-import { checkQuyen } from "./athor/Authoraziton.js";
-import ModalChangeStatus from "./components/ModalChangeStatus.js";
+
+
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import moment from "moment";
@@ -84,14 +78,6 @@ const actionReducer = (state = initialValue, { type, payload }) => {
 const App = () => {
 
   const [tableReducer, dispatch] = useReducer(actionReducer, initialValue);
-
-  // const [startDate, setStartDate] = useState(
-  //   new Date(Date.now() - 1296000000).toLocaleDateString().split("/")
-  // );
-
-  // const [endDate, setEndDate] = useState(
-  //   new Date(Date.now()).toLocaleDateString().split("/")
-  // );
 
   //print đơn hàng
   const componentRef = useRef();
@@ -162,10 +148,11 @@ const App = () => {
   // expected output: 0
 
   // expected output: 818035920000
-
+  console.log(process.env.HOST);
   return (
     <contextValue.Provider value={{ tableReducer, dispatch }}>
-      <div style={{ width: "1600px", margin: "0 auto" }}>
+     <div style={{marginTop:20}}>
+     <div style={{ width: "1600px", margin: "0 auto" }}>
         <div>
           <div className="d-none">
             <div ref={componentRef}>
@@ -413,6 +400,7 @@ const App = () => {
           </TabPane>
         </Tabs>
       </div>
+     </div>
     </contextValue.Provider>
   );
 };

@@ -19,6 +19,7 @@ import {
 } from "../../api/Order.js";
 import { contextValue, FETCH_SHIPMENT_BY_ID } from "../../App.js";
 import { openNotificationWithIcon } from "../../Notification.js";
+import { validate } from "../../validate/validate.js";
 
 export default function EditSender({ idShipment, orderCodeShipment, data }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,7 +37,7 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
       type: FETCH_SHIPMENT_BY_ID,
       payload: res?.responses,
     });
-    openNotificationWithIcon("success")
+    openNotificationWithIcon("success");
   };
 
   const handleCancel = () => {
@@ -45,7 +46,6 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
   useEffect(() => {
     setFormSender({ ...data });
   }, [isModalVisible]);
-
 
   return (
     <>
@@ -67,6 +67,10 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
                 name="sendername"
                 className="mx-2 "
                 label="Tên người gửi"
+                rules={[
+                  validate.checkName(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="sendername"
@@ -86,7 +90,10 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
                 name="senderphone"
                 className="mx-2"
                 label="Số điện thoại"
-                required
+                rules={[
+                  validate.checkPhone(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="senderphone"
@@ -108,7 +115,10 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
                 name="senderemail"
                 className="mx-2"
                 label="Email"
-                required
+                rules={[
+                  validate.checkMail(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="senderemail"
@@ -128,6 +138,10 @@ export default function EditSender({ idShipment, orderCodeShipment, data }) {
                 name="phoneregioncode"
                 className="mx-2"
                 label="Mã bưu chính"
+                rules={[
+                  validate.checkCodePost(),
+                  validate.checkRequire()
+                ]}
               >
                 <Input
                   name="phoneregioncode"

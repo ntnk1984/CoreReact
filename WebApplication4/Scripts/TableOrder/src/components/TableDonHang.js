@@ -12,8 +12,6 @@ import {
   Popover,
 } from "antd";
 import { UnorderedListOutlined, SearchOutlined } from "@ant-design/icons";
-import { fetchChangeStatusOrder } from "../api/Order.js";
-import { checkQuyen } from "../athor/Authoraziton.js";
 import ModalChangeStatus from "./ModalChangeStatus.js";
 import DetailOrder from "./DetailOrder.js";
 //antd

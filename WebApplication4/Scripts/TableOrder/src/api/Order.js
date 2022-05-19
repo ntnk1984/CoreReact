@@ -1,6 +1,12 @@
+// import dotenv from ("dotenv-webpack")
+
+const PORT =process.env.PORT;
+const HOST=process.env.HOST;
+
+
 export const fetchAllOrderApi = async (fromDate, toDate) => {
   return await (
-    await fetch("http://localhost:5020/api/shipment/query", {
+    await fetch(`http://${HOST}:${PORT}/api/shipment/query`, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       credentials: "include", // include, *same-origin, omit
       headers: {
@@ -33,7 +39,7 @@ export const removeOrderByIdApi = async (id) => {
 
 export const fetchChangeStatusOrder = async (listId, newStatus, noteType) => {
   return await (
-    await fetch("http://localhost:5020/api/shipment/delivery/update", {
+    await fetch(`http://${HOST}:${PORT}/api/shipment/delivery/update`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -53,7 +59,7 @@ export const fetchChangeStatusOrder = async (listId, newStatus, noteType) => {
 export const fetchPackageByShipmentId = async (id) => {
   return await (
     await fetch(
-      `http://localhost:5020/api/package/get-by-shipment-id?IDOrderShipping=${id}`,
+      `http://${HOST}:${PORT}/api/package/get-by-shipment-id?IDOrderShipping=${id}`,
       {
         method: "GET",
         credentials: "include",
@@ -68,7 +74,7 @@ export const fetchPackageByShipmentId = async (id) => {
 };
 
 export const fetchDeletePackageId = async (id) => {
-  return await await fetch("http://localhost:5020/api/package/delete", {
+  return await await fetch(`http://${HOST}:${PORT}/api/package/delete`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -85,10 +91,10 @@ export const fetchDeletePackageId = async (id) => {
 };
 
 export const fetchMerchandiseShipmentCode = async (code) => {
+  
 
-  try{
     return await (
-      await fetch(`http://localhost:5020/api/merchandise/get?OrderCode=${code}`, {
+      await fetch(`http://${HOST}:${PORT}/api/merchandise/get?OrderCode=${code}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -98,13 +104,11 @@ export const fetchMerchandiseShipmentCode = async (code) => {
         },
       })
     ).json();
-  }catch(e){
-    console.log(e)
-  }
+  
 };
 
 export const fetchDeleteMerchandiseId = async (id) => {
-  return await await fetch("http://localhost:5020/api/merchandise/delete", {
+  return await await fetch(`http://${HOST}:${PORT}/api/merchandise/delete`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -121,7 +125,7 @@ export const fetchDeleteMerchandiseId = async (id) => {
 
 export const fetchUpdateMerchandiseId = async (item) => {
   return await (
-    await fetch("http://localhost:5020/api/merchandise/edit", {
+    await fetch(`http://${HOST}:${PORT}/api/merchandise/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -139,7 +143,7 @@ export const fetchUpdateMerchandiseId = async (item) => {
 export const fetchUpdatePackage = async (item) => {
 
   return await (
-    await fetch("http://localhost:5020/api/package/edit-by-order-id", {
+    await fetch(`http://${HOST}:${PORT}/api/package/edit-by-order-id`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -168,7 +172,7 @@ export const fetchUpdatePackage = async (item) => {
 
 export const fetchShipmentId = async (id, orderCode) => {
   return await (
-    await fetch("http://localhost:5020/api/shipment/find", {
+    await fetch(`http://${HOST}:${PORT}/api/shipment/find`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -197,7 +201,7 @@ export const fetchChangeSenderShipmentId = async ({
 }) => {
  
   return await (
-    await fetch("http://localhost:5020/api/shipment/edit", {
+    await fetch(`http://${HOST}:${PORT}/api/shipment/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -237,7 +241,7 @@ export const fetchChangeRecieverShipmentId = async ({
 }) => {
  
   return await (
-    await fetch("http://localhost:5020/api/shipment/edit", {
+    await fetch(`http://${HOST}:${PORT}/api/shipment/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -264,27 +268,4 @@ export const fetchChangeRecieverShipmentId = async ({
   ).json();
 };
 
-// {
-//   "updateShipmentRequest": {
-//     "id": id,
-//     "sender": {
-//       "name": sendername,
-//       "phone": senderphone,
-//       "address": senderaddress,
-//       "countryCode": sendercountrycode,
-//       "cityCode": sendercitycode,
-//       "districtCode": senderdistrictcode,
-//       "wardCode": senderwardcode,
-//       "postalCode": servicepostage
-//     },
-//     "receiver": {
-//       "name": receivername,
-//       "phone": receiverphone,
-//       "address": receiveraddress,
-//       "countryCode": receivercountrycode,
-//       "cityCode": receivercitycode,
-//       "districtCode": receiverdistrictcode,
-//       "wardCode": receiverwardcode,
-//       "postalCode": receiverpostalcode
-//     }
-// }
+
