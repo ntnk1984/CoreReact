@@ -4,17 +4,6 @@ import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, 
 import { DeleteOutlined } from "@ant-design/icons";
 import { contextValue } from "../App";
 import "./Style/TableListOrder.css";
-// const EditableContext = React.createContext(null);
-const originData = [];
-
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
 
 const EditableCell = ({ editing, dataIndex, title, inputType, record, index, children, ...restProps }) => {
   const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
@@ -243,41 +232,28 @@ function TableListOrder() {
       width: "75px",
       editable: true,
     },
-
-    // {
-    //   title: "Chỉnh Sửa",
-    //   dataIndex: "operation",
-    //   width: "15%",
-    //   align: "center",
-
-    //   render: (_, record) => {
-    //     const editable = isEditing(record);
-    //     return editable ? (
-    //       <span>
-    //         <Typography.Link
-    //           onClick={() => {
-    //             save(record.key);
-
-    //             // GỬi Reacod để gọi api chỉnh sửa
-    //           }}
-    //           style={{
-    //             marginRight: 8,
-    //           }}
-    //         >
-    //           Lưu
-    //         </Typography.Link>
-    //         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-    //           <a>Thoát</a>
-    //         </Popconfirm>
-    //       </span>
-    //     ) : (
-    //       <Typography.Link disabled={editingKey !== ""} onClick={() => edit(record)}>
-    //         Sửa
-    //       </Typography.Link>
-    //     );
-    //   },
-    // },
+    {
+      title: "Chỉnh Sửa",
+      dataIndex: "operation",
+      width: "75px",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <Popconfirm title="Bạn muốn xóa hàng hóa này" onConfirm={() => handleDelete(record.HSCode)}>
+            <div style={{ color: "red", cursor: "pointer", fontSize: "20px" }}>
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+          </Popconfirm>
+        );
+      },
+    },
   ];
+  const handleDelete = (key) => {
+    const newData = [...data];
+    const index = newData.findIndex((item) => key === item.HSCode);
+    newData.splice(index, 1);
+    setData(newData);
+  };
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;

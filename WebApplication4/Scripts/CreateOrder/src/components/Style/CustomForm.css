@@ -4,9 +4,12 @@
 }
 .App-Form {
   background-color: #F2f2f2;
-  min-height: 100vh;
-  padding-bottom: 20px;
+  /* min-height: 100vh;
+  max-height: 100vh; */
+  padding-bottom: 10px;
 }
+
+
 /* .App-Form .ant-form-item {
   
 } */

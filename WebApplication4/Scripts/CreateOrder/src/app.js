@@ -1,5 +1,5 @@
 import { Button, Col, message, Row, Steps } from "antd";
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import CreateOrderFour from "./components/CreateOrderFour";
 // import CreateOrderThree from "./components/CreateOrderThree";
 import CreateOrderOne from "./components/CreateOrderOne";
@@ -93,6 +93,7 @@ const initialState = {
   progress: 0,
   indexBuuGui: 0,
   spin: false,
+  checkData: false,
 };
 
 //usereducer
@@ -166,6 +167,9 @@ const createOrderReducer = (state = initialState, action) => {
 
       return { ...state };
     }
+    case "CHECKDATA_REQUEST": {
+      return { ...state, checkData: !!action.payload };
+    }
 
     default:
       return state;
@@ -179,23 +183,32 @@ export default function App() {
     createOrder,
     dispatch,
   };
-
-  const handelSubmit = () => {
+  console.log(createOrder);
+  const [heightForm4, setHeightForm4] = useState(700);
+  const handelSubmit = async () => {
     console.log("Subit");
     document.getElementById("FormOne").click();
     document.getElementById("FormTwo").click();
-    document.getElementById("FormThree").click();
-
-    postOrder(createOrder);
+    // document.getElementById("FormThree").click();
+    if (createOrder.checkData) {
+      postOrder(createOrder);
+    }
   };
-
+  const setHeight = () => {
+    const height = document.getElementById("height123").getBoundingClientRect().height;
+    setHeightForm4(height);
+    console.log(height);
+  };
+  useEffect(() => {
+    setHeight();
+  }, [document.getElementById("height123")?.getBoundingClientRect().height]);
   return (
     <contextValue.Provider value={store}>
       <div className="App-Form ">
-        <div className="main pt-4" style={{ margin: "0 auto", width: "95%" }}>
+        <div className="main " style={{ margin: "0 auto", width: "95%" }}>
           <Row>
             <Col className="Scroll-Left" sm={24} lg={17} xxl={19}>
-              <Row gutter={[16, 24]}>
+              <Row gutter={[16, 24]} id="height123">
                 <Col sm={24} lg={12} xxl={12}>
                   <CreateOrderOne />
                 </Col>
@@ -203,13 +216,13 @@ export default function App() {
                   <CreateOrderTwo />
                 </Col>
 
-                <Col style={{ width: "100%" }} xl={24}>
+                <Col style={{ width: "100%", overflow: "hidden" }} xl={24}>
                   <CreateOrderFour />
                 </Col>
               </Row>
             </Col>
 
-            <Col style={{ paddingLeft: "10px" }} sm={24} lg={7} xxl={5}>
+            <Col style={{ paddingLeft: "10px", backgroundColor: "white", height: heightForm4 }} sm={24} lg={7} xxl={5}>
               <CreateOrderThree handelSubmit={handelSubmit} />
             </Col>
           </Row>

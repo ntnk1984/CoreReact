@@ -79,7 +79,7 @@ export default function CreateOrderThree({ handelSubmit }) {
 
   return (
     <Spin spinning={OpenSpin}>
-      <div className="creatOrderThree-Main ">
+      <div className="creatOrderThree-Main">
         <Form
           labelWrap
           colon={false}
@@ -89,7 +89,7 @@ export default function CreateOrderThree({ handelSubmit }) {
           wrapperCol={{
             span: 18,
           }}
-          className=" form-orderThree rounded rounded-3 shadow-sm p-3"
+          className=" form-orderThree rounded rounded-3  p-3"
           style={{ background: "white" }}
         >
           <h4 style={{ textAlign: "center" }} className="text-secondary ">
@@ -223,6 +223,14 @@ export default function CreateOrderThree({ handelSubmit }) {
 
             <Col span={4}></Col>
           </Row>
+          <Row gutter={[16]} style={{ alignItems: "center", textAlign: "center" }}>
+            <Col>
+              <Button onClick={handelSubmit} type="primary">
+                Hoàn Tất
+              </Button>
+            </Col>
+            {/* <div className="btn-Submit"></div> */}
+          </Row>
         </Form>
         <div className="modal-orderFour">
           <Modal
@@ -262,12 +270,6 @@ export default function CreateOrderThree({ handelSubmit }) {
               <LPackageLineItems />
             </div>
           </Modal>
-        </div>
-
-        <div className="btn-Submit">
-          <Button onClick={handelSubmit} type="primary">
-            Hoàn Tất
-          </Button>
         </div>
       </div>
     </Spin>

@@ -11,10 +11,7 @@ export const contextValue = React.createContext();
 
 console.log(process.env.API);
 const initialState = {
-  account: [],
   importOrderList: [],
-  listAccount: [],
-  visibleModal: false,
   Sender: {
     Name: undefined,
     Phone: undefined,
@@ -25,20 +22,21 @@ const initialState = {
     WardCode: undefined,
     PostalCode: undefined,
   },
+  onErrorSender: false,
 };
 
 //usereducer
 const createOrderListReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case "ADD_ACCOUNT": {
-    //   return { ...state, account: [...state.account, action.payload] };
-    // }
+    case "ADD_INFO_SENDER": {
+      return { ...state, Sender: action.payload };
+    }
     case "ADD_LIST_ORDER": {
       console.log(action.payload, "acction.payload");
       return { ...state, importOrderList: action.payload };
     }
-    case "CLOSE_VISIBLE_MODAL": {
-      return { ...state, visibleModal: false };
+    case "SET_ONERROR_SENDER": {
+      return { ...state, onErrorSender: !!action.payload };
     }
     case "GET_LIST_ORDER": {
       return { ...state };
@@ -68,6 +66,8 @@ export default function App() {
     const data = [];
     dispatch({ type: "GET_LIST_ORDER", payload: data });
   }, []);
+  // /
+  const fortmatDataXLSXtoTableAntd = (data) => {};
   // /
   const typeFileExcel = ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
   const importExcel = (e) => {
@@ -116,7 +116,7 @@ export default function App() {
   // console.log(createOrderList.importAccounts, "83");
   return (
     <contextValue.Provider value={store}>
-      <div className="app-main  pt-4 " style={{ width: "80%", margin: "auto" }}>
+      <div className="app-main  pt-4 " style={{ width: "95%", margin: "auto" }}>
         <div className="d-flex wrapper justify-content-between">
           <div>
             <Sender />

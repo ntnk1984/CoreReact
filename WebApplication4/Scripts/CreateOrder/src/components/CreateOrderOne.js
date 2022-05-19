@@ -49,11 +49,19 @@ export default function CreateOrderOne() {
       type: "ADD_INFO_SENDER",
       payload: senderInfo,
     });
+    context.dispatch({
+      type: "CHECKDATA_REQUEST",
+      payload: true,
+    });
     context.dispatch({ type: "SET_PROGRESS" });
   };
 
   const onFinishFailed = () => {
     message.error("Vui lòng nhập đầy đủ thông tin");
+    context.dispatch({
+      type: "CHECKDATA_REQUEST",
+      payload: false,
+    });
   };
   // console.log(senderInfo, " SenDer");
   return (
@@ -162,7 +170,7 @@ export default function CreateOrderOne() {
           </Col>
         </Row>
         <Row>
-          <Col md={12} xl={12} xxl={6}>
+          <Col md={12} lg={12} xl={12} xxl={6}>
             <Form.Item
               name="sendercountry"
               rules={[validate.checkRequire()]}
@@ -185,7 +193,7 @@ export default function CreateOrderOne() {
               </Select>
             </Form.Item>
           </Col>
-          <Col md={12} xl={12} xxl={6}>
+          <Col md={12} lg={12} xl={12} xxl={6}>
             <Form.Item
               name="sendercity"
               rules={[validate.checkRequire()]}
@@ -208,7 +216,7 @@ export default function CreateOrderOne() {
               </Select>
             </Form.Item>
           </Col>
-          <Col md={12} xl={12} xxl={6}>
+          <Col md={12} lg={12} xl={12} xxl={6}>
             <Form.Item
               rules={[validate.checkRequire()]}
               name="senderdistrict"
@@ -231,7 +239,7 @@ export default function CreateOrderOne() {
               </Select>
             </Form.Item>
           </Col>
-          <Col md={12} xl={12} xxl={6}>
+          <Col md={12} lg={12} xl={12} xxl={6}>
             <Form.Item rules={[validate.checkRequire()]} name="senderward" className="mx-2" label="Phường/Xã" required>
               <Select
                 name="senderward"

@@ -185,7 +185,7 @@ function LPackageLineItems() {
         weight: 1,
       },
       currency: "VND",
-      COD: 0,
+      COD: 1,
       packagetype: 1,
     };
     setDataSources({

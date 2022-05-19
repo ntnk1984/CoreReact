@@ -7,9 +7,11 @@ import "./Style/Sender.css";
 function Sender(props) {
   const context = useContext(contextValue);
   const [visible, setVisible] = useState(false);
+  const { onErrorSender, Sender } = context?.createOrderList;
+  console.log(onErrorSender, " store");
+  console.log(Sender, " sender store");
 
   const [namButton, setNameButton] = useState("Nhập thông tin người gửi");
-
   const [senderInfo, setSenderInfo] = useState({
     Name: undefined,
     Phone: undefined,
@@ -33,8 +35,11 @@ function Sender(props) {
     });
 
     setNameButton(senderInfo.Name);
-
-    setOnError(false);
+    message.success("Thêm thông tin người gửi thành công!");
+    context.dispatch({
+      type: "SET_ONERROR_SENDER",
+      payload: false,
+    });
   };
 
   const [onError, setOnError] = useState(false);
@@ -42,9 +47,11 @@ function Sender(props) {
     message.error("Vui lòng nhập đầy đủ thông tin");
 
     setNameButton("Vui Lòng Nhập Đầy đủ thông  tin");
-    setOnError(true);
 
-    console.log("set 123");
+    context.dispatch({
+      type: "SET_ONERROR_SENDER",
+      payload: true,
+    });
   };
 
   const handleChangeVal = (e) => {
@@ -53,12 +60,17 @@ function Sender(props) {
   };
   const handleSubmitSender = () => {
     document.getElementById("SenderForm").click();
+    if (!onErrorSender) {
+      return;
+    } else {
+      setVisible(false);
+    }
   };
 
   return (
     <div className="senderForm">
       <div>
-        <div onClick={() => setVisible(true)} className={!!onError ? "btnName--error" : "btnName"}>
+        <div onClick={() => setVisible(true)} className={!!onErrorSender ? "btnName--error" : "btnName"}>
           <span>{namButton}</span>
         </div>
       </div>
@@ -72,7 +84,17 @@ function Sender(props) {
         closable={false}
         width={700}
         footer={[
-          <Button onClick={() => setVisible(false)} key="back">
+          <Button
+            onClick={() => {
+              setVisible(false);
+              setNameButton("Vui lòng nhập đầy đủ thông tin");
+              context.dispatch({
+                type: "SET_ONERROR_SENDER",
+                payload: true,
+              });
+            }}
+            key="back"
+          >
             Trở về
           </Button>,
           <Button key="submit" type="primary" onClick={handleSubmitSender}>
@@ -255,7 +277,7 @@ function Sender(props) {
                   name="WardCode"
                   size="middle"
                   placeholder="Chọn xã / phường"
-                  defaultValue={senderInfo.WardCode ? "Vui lòng chọn" : senderInfo.WardCode}
+                  value={senderInfo.WardCode ? "Vui lòng chọn" : senderInfo.WardCode}
                   style={{ width: "100%" }}
                   onChange={(e) => {
                     setSenderInfo({ ...senderInfo, WardCode: e });

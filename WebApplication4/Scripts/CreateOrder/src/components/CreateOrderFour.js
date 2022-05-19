@@ -14,7 +14,7 @@ function CreateOrderFour({ handelSubmit }) {
 
   return (
     <Spin spinning={OpenSpin}>
-      <div className=" rounded rounded-3 shadow-sm" style={{ background: "white", padding: "10px 20px" }}>
+      <div className="  shadow-sm" style={{ background: "white", padding: "10px 20px" }}>
         <div style={{ paddingBottom: "20px", textAlign: "end" }}>
           <EditableTableFuc />
         </div>

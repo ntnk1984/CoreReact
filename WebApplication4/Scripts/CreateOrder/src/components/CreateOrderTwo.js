@@ -45,11 +45,19 @@ export default function CreateOrderTwo() {
       type: "ADD_INFO_RECEIVER",
       payload: receiverInfo,
     });
+    context.dispatch({
+      type: "CHECKDATA_REQUEST",
+      payload: true,
+    });
     context.dispatch({ type: "SET_PROGRESS" });
   };
 
   const onFinishFailed = () => {
     message.error("Vui lòng nhập đầy đủ thông tin");
+    context.dispatch({
+      type: "CHECKDATA_REQUEST",
+      payload: false,
+    });
   };
 
   return (

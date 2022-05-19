@@ -223,7 +223,7 @@ function EditableTableFuc() {
       title: "Xóa",
       dataIndex: "operation",
       align: "center",
-      width: "5%",
+      width: "10%",
       render: (_, record) =>
         dataSources.dataSource.length >= 1 ? (
           <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
@@ -298,7 +298,7 @@ function EditableTableFuc() {
     };
   });
   return (
-    <div>
+    <div style={{ minHeight: "100%" }}>
       <div>
         <Row>
           <Col span={8}></Col>
@@ -328,8 +328,9 @@ function EditableTableFuc() {
         dataSource={dataSource}
         columns={columns1}
         size="small"
-        scroll={{ y: 240 }}
+        scroll={{ y: "220px" }}
         pagination={false}
+        style={{ minHeight: "220px" }}
       />
     </div>
   );
