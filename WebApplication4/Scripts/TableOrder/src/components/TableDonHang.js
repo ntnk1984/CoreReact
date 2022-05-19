@@ -22,9 +22,6 @@ const menu = (id,ordercode) => (
     <Menu.Item key="1">
       <ModalChangeStatus id={id}/>
     </Menu.Item>
-    <Menu.Item key="2">
-      <a>Sửa đơn</a>
-    </Menu.Item>
     <Menu.Item key="4">
      <DetailOrder idShipment={id} orderCodeShipment={ordercode}/>
     </Menu.Item>
