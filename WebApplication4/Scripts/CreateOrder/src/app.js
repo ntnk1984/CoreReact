@@ -1,15 +1,11 @@
-import { Button, Col, message, Row, Steps } from "antd";
+import { Col, message, Row, Button } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
 import CreateOrderFour from "./components/CreateOrderFour";
-// import CreateOrderThree from "./components/CreateOrderThree";
 import CreateOrderOne from "./components/CreateOrderOne";
 import CreateOrderThree from "./components/CreateOrderThree.js";
 import CreateOrderTwo from "./components/CreateOrderTwo.js";
-import LPackageLineItems from "./components/DetailOrder/LPackageLineItems";
 import "./components/Style/CustomForm.css";
 import { postOrder } from "./Service.js";
-
-const { Step } = Steps;
 
 export const contextValue = React.createContext();
 const initialState = {
@@ -89,7 +85,6 @@ const initialState = {
     ],
   },
 
-  visibility: true,
   progress: 0,
   indexBuuGui: 0,
   spin: false,
@@ -129,19 +124,10 @@ const createOrderReducer = (state = initialState, action) => {
       // message.success("Thêm bưu gửi thành công!");
       return { ...state, listOrder: { ...state.listOrder, RequestedPackageLineItems: action.payload } };
     }
-    case "SET_VISIBILITY": {
-      return { ...state, visibility: !state.visibility };
-    }
-    case "SET_PROGRESS": {
-      return { ...state, progress: ++state.progress };
-    }
-
     case "ADD_INFO_SENDER": {
-      message.success("Thêm thông tin thành công!");
       return { ...state, sender: action.payload };
     }
     case "ADD_INFO_RECEIVER": {
-      message.success("Thêm thành công!");
       return { ...state, receiver: action.payload };
     }
     case "POST_ORDER_API": {
@@ -151,7 +137,7 @@ const createOrderReducer = (state = initialState, action) => {
       return { ...state, progress: --state.progress };
     }
     case "REMOVE_ORDER_CHILD": {
-      const { val, ind, index } = action.payload.value;
+      const { val, index } = action.payload.value;
 
       state.listOrder[index] = state.listOrder[index].filter((item) => item.maSP !== val.maSP);
       message.success("Xóa thành công!");
@@ -183,31 +169,22 @@ export default function App() {
     createOrder,
     dispatch,
   };
-  console.log(createOrder);
-  const [heightForm4, setHeightForm4] = useState(700);
   const handelSubmit = async () => {
     console.log("Subit");
     document.getElementById("FormOne").click();
     document.getElementById("FormTwo").click();
-    // document.getElementById("FormThree").click();
+
     if (createOrder.checkData) {
       postOrder(createOrder);
     }
   };
-  const setHeight = () => {
-    const height = document.getElementById("height123").getBoundingClientRect().height;
-    setHeightForm4(height);
-    console.log(height);
-  };
-  useEffect(() => {
-    setHeight();
-  }, [document.getElementById("height123")?.getBoundingClientRect().height]);
+
   return (
     <contextValue.Provider value={store}>
       <div className="App-Form ">
         <div className="main " style={{ margin: "0 auto", width: "95%" }}>
-          <Row>
-            <Col className="Scroll-Left" sm={24} lg={17} xxl={19}>
+          <Row style={{ height: "fit-content" }}>
+            <Col style={{ height: "fit-content" }} className="Scroll-Left" sm={24} lg={17} xxl={19}>
               <Row gutter={[16, 24]} id="height123">
                 <Col sm={24} lg={12} xxl={12}>
                   <CreateOrderOne />
@@ -222,8 +199,24 @@ export default function App() {
               </Row>
             </Col>
 
-            <Col style={{ paddingLeft: "10px", backgroundColor: "white", height: heightForm4 }} sm={24} lg={7} xxl={5}>
+            <Col style={{ paddingLeft: "10px", backgroundColor: "white", position: "relative" }} sm={24} lg={7} xxl={5}>
               <CreateOrderThree handelSubmit={handelSubmit} />
+              <div style={{ position: "absolute", bottom: "5%", right: "10px" }}>
+                {createOrder.checkData ? (
+                  <Button className="btn-Submit" onClick={handelSubmit} type="primary">
+                    Hoàn tất
+                  </Button>
+                ) : (
+                  <Button className="btn-Submit" onClick={handelSubmit} type="primary">
+                    Check
+                  </Button>
+                )}
+              </div>
+              <div style={{ position: "absolute", bottom: "5%", left: "10px" }}>
+                <Button danger className="btn-Submit" type="primary">
+                  Xóa dữ liệu
+                </Button>
+              </div>
             </Col>
           </Row>
         </div>

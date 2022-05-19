@@ -1,12 +1,10 @@
 .app-main {
 
 }
-.app-main .wrapper .lableName{
-  display: flex;
+.app-main .wrapper .btn-style {
   align-items: center;
   text-align: center;
   vertical-align: middle;
-  background-color: #EB5353;
   cursor: pointer;
   border-radius: 5px;
   padding: 0 7px;
@@ -14,8 +12,21 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: all 0.3s linear;
 }
+.app-main .wrapper .lableName{
+  display: flex;
+  background-color: #EB5353;
+}
 .app-main .wrapper .lableName:hover{
   background-color: #880606;
+}
+.app-main .wrapper .labelPost{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background-color: #28A745;
+}
+.app-main .wrapper .labelPost:hover{
+  background-color: #05a62b;
 }
 
 @media screen and (max-width: 1200px) {}

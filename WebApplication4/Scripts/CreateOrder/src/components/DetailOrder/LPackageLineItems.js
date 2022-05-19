@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, Row, Col } from "antd";
+import { Table, Button, Popconfirm, Form, message, InputNumber, Row, Col } from "antd";
 import { contextValue } from "../../App";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -7,7 +7,6 @@ const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
-
   return (
     <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
@@ -16,7 +15,6 @@ const EditableRow = ({ index, ...props }) => {
     </Form>
   );
 };
-
 const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
@@ -33,7 +31,6 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       [dataIndex]: record[dataIndex],
     });
   };
-
   const save = async (e) => {
     try {
       const values = await form.validateFields();
@@ -71,7 +68,6 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       message.error("Sửa Thất Bại");
     }
   };
-
   let childNode = children;
   if (editable) {
     childNode = editing ? (
@@ -102,25 +98,20 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       </div>
     );
   }
-
   return <td {...restProps}>{childNode}</td>;
 };
-
 function LPackageLineItems() {
   const context = useContext(contextValue);
   const { listOrder } = context?.createOrder;
   const dataSourceStore = listOrder?.RequestedPackageLineItems;
-
   const [dataSources, setDataSources] = useState({
     dataSource: dataSourceStore,
     count: 3,
   });
-
   // useEffect(() => {
   //   context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
   //   console.log("123 126");
   // }, [dataSources]);
-
   const addPackageLine = () => {
     context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
     message.success("Thêm bưu gửi thành công!");
@@ -172,7 +163,6 @@ function LPackageLineItems() {
         ) : null,
     },
   ];
-
   const handleAdd = () => {
     const { count, dataSource } = dataSources;
     const newData = {
@@ -282,5 +272,4 @@ function LPackageLineItems() {
     </div>
   );
 }
-
 export default () => <LPackageLineItems />;

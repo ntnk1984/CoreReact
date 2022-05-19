@@ -3,27 +3,20 @@ import { Button, Col, Collapse, Form, Input, InputNumber, Modal, Row, Select, Sp
 import React, { useContext, useEffect, useState } from "react";
 import { contextValue } from "../App.js";
 import LPackageLineItems from "./DetailOrder/LPackageLineItems.js";
-import TotalOrder from "./DetailOrder/TotalOrder.js";
+
 import "./Style/CreatOrderThree.css";
-
 const { Panel } = Collapse;
-
 export default function CreateOrderThree({ handelSubmit }) {
   const context = useContext(contextValue);
   const { createOrder, dispatch } = context;
-
   //createOrder.spi
-
   const { listOrder } = context.createOrder;
   const arrData = listOrder?.RequestedPackageLineItems;
-
   const [OpenSpin, setOpenSpin] = useState(false);
   const [visibleThree, setVisibleThree] = useState(false);
-
   const addPackageLine = () => {
     document.getElementById("LPackageLineId").click();
   };
-
   //Tổng size
   // console.log(arrData);
   const [totalSize, setTotalSize] = useState({
@@ -63,8 +56,6 @@ export default function CreateOrderThree({ handelSubmit }) {
       weightTotal: weightTotal,
     });
   };
-  // console.log(totalSize, "total State");
-  // console.log(totalSize.weightTotal);
 
   const updateData = () => {
     const cloneData = arrData;
@@ -223,15 +214,8 @@ export default function CreateOrderThree({ handelSubmit }) {
 
             <Col span={4}></Col>
           </Row>
-          <Row gutter={[16]} style={{ alignItems: "center", textAlign: "center" }}>
-            <Col>
-              <Button onClick={handelSubmit} type="primary">
-                Hoàn Tất
-              </Button>
-            </Col>
-            {/* <div className="btn-Submit"></div> */}
-          </Row>
         </Form>
+        <div className="btn-Submit"></div>
         <div className="modal-orderFour">
           <Modal
             // title="Biểu mẫu mặt hàng"

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { InputNumber, message, Select, Steps } from "antd";
-import { Form, Input, Button, Row, Col, Dropdown, Menu } from "antd";
+import React, { useContext, useState } from "react";
+import { InputNumber, message, Select } from "antd";
+import { Form, Button, Row, Col } from "antd";
 import { contextValue } from "../../App.js";
 import { validate } from "../../validate.js";
 
@@ -31,10 +31,8 @@ export default function TotalOrder() {
   const submitPackgeLine = () => {
     context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: totalOrder.packageLineItems });
   };
-
   const addPackageItem = () => {
     let { count, packageLineItems } = totalOrder;
-
     const dataTemp = {
       SequenceNumber: count,
       dimension: {
@@ -50,7 +48,6 @@ export default function TotalOrder() {
     const cloneTotalOrder = { ...totalOrder };
     cloneTotalOrder.packageLineItems.push(dataTemp);
     cloneTotalOrder.count++;
-
     setTotalOrder(cloneTotalOrder);
   };
   // console.log(tempInfoOrder);
@@ -59,7 +56,6 @@ export default function TotalOrder() {
     temp.packageLineItems[index].dimension[name] = value;
     setTotalOrder(temp);
   };
-
   const onFinish = () => {
     submitPackgeLine();
     console.log("1234");

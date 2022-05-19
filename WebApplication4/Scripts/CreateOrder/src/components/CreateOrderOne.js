@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
-import { Form, Input, Button, Row, Col, Dropdown, Menu, Select, Alert, message } from "antd";
+import { Form, Input, Button, Row, Col, Select, message } from "antd";
 import { contextValue } from "../App.js";
 import { RexName, validate } from "../validate.js";
 

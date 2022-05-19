@@ -1,7 +1,5 @@
 .creatOrderThree-Main {
-  position: relative;
-  min-height: 100vh;
-  
+  /* position: relative;   */
 }
 .creatOrderThree-Main .form-orderThree .sizeForm-div{
   display: flex;
@@ -25,7 +23,7 @@
 }
 .creatOrderThree-Main  .btn-Submit{
   position: absolute;
-  bottom: -10%;
+  bottom: 0;
   right: 0;
 }
 .creatOrderThree-Main .ant-form-item {

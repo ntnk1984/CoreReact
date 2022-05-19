@@ -3,13 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { contextValue } from "../App";
 import { validate } from "../validate.js";
 import "./Style/Sender.css";
-
 function Sender(props) {
   const context = useContext(contextValue);
   const [visible, setVisible] = useState(false);
-  const { onErrorSender, Sender } = context?.createOrderList;
-  console.log(onErrorSender, " store");
-  console.log(Sender, " sender store");
+  const { onErrorSender, Sender, isPostDataAPI } = context?.createOrderList;
 
   const [namButton, setNameButton] = useState("Nhập thông tin người gửi");
   const [senderInfo, setSenderInfo] = useState({
@@ -23,37 +20,33 @@ function Sender(props) {
     WardCode: undefined,
     PostalCode: undefined,
   });
-
   useEffect(() => {
     console.log("Loadingg");
   }, []);
-
   const onFinish = () => {
     context.dispatch({
       type: "ADD_INFO_SENDER",
       payload: senderInfo,
     });
-
     setNameButton(senderInfo.Name);
     message.success("Thêm thông tin người gửi thành công!");
     context.dispatch({
       type: "SET_ONERROR_SENDER",
       payload: false,
     });
+    context.dispatch({ type: "SET_SUBMIT_DATA_TO_API", payload: true });
+    setVisible(false);
   };
-
   const [onError, setOnError] = useState(false);
   const onFinishFailed = () => {
     message.error("Vui lòng nhập đầy đủ thông tin");
-
     setNameButton("Vui Lòng Nhập Đầy đủ thông  tin");
-
     context.dispatch({
       type: "SET_ONERROR_SENDER",
       payload: true,
     });
+    context.dispatch({ type: "SET_SUBMIT_DATA_TO_API", payload: false });
   };
-
   const handleChangeVal = (e) => {
     let { name, value } = e.target;
     setSenderInfo({ ...senderInfo, [name]: value });
@@ -66,7 +59,6 @@ function Sender(props) {
       setVisible(false);
     }
   };
-
   return (
     <div className="senderForm">
       <div>
@@ -74,7 +66,6 @@ function Sender(props) {
           <span>{namButton}</span>
         </div>
       </div>
-
       <Modal
         title="Người Gửi "
         centered

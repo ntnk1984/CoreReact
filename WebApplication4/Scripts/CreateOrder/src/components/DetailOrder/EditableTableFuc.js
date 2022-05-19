@@ -3,7 +3,6 @@ import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, 
 import { contextValue } from "../../App";
 import { DeleteOutlined } from "@ant-design/icons";
 const EditableContext = React.createContext(null);
-
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
@@ -14,7 +13,6 @@ const EditableRow = ({ index, ...props }) => {
     </Form>
   );
 };
-
 const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
   const checkShowTypeInput = (dataInd) => {
     if (
