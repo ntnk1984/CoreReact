@@ -1,12 +1,12 @@
 // import dotenv from ("dotenv-webpack")
 
-const PORT =process.env.PORT;
+
 const HOST=process.env.HOST;
 
 
 export const fetchAllOrderApi = async (fromDate, toDate) => {
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/shipment/query`, {
+    await fetch(`${HOST}/api/shipment/query`, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       credentials: "include", // include, *same-origin, omit
       headers: {
@@ -39,7 +39,7 @@ export const removeOrderByIdApi = async (id) => {
 
 export const fetchChangeStatusOrder = async (listId, newStatus, noteType) => {
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/shipment/delivery/update`, {
+    await fetch(`${HOST}/api/shipment/delivery/update`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -59,7 +59,7 @@ export const fetchChangeStatusOrder = async (listId, newStatus, noteType) => {
 export const fetchPackageByShipmentId = async (id) => {
   return await (
     await fetch(
-      `http://${HOST}:${PORT}/api/package/get-by-shipment-id?IDOrderShipping=${id}`,
+      `${HOST}/api/package/get-by-shipment-id?IDOrderShipping=${id}`,
       {
         method: "GET",
         credentials: "include",
@@ -74,7 +74,7 @@ export const fetchPackageByShipmentId = async (id) => {
 };
 
 export const fetchDeletePackageId = async (id) => {
-  return await await fetch(`http://${HOST}:${PORT}/api/package/delete`, {
+  return await await fetch(`${HOST}/api/package/delete`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -94,7 +94,7 @@ export const fetchMerchandiseShipmentCode = async (code) => {
   
 
     return await (
-      await fetch(`http://${HOST}:${PORT}/api/merchandise/get?OrderCode=${code}`, {
+      await fetch(`${HOST}/api/merchandise/get?OrderCode=${code}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -108,7 +108,7 @@ export const fetchMerchandiseShipmentCode = async (code) => {
 };
 
 export const fetchDeleteMerchandiseId = async (id) => {
-  return await await fetch(`http://${HOST}:${PORT}/api/merchandise/delete`, {
+  return await await fetch(`${HOST}/api/merchandise/delete`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -125,7 +125,7 @@ export const fetchDeleteMerchandiseId = async (id) => {
 
 export const fetchUpdateMerchandiseId = async (item) => {
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/merchandise/edit`, {
+    await fetch(`${HOST}/api/merchandise/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -143,7 +143,7 @@ export const fetchUpdateMerchandiseId = async (item) => {
 export const fetchUpdatePackage = async (item) => {
 
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/package/edit-by-order-id`, {
+    await fetch(`${HOST}/api/package/edit-by-order-id`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -172,7 +172,7 @@ export const fetchUpdatePackage = async (item) => {
 
 export const fetchShipmentId = async (id, orderCode) => {
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/shipment/find`, {
+    await fetch(`${HOST}/api/shipment/find`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -201,7 +201,7 @@ export const fetchChangeSenderShipmentId = async ({
 }) => {
  
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/shipment/edit`, {
+    await fetch(`${HOST}/api/shipment/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -241,7 +241,7 @@ export const fetchChangeRecieverShipmentId = async ({
 }) => {
  
   return await (
-    await fetch(`http://${HOST}:${PORT}/api/shipment/edit`, {
+    await fetch(`${HOST}/api/shipment/edit`, {
       method: "POST",
       credentials: "include",
       headers: {
