@@ -3,6 +3,7 @@ import { Select } from "antd";
 import { Form, Input, Button, Row, Col, message } from "antd";
 import { contextValue } from "../App.js";
 import { validate } from "../validate.js";
+import { SendOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -71,14 +72,20 @@ export default function CreateOrderTwo() {
         className=" rounded rounded-3 p-3 shadow-sm"
         style={{ background: "white" }}
       >
-        <h4 className="text-secondary mx-2">THÔNG TIN NGƯỜI NHẬN</h4>
+        <div className="d-flex" style={{ paddingLeft: "10px" }}>
+          <h4 className="text-secondary px-1">
+            <ion-icon className="text-secondary" style={{ fontSize: "20px" }} name="mail-unread-outline"></ion-icon>
+            &nbsp;NGƯỜI NHẬN
+          </h4>
+        </div>
+
         <Row>
           <Col span={12}>
             <Form.Item
               name="receivername"
               rules={[validate.checkRequire(), validate.checkName()]}
               className="mx-2"
-              label="Tên người gửi"
+              label="Tên người nhận"
               required
             >
               <Input

@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { Form, Input, Button, Row, Col, Select, message } from "antd";
 import { contextValue } from "../App.js";
 import { RexName, validate } from "../validate.js";
+import { SendOutlined } from "@ant-design/icons";
 
 // import { validate } from "../../utils/validate/validate";
 // import provinceData from "../../assets/local.json";
@@ -75,9 +76,12 @@ export default function CreateOrderOne() {
         className=" rounded rounded-3 p-3 shadow-sm"
         style={{ background: "white" }}
       >
-        <h4 id="onePage" className="text-secondary mx-2">
-          THÔNG TIN NGƯỜI GỬI
-        </h4>
+        <div className="d-flex" style={{ paddingLeft: "10px" }}>
+          <h4 id="onePage" className="text-secondary mx-1">
+            <ion-icon className="text-secondary " style={{ fontSize: "20px" }} name="send-outline"></ion-icon>
+            &nbsp;NGƯỜI GỬI
+          </h4>
+        </div>
         <Row>
           <Col span={12}>
             <Form.Item

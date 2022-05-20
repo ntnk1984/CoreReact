@@ -1,9 +1,8 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
-const webpack = require("webpack");
-console.log(process.env.NODE_ENV);
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 let env = "";
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == "development  ") {
   env = "./.deverlopment.env";
 } else {
@@ -15,11 +14,6 @@ module.exports = {
     path: path.join(__dirname, "/dist"),
     filename: "index-bundle.js",
   },
-  // externals: {
-  //   antd: "antd",
-  //   react: "React",
-  //   "react-dom": "ReactDOM",
-  // },
   module: {
     rules: [
       {

@@ -37,24 +37,9 @@ const initialState = {
 //usereducer
 const creatOrderINTLReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case "SET_VISIBLE_MODAL": {
-    //   return { ...state, visibleModal: !state.visibleModal };
-    // }
-    // case "CLOSE_VISIBLE_MODAL": {
-    //   return { ...state, visibleModal: false };
-    // }
     case "LOAD_DATA_COUNTRY_CODES": {
       return { ...state, CountryCodes: action.payload };
     }
-    case "ADD_INFO_SENDER_INTL": {
-      // message.success("Thêm thông tin thành công!");
-      return { ...state, sender: action.payload };
-    }
-    case "ADD_INFO_RECEIVER_INTL": {
-      // message.success("Thêm thông tin thành công!");
-      return { ...state, receiver: action.payload };
-    }
-
     default:
       return state;
   }
@@ -68,21 +53,21 @@ export default function App() {
     dispatch,
   };
   // console.log(creatOrderINTL);
-  const getDataNumberPhone = async () => {
-    try {
-      const res = await fetch(
-        "https://gist.githubusercontent.com/anubhavshrimal/75f6183458db8c453306f93521e93d37/raw/f77e7598a8503f1f70528ae1cbf9f66755698a16/CountryCodes.json"
-      );
-      const responseJson = await res.json();
-      dispatch({ type: "LOAD_DATA_COUNTRY_CODES", payload: responseJson });
-      console.log(responseJson);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getDataNumberPhone();
-  }, []);
+  // const getDataNumberPhone = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       "https://gist.githubusercontent.com/anubhavshrimal/75f6183458db8c453306f93521e93d37/raw/f77e7598a8503f1f70528ae1cbf9f66755698a16/CountryCodes.json"
+  //     );
+  //     const responseJson = await res.json();
+  //     dispatch({ type: "LOAD_DATA_COUNTRY_CODES", payload: responseJson });
+  //     console.log(responseJson);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getDataNumberPhone();
+  // }, []);
   return (
     <contextValue.Provider value={store}>
       <div className="app-main">
