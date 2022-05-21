@@ -50,14 +50,7 @@ export default function App() {
   return (
     <contextValue.Provider value={store}>
       <div className="app-main  pt-3 " style={{ width: "95%", margin: "auto" }}>
-        <Tabs tabPosition="left">
-          <TabPane tab="Thu Gom" key="1">
-            <TableCustom />
-          </TabPane>
-          <TabPane tab="Phát" key="2">
-            <TableCollect />
-          </TabPane>
-        </Tabs>
+        <TableCustom />
       </div>
     </contextValue.Provider>
   );

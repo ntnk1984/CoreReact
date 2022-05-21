@@ -101,10 +101,20 @@ function TableCustom(props) {
     startDate: "",
     endDate: "",
   });
-  const [rowItem, setRowItem] = useState();
-  const [postmanID, setPostmanID] = useState();
-
   const { inFoPostman, listOrder } = context?.patnerDeliver;
+  const [rowItem, setRowItem] = useState();
+  const [shipmentData, setShipmentData] = useState({
+    driverID: undefined,
+    from_Location: undefined,
+    to_Location: undefined,
+  });
+  //Giá trị mặc định
+  const DRIVERID = shipmentData.driverID;
+  const FROM_LOCATION = shipmentData.from_Location;
+  const TO_LOCATION = shipmentData.to_Location;
+  // = fasle disable button POST  data API
+  const TOTALSTATETRUE = !!rowItem && rowItem.length !== 0 && !!DRIVERID && FROM_LOCATION && TO_LOCATION;
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       setRowItem(selectedRows);
@@ -120,25 +130,24 @@ function TableCustom(props) {
     return message.success("Giao thành công!");
   };
   // const FucError = () => message.error("Giao thất bại");
-
+  console.log(shipmentData);
   const data = listOrder;
-  const Postman = () => {
+  // Tuyến vận chuyển bưu gửi,
+  const Driver = () => {
     return (
       <>
         <Select
           showSearch
-          // name={name}
-
-          style={{ width: "100%" }}
-          placeholder="Bưu tá"
-          defaultValue={postmanID}
+          style={{ width: "100%", padding: "0 5px" }}
+          placeholder="Tài xế"
+          defaultValue={shipmentData?.driverID}
           optionFilterProp="children"
           filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           filterSort={(optionA, optionB) =>
             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
           }
           onChange={(e) => {
-            setPostmanID(e);
+            setShipmentData({ ...shipmentData, driverID: e });
           }}
         >
           {inFoPostman.map((item) => {
@@ -154,6 +163,67 @@ function TableCustom(props) {
       </>
     );
   };
+  const FromLocation = () => {
+    return (
+      <>
+        <Select
+          showSearch
+          style={{ width: "100%", padding: "0 5px" }}
+          placeholder="Nơi giao"
+          defaultValue={shipmentData?.from_Location}
+          optionFilterProp="children"
+          filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          filterSort={(optionA, optionB) =>
+            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+          }
+          onChange={(e) => {
+            setShipmentData({ ...shipmentData, from_Location: e });
+          }}
+        >
+          {inFoPostman.map((item) => {
+            let name = `${item.first_name}  ${item.last_name}  ${item.phone}`;
+            let value = `${item.id}  `;
+            return (
+              <Select.Option key={item.id} value={value}>
+                {name}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </>
+    );
+  };
+  const ToLocation = () => {
+    return (
+      <>
+        <Select
+          showSearch
+          style={{ width: "100%", padding: "0 5px" }}
+          placeholder="Nơi đến"
+          defaultValue={shipmentData?.to_Location}
+          optionFilterProp="children"
+          filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          filterSort={(optionA, optionB) =>
+            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+          }
+          onChange={(e) => {
+            setShipmentData({ ...shipmentData, to_Location: e });
+          }}
+        >
+          {inFoPostman.map((item) => {
+            let name = `${item.first_name}  ${item.last_name}  ${item.phone}`;
+            let value = `${item.id}  `;
+            return (
+              <Select.Option key={item.id} value={value}>
+                {name}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </>
+    );
+  };
+  // Nếu có tuyến được tạo sẳn từ form tạo tuyến đi, thì sẽ hiển thị 1 select chọn chuyến đi và hiển thị một slect chọn tài xế, và ngày xuất phát.
   const dateFormatDMY = "MM-DD-YYYY";
 
   useEffect(() => {
@@ -197,18 +267,20 @@ function TableCustom(props) {
         <div>
           <DateLoadData />
         </div>
-        <div style={{ width: "50%", paddingBottom: "10px" }}>
-          <Postman />
+        <div className="d-flex justify-content-between" style={{ width: "50%", paddingBottom: "10px" }}>
+          <FromLocation />
+          <ToLocation />
+          <Driver />
         </div>
         <div>
           <Button
-            disabled={!!rowItem && !!postmanID && rowItem.length !== 0 ? false : true}
+            disabled={TOTALSTATETRUE ? false : true}
             onClick={() => {
-              PostDataAPI(rowItem, postmanID, FucSuccess);
+              PostDataAPI(rowItem, shipmentData, FucSuccess);
             }}
             type="primary"
           >
-            Giao Bưu Tá
+            Gửi thông tin cho Kho
           </Button>
         </div>
       </div>

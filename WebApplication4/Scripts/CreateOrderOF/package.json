@@ -1,5 +1,6 @@
 {
-    "name": "form-signin",
+    "name": "createorder2",
+    "proxy": "http://localhost:5020",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -27,9 +28,7 @@
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
         "antd": "^4.19.5",
-        "moment": "^2.29.3",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "xlsx": "^0.18.5"
+        "react-dom": "^17.0.2"
     }
 }

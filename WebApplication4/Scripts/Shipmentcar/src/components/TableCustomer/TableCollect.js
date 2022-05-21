@@ -95,7 +95,7 @@ const columns = [
 
 // rowSelection objects indicates the need for row selection
 
-function TableCustom(props) {
+function TableCollect(props) {
   const context = useContext(contextValue);
   const [dateFortmat, setDateFortmat] = useState({
     startDate: "",
@@ -104,7 +104,7 @@ function TableCustom(props) {
   const [rowItem, setRowItem] = useState();
   const [postmanID, setPostmanID] = useState();
 
-  const { inFoPostman, listOrder } = context?.patnerDeliver;
+  const { inFoPostman, listOrderStartus6 } = context?.patnerDeliver;
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       setRowItem(selectedRows);
@@ -121,7 +121,7 @@ function TableCustom(props) {
   };
   // const FucError = () => message.error("Giao thất bại");
 
-  const data = listOrder;
+  const data = listOrderStartus6;
   const Postman = () => {
     return (
       <>
@@ -169,12 +169,12 @@ function TableCustom(props) {
     const data = {
       FromDate: dateFortmat.startDate,
       ToDate: dateFortmat.endDate,
-      Type: 1,
+      Type: 6,
     };
     const res = await GetQueryShipmentApi(data);
-    // console.log(res.responses);
+    console.log(res.responses);
     const listOrderJson = res.responses?.map((row) => ({ ...row, key: row.ordercode }));
-    context.dispatch({ type: "LOAD_LIST_ORDER", payload: listOrderJson });
+    context.dispatch({ type: "LOAD_LIST_ORDER_STARTUS3", payload: listOrderJson });
   }, [dateFortmat]);
 
   const DateLoadData = () => {
@@ -218,4 +218,4 @@ function TableCustom(props) {
   );
 }
 
-export default TableCustom;
+export default TableCollect;
