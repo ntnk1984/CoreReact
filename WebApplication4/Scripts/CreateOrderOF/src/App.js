@@ -89,6 +89,12 @@ const initialState = {
   indexBuuGui: 0,
   spin: false,
   checkData: false,
+  DropoffType: {
+    type: "1",
+    detail: {
+      location: "",
+    },
+  },
 };
 
 //usereducer
@@ -155,6 +161,9 @@ const createOrderReducer = (state = initialState, action) => {
     }
     case "CHECKDATA_REQUEST": {
       return { ...state, checkData: !!action.payload };
+    }
+    case "ADD_DROPOFFTYPE": {
+      return { ...state, DropoffType: action.payload };
     }
 
     default:

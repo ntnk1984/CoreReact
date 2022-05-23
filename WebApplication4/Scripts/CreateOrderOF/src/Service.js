@@ -1,10 +1,10 @@
 export const postOrder = async (data) => {
-  let { listOrder, receiver, sender } = data;
+  let { listOrder, receiver, sender, DropoffType } = data;
   console.log(data, " data sirvice");
 
   let dataPostJson = {
     ShipmentRequest: {
-      DropoffType: "01",
+      DropoffType: DropoffType,
       ServiceType: "01",
       Sender: {
         Name: sender.sendername,

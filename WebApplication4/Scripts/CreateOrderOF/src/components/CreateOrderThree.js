@@ -19,7 +19,7 @@ export default function CreateOrderThree({ handelSubmit }) {
     document.getElementById("LPackageLineId").click();
   };
   //Tổng size
-  // console.log(arrData);
+  console.log(arrData);
   const [totalSize, setTotalSize] = useState({
     lengthTotal: 0,
     widthTotal: 0,
@@ -32,6 +32,12 @@ export default function CreateOrderThree({ handelSubmit }) {
     packagetype: 3,
     service: "Đ-D-V",
   });
+  const [dropoffType, setDropoffType] = useState({
+    type: "1",
+    detail: {
+      location: "",
+    },
+  });
   useEffect(() => {
     cloneListOrder();
     // console.log("1 lần");
@@ -39,6 +45,9 @@ export default function CreateOrderThree({ handelSubmit }) {
   useEffect(() => {
     updateData();
   }, [obj]);
+  useEffect(() => {
+    context.dispatch({ type: "ADD_DROPOFFTYPE", payload: dropoffType });
+  }, [dropoffType]);
   const cloneListOrder = () => {
     let lengthTotal = 0;
     let widthTotal = 0;
@@ -66,25 +75,26 @@ export default function CreateOrderThree({ handelSubmit }) {
     });
     context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: termData });
 
-    console.log(termData);
+    console.log(termData, "tempdata");
   };
-  const [checkked, setCheckked] = useState(false);
+
+  const [receive, setReceive] = useState("1");
   const [getLocationApi, setGetLocationApi] = useState([]);
 
   const showSelect = () => {
-    setCheckked(true);
+    setReceive("0");
   };
   const handleShowSelectLocation = async (e) => {
-    if (e.target.checked) {
-      // setCheckked(true);
+    if (e === "0") {
+      setDropoffType({ ...dropoffType, type: "0" });
       const dataLocation = await getDataLocationPost(showSelect);
       setGetLocationApi(dataLocation);
-      console.log(dataLocation, " form");
     } else {
-      setCheckked(false);
+      setReceive("1");
     }
   };
-  console.log(getLocationApi, "datalocation");
+
+  console.log(dropoffType, " drop");
   return (
     <Spin spinning={OpenSpin}>
       <div className="creatOrderThree-Main">
@@ -101,11 +111,11 @@ export default function CreateOrderThree({ handelSubmit }) {
           style={{ background: "white" }}
         >
           <h4 style={{ textAlign: "center" }} className="text-secondary ">
-            THÔNG TIN BƯU GỬI
+            Thông tin đơn hàng
           </h4>
           <Row>
             <Col span={20}>
-              <Form.Item name="weight" label="Khối Lượng" className="mt-4 mb-2 ">
+              <Form.Item name="weight" label="Khối Lượng" className="pt-3 mb-2 ">
                 <Input disabled placeholder={totalSize.weightTotal + " g"} />
               </Form.Item>
             </Col>
@@ -114,7 +124,7 @@ export default function CreateOrderThree({ handelSubmit }) {
 
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="service" label="Dịch vụ" className="mt-4 mb-2 ">
+              <Form.Item name="service" label="Dịch vụ" className="pt-3 mb-2 ">
                 <Select
                   defaultValue="MD"
                   onChange={(e) => {
@@ -132,7 +142,7 @@ export default function CreateOrderThree({ handelSubmit }) {
               <Form.Item
                 style={{ textAlign: "center", alignItems: "center" }}
                 name="settingIcon"
-                className="mt-4 mb-2 "
+                className="pt-3 mb-2 "
               >
                 <SettingFilled style={{ fontSize: "16px", cursor: "pointer" }} />
               </Form.Item>
@@ -141,7 +151,7 @@ export default function CreateOrderThree({ handelSubmit }) {
 
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="packagetype" label="Loại" className="mt-4 mb-2 ">
+              <Form.Item name="packagetype" label="Loại" className="pt-3 mb-2 ">
                 <Select
                   defaultValue="Đ-D-V"
                   onChange={(e) => {
@@ -156,14 +166,14 @@ export default function CreateOrderThree({ handelSubmit }) {
             </Col>
 
             <Col span={4} style={{ textAlign: "center", alignItems: "center" }}>
-              <Form.Item name="package" className="mt-4 mb-2 ">
+              <Form.Item name="package" className="pt-3 mb-2 ">
                 <PlusOutlined onClick={() => setVisibleThree(true)} style={{ fontSize: "16px", cursor: "pointer" }} />
               </Form.Item>
             </Col>
           </Row>
           <Row className="customs-font" style={{ textAlign: "center" }} gutter={[4]}>
             <Col span={20}>
-              <Form.Item className=" mt-4 mb-2 " name="size" label="Size Tổng (Mg)">
+              <Form.Item className=" pt-3 mb-2 " name="size" label="Size Tổng (Mg)">
                 <Row gutter={[4]}>
                   <Col span={7}>
                     <div className="sizeForm-div">
@@ -192,19 +202,7 @@ export default function CreateOrderThree({ handelSubmit }) {
 
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="confirmation" label="Xác Nhận" className="mt-4 mb-2 ">
-                <Select defaultValue="online">
-                  <Select.Option value="online">Trực Tuyến</Select.Option>
-                  <Select.Option value="offline">Tại bưu cục</Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-
-            <Col span={4}></Col>
-          </Row>
-          <Row gutter={[16]}>
-            <Col span={20}>
-              <Form.Item name="insurance" label="Bảo Hiểm" className="mt-4 mb-2 ">
+              <Form.Item name="insurance" label="Bảo Hiểm" className="pt-3 mb-2 ">
                 <Select defaultValue="none">
                   <Select.Option value="none">Không Có</Select.Option>
                   <Select.Option value="every">Rơi vỡ - Thất Lạc</Select.Option>
@@ -217,7 +215,7 @@ export default function CreateOrderThree({ handelSubmit }) {
 
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="COD" label="C.O.D" className="mt-4 mb-2  w-100">
+              <Form.Item name="COD" label="C.O.D" className="pt-3 mb-2  w-100">
                 <InputNumber
                   onChange={(e) => {
                     setObj({ ...obj, COD: e });
@@ -232,45 +230,70 @@ export default function CreateOrderThree({ handelSubmit }) {
 
             <Col span={4}></Col>
           </Row>
-
           <Row gutter={[16]}>
             <Col span={20}>
-              <Form.Item name="locationChecked" className="mt-4 mb-2  w-100">
-                <Checkbox
+              <Form.Item name="confirmation" label="Thu gom" className="pt-3 mb-2 ">
+                <Select
                   onChange={(e) => {
                     handleShowSelectLocation(e);
                   }}
+                  defaultValue="1"
                 >
-                  Nhận hàng tại bưu cục
-                </Checkbox>
+                  <Select.Option value="1">Tại Nhà</Select.Option>
+                  <Select.Option value="0">Tại bưu cục</Select.Option>
+                </Select>
               </Form.Item>
             </Col>
 
             <Col span={4}></Col>
           </Row>
-          {checkked ? (
-            <Row gutter={[16]}>
-              <Col span={20}>
-                <Form.Item label="Chọn vị trí" name="locationOption" className="mt-4 mb-2  w-100">
-                  <Select
-                    placeholder="Ví trí lưu kho"
-                    onChange={(e) => {
-                      console.log(e);
-                    }}
-                  >
-                    {getLocationApi?.map((item, index) => {
-                      return (
-                        <Select.Option style={{ fontSize: 10 }} value={item.id} key={index}>
-                          ĐC:{item.Location} SC:{item.Capacity}
-                        </Select.Option>
-                      );
-                    })}
-                  </Select>
-                </Form.Item>
-              </Col>
+          {receive === "0" ? (
+            <>
+              <Row gutter={[16]}>
+                <Col span={20}>
+                  <Form.Item label="Chọn vị trí" name="locationOption" className="pt-3 mb-2  w-100">
+                    <Select
+                      placeholder="Ví trí lưu kho"
+                      onChange={(e) => {
+                        setDropoffType({ ...dropoffType, detail: { location: e } });
+                      }}
+                    >
+                      {getLocationApi?.map((item, index) => {
+                        return (
+                          <Select.Option style={{ fontSize: 10 }} value={item.id} key={index}>
+                            ĐC:{item.Location} SC:{item.Capacity}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                </Col>
 
-              <Col span={4}></Col>
-            </Row>
+                <Col span={4}></Col>
+              </Row>
+              {/* <Row gutter={[16]}>
+                <Col span={20}>
+                  <Form.Item label="Chọn  bưu cục" name="locationOption" className="pt-3 mb-2  w-100">
+                    <Select
+                      placeholder="Ví trí lưu kho"
+                      onChange={(e) => {
+                        console.log(e);
+                      }}
+                    >
+                      {getLocationApi?.map((item, index) => {
+                        return (
+                          <Select.Option style={{ fontSize: 10 }} value={item.id} key={index}>
+                            ĐC:{item.Location} SC:{item.Capacity}
+                          </Select.Option>
+                        );
+                      })}
+                    </Select>
+                  </Form.Item>
+                </Col>
+
+                <Col span={4}></Col>
+              </Row> */}
+            </>
           ) : (
             ""
           )}
