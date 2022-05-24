@@ -77,3 +77,36 @@ export const postOrder =  (data) => {
   //     console.log("thất  bại!");
   //   }
 };
+
+export const fetchGetCountry = async () => {
+
+  var res = await fetch(`http://localhost:5030/api/Country/GetAllCountry`)
+  res = await res.json()
+  return res
+
+};
+
+export const fetchGetProvince = async (countrycode) => {
+
+  var res = await fetch(`http://localhost:5030/api/City/GetAllCityByCountryCode?CountryCode=${countrycode}`)
+  res = await res.json()
+  return res
+
+};
+
+export const fetchGetDistrict = async (countrycode,provincecode) => {
+
+  var res = await fetch(`http://localhost:5030/api/District/GetAllDistrictByCityCountryCode?CityCode=${provincecode}&CountryCode=${countrycode}`)
+  res = await res.json()
+  return res
+
+};
+
+export const fetchGetWard = async (countrycode, provincecode, districtcode) => {
+
+  var res = await fetch(`http://localhost:5030/api/Ward/GetAllWardByDistrictCityCountryCode?DistrictCode=${districtcode}&CityCode=${provincecode}&CountryCode=${countrycode}`)
+  res = await res.json()
+  return res
+
+};
+
