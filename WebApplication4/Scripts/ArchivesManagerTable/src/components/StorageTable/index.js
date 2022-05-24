@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, Row, Col } from "antd";
+import { Table, Input, Button, Popconfirm, Form, Tooltip, message, InputNumber, Row, Col, Select } from "antd";
 import { contextValue } from "../../App";
 import { DeleteOutlined } from "@ant-design/icons";
 const EditableContext = React.createContext(null);
@@ -15,13 +15,7 @@ const EditableRow = ({ index, ...props }) => {
 };
 const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
   const checkShowTypeInput = (dataInd) => {
-    if (
-      dataInd === "VietNameseName" ||
-      dataInd === "EnglishName" ||
-      dataInd === "CountryManufacturedCode" ||
-      dataInd === "Unit" ||
-      dataInd === "Currency"
-    ) {
+    if (dataInd === "code" || dataInd === "name") {
       return (
         <Input
           ref={inputRef}
@@ -31,15 +25,54 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
           }}
         />
       );
-    } else if (dataInd === "Value" || dataInd === "Weight" || dataInd === "Quantity") {
+    } else if (dataInd === "capacity") {
       return (
         <InputNumber
+          min={0}
           ref={inputRef}
           onPressEnter={save}
           onBlur={() => {
             save();
           }}
         />
+      );
+    } else if (dataInd === "stored") {
+      return (
+        <InputNumber
+          min={0}
+          ref={inputRef}
+          onPressEnter={save}
+          max={record.capacity}
+          onBlur={() => {
+            save();
+          }}
+        />
+      );
+    } else if (dataInd === "acceptOderCityCode") {
+      return (
+        <Select
+          ref={inputRef}
+          // onPressEnter={save}
+          onBlur={() => {
+            save();
+          }}
+        >
+          <Select.Option name="VN-HN" value="VN-HN">
+            VN-HN
+          </Select.Option>
+          <Select.Option name="VN-SG" value="VN-SG">
+            VN-SG
+          </Select.Option>
+          <Select.Option name="VN-DN" value="VN-DN">
+            VN-DN
+          </Select.Option>
+          <Select.Option name="VN-CM" value="VN-SM">
+            VN-CM
+          </Select.Option>
+          <Select.Option name="VN-BD" value="VN-BD">
+            VN-BD
+          </Select.Option>
+        </Select>
       );
     }
   };
@@ -102,12 +135,13 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
 
 function StorageTable() {
   const context = useContext(contextValue);
-  const { listOrder } = context?.archiveManager;
-  const dataSourceStore = listOrder?.storageList;
-  // console.log(dataSourceStore, "Data store 111");
+  const { storageList } = context?.archiveManager;
+  const dataSourceStore = storageList.map((item, index) => ({ ...item, key: index }));
+  const count = storageList.length;
+  console.log(dataSourceStore, "Data store 111");
   const [dataSources, setDataSources] = useState({
     dataSource: dataSourceStore,
-    count: 1,
+    count: count,
   });
 
   const columns = [
@@ -115,22 +149,28 @@ function StorageTable() {
       title: "Mã Khu",
       dataIndex: "code",
       align: "center",
-      width: "20%",
+      width: "15%",
       editable: true,
     },
-
     {
       title: "Tên Khu",
       dataIndex: "name",
       align: "center",
-      width: "7%",
+      width: "20%",
       editable: true,
     },
     {
       title: "Sức Chứa",
       dataIndex: "capacity",
       align: "center",
-      width: "7%",
+      width: "20%",
+      editable: true,
+    },
+    {
+      title: "Đang Chứa",
+      dataIndex: "stored",
+      align: "center",
+      width: "20%",
       editable: true,
     },
     {
@@ -143,20 +183,23 @@ function StorageTable() {
       },
       dataIndex: "acceptOderCityCode",
       align: "center",
-      width: "7%",
+      width: "15%",
       editable: true,
     },
 
     {
-      title: "Xóa",
+      title: "Thao Tác",
       dataIndex: "operation",
       align: "center",
       width: "10%",
       render: (_, record) =>
         dataSources.dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-            <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
-          </Popconfirm>
+          <>
+            <Button type="link">Xuất Kho</Button>
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+              <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
+            </Popconfirm>
+          </>
         ) : null,
     },
   ];
@@ -166,16 +209,11 @@ function StorageTable() {
     let randString = (Math.random() + 1).toString(36).substring(7);
     const newData = {
       key: `${count}`,
-      SequenceNumber: count,
-      HSCode: randString,
-      VietNameseName: `Tên Tiếng Việt ${count}`,
-      EnglishName: `Tên Tiếng Anh ${count}`,
-      CountryManufacturedCode: `Mã Quốc Gia ${count}`,
-      Unit: `Lốc  ${count}`,
-      Currency: "VND",
-      Value: count,
-      Weight: count,
-      Quantity: count,
+      name: "Khu Mới",
+      code: `SMDP ${count}`,
+      capacity: 1000,
+      acceptOderCityCode: "VH-SG",
+      stored: 0,
     };
     setDataSources({
       dataSource: [...dataSource, newData],
@@ -227,26 +265,29 @@ function StorageTable() {
   });
   return (
     <div style={{ minHeight: "100%" }}>
-      <div>
-        <Row>
-          <Col span={8}></Col>
-          <Col span={8}>
-            <h4 style={{ textAlign: "center", padding: "0" }} className="text-secondary ">
-              Hàng Hóa
-            </h4>
-          </Col>
-          <Col span={8}>
-            <Button
-              onClick={handleAdd}
-              type="primary"
-              style={{
-                marginBottom: 5,
-              }}
-            >
-              Thêm Sản Phẩm
-            </Button>
-          </Col>
-        </Row>
+      <div className="d-flex justify-content-between">
+        <div style={{ width: "calc(100%/3)" }}>
+          <Select placeholder="Chọn kho" style={{ width: "50%" }}>
+            <Select.Option value="HN">Kho Hà Nội</Select.Option>
+            <Select.Option value="SG">Kho HCM</Select.Option>
+            <Select.Option value="DL">Kho DL</Select.Option>
+          </Select>
+        </div>
+        <h4 style={{ textAlign: "center", padding: "0", width: "calc(100%/3)" }} className="text-secondary ">
+          Quản lí khu
+        </h4>
+        <div style={{ width: "calc(100%/3)", textAlign: "end" }}>
+          <Button
+            onClick={handleAdd}
+            type="primary"
+            style={{
+              marginBottom: 5,
+              // width: "calc(100%/3)",
+            }}
+          >
+            Tạo khu mới
+          </Button>
+        </div>
       </div>
 
       <Table
@@ -256,7 +297,7 @@ function StorageTable() {
         dataSource={dataSource}
         columns={columns1}
         size="small"
-        scroll={{ y: "220px" }}
+        scroll={{ y: "80vh" }}
         pagination={false}
         style={{ minHeight: "220px" }}
       />

@@ -5,7 +5,7 @@ import CreateOrderOne from "./components/CreateOrderOne";
 import CreateOrderThree from "./components/CreateOrderThree.js";
 import CreateOrderTwo from "./components/CreateOrderTwo.js";
 import "./components/Style/CustomForm.css";
-import { postOrder } from "./Service.js";
+import { getCountryAll, postOrder } from "./Service.js";
 
 export const contextValue = React.createContext();
 const initialState = {
@@ -89,6 +89,8 @@ const initialState = {
   indexBuuGui: 0,
   spin: false,
   checkData: false,
+  cityCode: [],
+  countryCode: [],
 };
 
 //usereducer
@@ -156,7 +158,12 @@ const createOrderReducer = (state = initialState, action) => {
     case "CHECKDATA_REQUEST": {
       return { ...state, checkData: !!action.payload };
     }
-
+    case "GET_ALL_COUNTRY_CODE": {
+      return { ...state, countryCode: action.payload };
+    }
+    case "GET_DATA_CITY_CODE": {
+      return { ...state, cityCode: action.payload };
+    }
     default:
       return state;
   }
@@ -169,6 +176,7 @@ export default function App() {
     createOrder,
     dispatch,
   };
+
   const handelSubmit = async () => {
     console.log("Subit");
     document.getElementById("FormOne").click();
@@ -179,6 +187,12 @@ export default function App() {
     }
   };
 
+  useEffect(async () => {
+    const country = await getCountryAll();
+    console.log(country);
+    await dispatch({ type: "GET_ALL_COUNTRY_CODE", payload: country.responses });
+  }, []);
+  console.log(createOrder.countryCode);
   return (
     <contextValue.Provider value={store}>
       <div className="App-Form ">

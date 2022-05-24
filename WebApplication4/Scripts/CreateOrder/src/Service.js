@@ -80,4 +80,30 @@ export const postOrder = async (data) => {
   }
 };
 
-export const layThongTinQuanHuyen = () => {};
+export const getCountryAll = async () => {
+  const res = await fetch("http://localhost:5030/api/Country/GetAllCountry");
+
+  return await res.json();
+};
+
+export const getCity = async (countryCode) => {
+  let res = await fetch(`http://localhost:5030/api/City/GetAllCityByCountryCode?CountryCode=${countryCode}`);
+  res = await res.json();
+  return await res.responses;
+};
+
+export const getDistrict = async (countryCode, cityCode) => {
+  let res = await fetch(
+    `http://localhost:5030/api/District/GetAllDistrictByCityCountryCode?CityCode=${cityCode}&CountryCode=${countryCode}`
+  );
+  res = await res.json();
+  return await res.responses;
+};
+
+export const getWard = async (countryCode, cityCode, districtCode) => {
+  let res = await fetch(
+    `http://localhost:5030/api/Ward/GetAllWardByDistrictCityCountryCode?DistrictCode=${districtCode}&CityCode=${cityCode}&CountryCode=${countryCode}`
+  );
+  res = await res.json();
+  return await res.responses;
+};
