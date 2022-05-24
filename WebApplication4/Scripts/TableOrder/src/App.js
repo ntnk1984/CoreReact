@@ -73,7 +73,7 @@ const actionReducer = (state = initialValue, { type, payload }) => {
   }
 };
 const App = () => {
-  console.log(process.env.HOST)
+  console.log(process.env.NODE_ENV)
   const [tableReducer, dispatch] = useReducer(actionReducer, initialValue);
 
   //print đơn hàng

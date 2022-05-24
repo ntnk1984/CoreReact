@@ -13,7 +13,7 @@ import {
 const { Option } = Select;
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { fetchChangeStatusOrder, fetchAllOrderApi } from "../api/Order.js";
-import { checkQuyen } from "../athor/Authoraziton.js";
+import { checkQuyen } from "../author/Authoraziton.js";
 import { contextValue, FETCH_ORDERS_TABLE_TIME } from "../App.js";
 
 let statusList = [
