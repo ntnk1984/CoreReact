@@ -2,7 +2,6 @@ import { message } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
 import StorageList from "./components/StorageList";
 import "./components/Style/App.css";
-import { GetAccountApi } from "./utils/Service";
 
 export const contextValue = React.createContext();
 
@@ -50,15 +49,11 @@ export default function App() {
     };
     // let response = await GetAccountApi(data_request);
   }, []);
-  // /
 
   const successFuc = () => {
     message.success("Tạo tài khoản thành công!");
   };
-  const errorFuc = (err) => {
-    message.error(`Tạo tài khoản thất bại! ${err}`);
-    console.log(err);
-  };
+
   //Format XLSX to Json
   return (
     <contextValue.Provider value={store}>

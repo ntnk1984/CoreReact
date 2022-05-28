@@ -213,7 +213,7 @@ export default function CreateOrderOne() {
                 onChange={async (e) => {
                   setSenderInfo({ ...senderInfo, sendercity: e });
                   const District = await getDistrict(senderInfo.sendercountry, e);
-                  await setDistrictCode(District);
+                  setDistrictCode(District);
                 }}
                 value={senderInfo.sendercity ? "Vui lòng chọn" : senderInfo.sendercity}
               >
@@ -244,7 +244,7 @@ export default function CreateOrderOne() {
                 onChange={async (e) => {
                   setSenderInfo({ ...senderInfo, senderdistrict: e });
                   const ward = await getWard(senderInfo.sendercountry, senderInfo.sendercity, e);
-                  await setWardCode(ward);
+                  setWardCode(ward);
                 }}
               >
                 {districtCode?.map((item, index) => {
