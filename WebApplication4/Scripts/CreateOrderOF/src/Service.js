@@ -1,6 +1,9 @@
+const HOST_SHIPMENT=process.env.HOST_SHIPMENT;
+const HOST_UIPARS=process.env.HOST_UIPARS;
+const HOST_CATEGORY=process.env.HOST_CATEGORY;
+
 export const postOrder = async (data) => {
   let { listOrder, receiver, sender, DropoffType } = data;
-  console.log(data, " data sirvice");
 
   let dataPostJson = {
     ShipmentRequest: {
@@ -59,9 +62,8 @@ export const postOrder = async (data) => {
     ShipmentRequest: [dataPostJson.ShipmentRequest],
   };
   dataRequest = JSON.stringify(dataRequest);
-  console.log("dataPostJson", dataRequest);
 
-  var res = await fetch(`http://localhost:5020/api/Shipment/add`, {
+  var res = await fetch(`${HOST_SHIPMENT}/api/Shipment/add`, {
     method: "POST",
     credentials: "include",
     body: dataRequest,
@@ -74,9 +76,6 @@ export const postOrder = async (data) => {
 
   if (res.status === 200) {
     res = await res.json();
-    console.log(res);
-  } else {
-    console.log(res);
   }
 };
 
@@ -85,10 +84,47 @@ export const getDataLocationPost = async (showSelect) => {
   if (res.status === 200) {
     showSelect();
     return res.json();
-    // console.log(res);
-  } else {
-    console.log(res);
   }
 };
 
-export const layThongTinQuanHuyen = () => {};
+export const getCountryAll = async () => {
+  const res = await fetch(`${HOST_CATEGORY}/api/Country/GetAllCountry`);
+
+  return await res.json();
+};
+
+export const getCity = async (countryCode) => {
+  let res = await fetch(`${HOST_CATEGORY}/api/City/GetAllCityByCountryCode?CountryCode=${countryCode}`);
+  res = await res.json();
+  return await res.responses;
+};
+
+export const getDistrict = async (countryCode, cityCode) => {
+  let res = await fetch(
+    `${HOST_CATEGORY}/api/District/GetAllDistrictByCityCountryCode?CityCode=${cityCode}&CountryCode=${countryCode}`
+  );
+  res = await res.json();
+  return await res.responses;
+};
+
+export const getWard = async (countryCode, cityCode, districtCode) => {
+  let res = await fetch(
+    `${HOST_CATEGORY}/api/Ward/GetAllWardByDistrictCityCountryCode?DistrictCode=${districtCode}&CityCode=${cityCode}&CountryCode=${countryCode}`
+  );
+  res = await res.json();
+  return await res.responses;
+};
+
+export const getExtraService = async () => {
+  let res = await fetch(
+    `${HOST_CATEGORY}/api/ExtraService/GetAllExtraService`
+  );
+  return await res.json();
+};
+
+export const getMerchandiseType = async () => {
+  let res = await fetch(
+    `${HOST_CATEGORY}/api/MerchandiseType/GetAllMerchandiseType`
+  );
+  return await res.json();
+};

@@ -4,6 +4,8 @@ import { Form, Input, Button, Row, Col, Select, message } from "antd";
 import { contextValue } from "../App.js";
 import { RexName, validate } from "../validate.js";
 import { SendOutlined } from "@ant-design/icons";
+import { getCity, getDistrict, getWard } from "../Service.js";
+
 
 // import { validate } from "../../utils/validate/validate";
 // import provinceData from "../../assets/local.json";
@@ -13,6 +15,13 @@ const { Option } = Select;
 export default function CreateOrderOne() {
   const context = useContext(contextValue);
   const temp = context?.createOrder.sender;
+  const countryCode = context?.createOrder.countryCode;
+
+  //GET API Location
+  const [cityCode, setCityCode] = useState([]);
+  const [districtCode, setDistrictCode] = useState([]);
+  const [wardCode, setWardCode] = useState([]);
+
   const [senderInfo, setSenderInfo] = useState({
     sendername: temp.sendername,
     senderphone: temp.senderphone,
@@ -24,13 +33,10 @@ export default function CreateOrderOne() {
     senderdistrict: temp.senderdistrict,
     senderward: temp.senderward,
   });
-  // console.log(senderInfo, senderInfo.sendercountry);
   const handleChangeVal = (e) => {
     let { name, value } = e.target;
     setSenderInfo({ ...senderInfo, [name]: value });
   };
-  // console.log(temp, "Log temp");
-  /*4.5.20 khởi tạo initialValues */
 
   const initForm = {
     sendername: senderInfo.sendername,
@@ -64,14 +70,13 @@ export default function CreateOrderOne() {
       payload: false,
     });
   };
-  // console.log(senderInfo, " SenDer");
   return (
     <div className="CustomFormInput">
       <Form
         size="small"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        initialValues={initForm}
+        defaultValue={initForm}
         layout="vertical"
         className=" rounded rounded-3 p-3 shadow-sm"
         style={{ background: "white" }}
@@ -91,7 +96,6 @@ export default function CreateOrderOne() {
               label="Tên người gửi"
               required
               onChange={(e) => {
-                // console.log(e);
                 handleChangeVal(e);
               }}
             >
@@ -187,13 +191,20 @@ export default function CreateOrderOne() {
                 size="middle"
                 style={{ width: "100%" }}
                 placeholder="Chọn quốc gia"
-                onChange={(e) => {
+                onChange={async (e) => {
                   setSenderInfo({ ...senderInfo, sendercountry: e });
+                  const city = await getCity(e);
+                  setCityCode(city);
                 }}
                 value={senderInfo.sendercountry ? "Vui lòng chọn" : senderInfo.sendercountry}
               >
-                <Option value="VN">Việt Nam</Option>
-                <Option value="CAM">Campuchia</Option>
+                {countryCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
@@ -210,13 +221,21 @@ export default function CreateOrderOne() {
                 size="middle"
                 style={{ width: "100%" }}
                 placeholder="Chọn tỉnh / thành phố"
-                onChange={(e) => {
+                onChange={async (e) => {
                   setSenderInfo({ ...senderInfo, sendercity: e });
+                  const District = await getDistrict(senderInfo.sendercountry, e);
+                  await setDistrictCode(District);
                 }}
                 value={senderInfo.sendercity ? "Vui lòng chọn" : senderInfo.sendercity}
               >
-                <Option value="P3">Phường 3</Option>
-                <Option value="P2">Phường 2</Option>
+                {cityCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
+
               </Select>
             </Form.Item>
           </Col>
@@ -234,12 +253,20 @@ export default function CreateOrderOne() {
                 placeholder="Chọn quận / huyện"
                 value={senderInfo.senderdistrict ? "Vui lòng chọn" : senderInfo.senderdistrict}
                 style={{ width: "100%" }}
-                onChange={(e) => {
+                onChange={async (e) => {
                   setSenderInfo({ ...senderInfo, senderdistrict: e });
+                  const ward = await getWard(senderInfo.sendercountry, senderInfo.sendercity, e);
+                  await setWardCode(ward);
                 }}
               >
-                <Option value="P3">Phường 3</Option>
-                <Option value="P2">Phường 2</Option>
+                {districtCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
+
               </Select>
             </Form.Item>
           </Col>
@@ -255,8 +282,13 @@ export default function CreateOrderOne() {
                   setSenderInfo({ ...senderInfo, senderward: e });
                 }}
               >
-                <Option value="P3">Phường 3</Option>
-                <Option value="P2">Phường 2</Option>
+                {wardCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>

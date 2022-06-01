@@ -1,11 +1,11 @@
 import { Col, message, Row, Button } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
-import CreateOrderFour from "./components/CreateOrderFour";
-import CreateOrderOne from "./components/CreateOrderOne";
-import CreateOrderThree from "./components/CreateOrderThree.js";
-import CreateOrderTwo from "./components/CreateOrderTwo.js";
+import CreateOrderFour from "./components/Merchandise";
+import CreateOrderOne from "./components/SenderInfo";
+import CreateOrderThree from "./components/OrderInfo.js";
+import CreateOrderTwo from "./components/ReceiverInfo.js";
 import "./components/Style/CustomForm.css";
-import { postOrder } from "./Service.js";
+import { getCountryAll, postOrder } from "./Service.js";
 
 export const contextValue = React.createContext();
 const initialState = {
@@ -115,9 +115,6 @@ const createOrderReducer = (state = initialState, action) => {
         state.listOrder.arrOrder[indexBuuGui].data = [...state.listOrder.arrOrder[indexBuuGui].data, inputOrder];
         message.success("Thêm thành công!");
       }
-
-      console.log(state.listOrder.arrOrder[indexBuuGui].data);
-
       return { ...state };
     }
     case "ADD_MERCHANDISE_ITEMS": {
@@ -162,6 +159,12 @@ const createOrderReducer = (state = initialState, action) => {
     case "CHECKDATA_REQUEST": {
       return { ...state, checkData: !!action.payload };
     }
+    case "GET_ALL_COUNTRY_CODE": {
+      return { ...state, countryCode: action.payload };
+    } 
+    case "GET_DATA_CITY_CODE": {
+      return { ...state, cityCode: action.payload };
+    }
     case "ADD_DROPOFFTYPE": {
       return { ...state, DropoffType: action.payload };
     }
@@ -179,7 +182,6 @@ export default function App() {
     dispatch,
   };
   const handelSubmit = async () => {
-    console.log("Subit");
     document.getElementById("FormOne").click();
     document.getElementById("FormTwo").click();
 
@@ -187,6 +189,10 @@ export default function App() {
       postOrder(createOrder);
     }
   };
+  useEffect(async () => {
+    const country = await getCountryAll();
+    await dispatch({ type: "GET_ALL_COUNTRY_CODE", payload: country.responses });
+  }, []);
 
   return (
     <contextValue.Provider value={store}>

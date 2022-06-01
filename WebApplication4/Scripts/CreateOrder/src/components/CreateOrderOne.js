@@ -189,9 +189,9 @@ export default function CreateOrderOne() {
               >
                 {countryCode?.map((item, index) => {
                   return (
-                    <Option key={item.id} value={item.code}>
+                    <Select.Option key={item.id} value={item.code}>
                       {item.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -219,9 +219,9 @@ export default function CreateOrderOne() {
               >
                 {cityCode?.map((item, index) => {
                   return (
-                    <Option key={item.id} value={item.code}>
+                    <Select.Option key={item.id} value={item.code}>
                       {item.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -249,9 +249,9 @@ export default function CreateOrderOne() {
               >
                 {districtCode?.map((item, index) => {
                   return (
-                    <Option key={item.id} value={item.code}>
+                    <Select.Option key={item.id} value={item.code}>
                       {item.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -271,9 +271,9 @@ export default function CreateOrderOne() {
               >
                 {wardCode?.map((item, index) => {
                   return (
-                    <Option key={item.id} value={item.code}>
+                    <Select.Option key={item.id} value={item.code}>
                       {item.name}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>

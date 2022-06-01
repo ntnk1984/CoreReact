@@ -35,8 +35,6 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
     try {
       const values = await form.validateFields();
       toggleEdit();
-      console.log(e.target.id);
-      // if(e.target.value !== ""){}
       switch (e.target.id) {
         case "length":
           record.dimension.length = +e.target.value;
@@ -61,10 +59,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
           break;
       }
       handleSave({ ...record, ...values });
-
-      // message.success("Cập Nhật Thành Công");
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
       message.error("Sửa Thất Bại");
     }
   };
@@ -108,15 +103,10 @@ function LPackageLineItems() {
     dataSource: dataSourceStore,
     count: 3,
   });
-  // useEffect(() => {
-  //   context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
-  //   console.log("123 126");
-  // }, [dataSources]);
   const addPackageLine = () => {
     context.dispatch({ type: "ADD_PACKAGE_LINE_ITEMS", payload: dataSources.dataSource });
     message.success("Thêm bưu gửi thành công!");
   };
-  console.log(dataSourceStore, "Data store 127");
   const columns = [
     {
       title: "Chiều Dài",
@@ -183,12 +173,10 @@ function LPackageLineItems() {
       count: count + 1,
     });
   };
-  // console.log(dataSources);
   const handleSave = (row) => {
     const newData = [...dataSources.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    // console.log(row, "row");
     newData.splice(index, 1, { ...item, ...row });
     setDataSources({
       ...dataSources,
@@ -197,7 +185,6 @@ function LPackageLineItems() {
   };
   const handleDelete = (key) => {
     const dataSourceTemp = dataSources.dataSource;
-    // const index = dataSources.dataSource;
     setDataSources({
       ...dataSources,
       dataSource: dataSourceTemp.filter((item) => item.key !== key),
@@ -215,7 +202,6 @@ function LPackageLineItems() {
     if (!col.editable) {
       return col;
     }
-    // console.log(col, " colll");
     return {
       ...col,
       onCell: (record) => ({

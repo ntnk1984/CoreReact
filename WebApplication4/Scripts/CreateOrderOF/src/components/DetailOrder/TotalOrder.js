@@ -50,7 +50,6 @@ export default function TotalOrder() {
     cloneTotalOrder.count++;
     setTotalOrder(cloneTotalOrder);
   };
-  // console.log(tempInfoOrder);
   const handleChangeVal = (value, name, index) => {
     const temp = { ...totalOrder };
     temp.packageLineItems[index].dimension[name] = value;
@@ -58,15 +57,10 @@ export default function TotalOrder() {
   };
   const onFinish = () => {
     submitPackgeLine();
-    console.log("1234");
-  };
-  const test = () => {
-    // document.querySelectorAll("FormTotalOrder").;
   };
   const onFinishFailed = () => {
     message.error("Vui lòng nhập đầy đủ thông tin");
   };
-  // console.log(totalOrder);
   return (
     <div style={{ backgroundColor: "#F2F2F2" }} className="totalOrder p-3 border border-1 rounded-3 mb-3 shadow-sm ">
       {totalOrder.packageLineItems.map((item, index) => {
@@ -151,7 +145,6 @@ export default function TotalOrder() {
         );
       })}
       <Button onClick={addPackageItem}>Thêm Buu Gui</Button>
-      <Button onClick={test}>Test</Button>
     </div>
   );
 }

@@ -107,3 +107,17 @@ export const getWard = async (countryCode, cityCode, districtCode) => {
   res = await res.json();
   return await res.responses;
 };
+
+export const getExtraService = async () => {
+  let res = await fetch(
+    `http://localhost:5030/api/ExtraService/GetAllExtraService`
+  );
+  return await res.json();
+};
+
+export const getMerchandiseType = async () => {
+  let res = await fetch(
+    `http://localhost:5030/api/MerchandiseType/GetAllMerchandiseType`
+  );
+  return await res.json();
+};

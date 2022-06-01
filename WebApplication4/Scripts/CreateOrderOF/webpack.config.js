@@ -2,18 +2,18 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
-console.log(process.env.NODE_ENV);
-let env = "";
-if (process.env.NODE_ENV == "development  ") {
-  env = "./.deverlopment.env";
-} else {
-  env = "./.production.env";
-}
+// console.log(process.env.NODE_ENV);
+// let env = "";
+// if (process.env.NODE_ENV == "development  ") {
+//   env = "./.deverlopment.env";
+// } else {
+//   env = "./.production.env";
+// }
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "/dist"),
-    filename: "index-bundle.js",
+    filename: "Create_Ordershipping.js",
   },
   // externals: {
   //   antd: "antd",
@@ -38,7 +38,7 @@ module.exports = {
       template: "./src/index.html",
     }),
     new Dotenv({
-      path: env, // default is .env
-    }),
+      path:process.env.NODE_ENV.trim() == "development"?"./.development.env":"./.production.env" ,
+  }),
   ],
 };

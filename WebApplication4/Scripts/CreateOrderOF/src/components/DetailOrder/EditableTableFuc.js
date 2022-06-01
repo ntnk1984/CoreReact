@@ -68,7 +68,6 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
 
       message.success("Cập Nhật Thành Công");
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
       message.error("Sửa Thất Bại");
     }
   };
@@ -104,7 +103,6 @@ function EditableTableFuc() {
   const context = useContext(contextValue);
   const { listOrder } = context?.createOrder;
   const dataSourceStore = listOrder?.MerchandiseItems;
-  // console.log(dataSourceStore, "Data store 111");
   const [dataSources, setDataSources] = useState({
     dataSource: dataSourceStore,
     count: 1,
@@ -252,12 +250,10 @@ function EditableTableFuc() {
       count: count + 1,
     });
   };
-  // console.log(dataSources);
   const handleSave = (row) => {
     const newData = [...dataSources.dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
-    // console.log(row, "row");
     newData.splice(index, 1, { ...item, ...row });
     setDataSources({
       ...dataSources,

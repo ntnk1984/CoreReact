@@ -4,12 +4,20 @@ import { Form, Input, Button, Row, Col, message } from "antd";
 import { contextValue } from "../App.js";
 import { validate } from "../validate.js";
 import { SendOutlined } from "@ant-design/icons";
+import { getCity, getDistrict, getWard } from "../Service.js";
 
 const { Option } = Select;
 
 export default function CreateOrderTwo() {
   const context = useContext(contextValue);
   const temp = context?.createOrder.receiver;
+  const countryCode = context?.createOrder.countryCode;
+
+  //GET API Location
+  const [cityCode, setCityCode] = useState([]);
+  const [districtCode, setDistrictCode] = useState([]);
+  const [wardCode, setWardCode] = useState([]);
+
   const [receiverInfo, setReceiverInfo] = useState({
     receivername: temp.receivername,
     receiverphone: temp.receiverphone,
@@ -22,7 +30,6 @@ export default function CreateOrderTwo() {
     receiverward: temp.receiverward,
   });
 
-  /*4.5.20 khởi tạo initialValues */
   const initForm = {
     receivername: receiverInfo.receivername,
     receiverphone: receiverInfo.receiverphone,
@@ -193,14 +200,21 @@ export default function CreateOrderTwo() {
                 name="receivercountry"
                 size="middle"
                 style={{ width: "100%" }}
-                onChange={(e) => {
+                onChange={async (e) => {
                   setReceiverInfo({ ...receiverInfo, receivercountry: e });
+                  const city = await getCity(e);
+                  setCityCode(city);
                 }}
                 placeholder="Chọn quốc gia"
                 value={receiverInfo.receivercountry ? "Vui lòng chọn" : receiverInfo.receivercountry}
               >
-                <Option value="VN">Việt Nam</Option>
-                <Option value="CAM">Campuchia</Option>
+                {countryCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
@@ -218,12 +232,19 @@ export default function CreateOrderTwo() {
                 placeholder="Chọn tỉnh / thành phố"
                 value={receiverInfo.receivercity ? "Vui lòng chọn" : receiverInfo.receivercity}
                 style={{ width: "100%" }}
-                onChange={(e) => {
+                onChange={async (e) => {
                   setReceiverInfo({ ...receiverInfo, receivercity: e });
+                  const District = await getDistrict(receiverInfo.receivercountry, e);
+                  setDistrictCode(District);
                 }}
               >
-                <Option value="HCM">Hồ Chí Minh</Option>
-                <Option value="HN">Hà Nội</Option>
+                {cityCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
@@ -241,12 +262,19 @@ export default function CreateOrderTwo() {
                 size="middle"
                 value={receiverInfo.receiverdistrict ? "Vui lòng chọn" : receiverInfo.receivercity}
                 style={{ width: "100%" }}
-                onChange={(e) => {
+                onChange={async (e) => {
                   setReceiverInfo({ ...receiverInfo, receiverdistrict: e });
+                  const ward = await getWard(receiverInfo.receivercountry, receiverInfo.receivercity, e);
+                  setWardCode(ward);
                 }}
               >
-                <Option value="Q9">Quận 9</Option>
-                <Option value="Q7">Quận 7</Option>
+                {districtCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
@@ -268,8 +296,13 @@ export default function CreateOrderTwo() {
                   setReceiverInfo({ ...receiverInfo, receiverward: e });
                 }}
               >
-                <Option value="P3">Phường 3</Option>
-                <Option value="P2">Phường 2</Option>
+                {wardCode?.map((item, index) => {
+                  return (
+                    <Select.Option key={item.id} value={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
