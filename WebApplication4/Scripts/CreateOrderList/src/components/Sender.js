@@ -1,12 +1,13 @@
 import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { contextValue } from "../App";
+import { getCity, getDistrict, getWard } from "../Service";
 import { validate } from "../validate.js";
 import "./Style/Sender.css";
 function Sender(props) {
   const context = useContext(contextValue);
   const [visible, setVisible] = useState(false);
-  const { onErrorSender, Sender, isPostDataAPI } = context?.createOrderList;
+  const { onErrorSender, countryCode, Sender, isPostDataAPI } = context?.createOrderList;
 
   const [namButton, setNameButton] = useState("Nhập thông tin người gửi");
   const [senderInfo, setSenderInfo] = useState({
@@ -20,6 +21,11 @@ function Sender(props) {
     WardCode: undefined,
     PostalCode: undefined,
   });
+  //GET API Location
+  const [cityCode, setCityCode] = useState([]);
+  const [districtCode, setDistrictCode] = useState([]);
+  const [wardCode, setWardCode] = useState([]);
+
   useEffect(() => {
     console.log("Loadingg");
   }, []);
@@ -206,13 +212,20 @@ function Sender(props) {
                   size="middle"
                   style={{ width: "100%" }}
                   placeholder="Chọn quốc gia"
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     setSenderInfo({ ...senderInfo, CountryCode: e });
+                    const city = await getCity(e);
+                    setCityCode(city);
                   }}
                   value={senderInfo.CountryCode ? "Vui lòng chọn" : senderInfo.CountryCode}
                 >
-                  <Select.Option value="VN">Việt Nam</Select.Option>
-                  <Select.Option value="CAM">Campuchia</Select.Option>
+                  {countryCode?.map((item, index) => {
+                    return (
+                      <Select.Option key={item.id} value={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
                 </Select>
               </Form.Item>
             </Col>
@@ -229,13 +242,20 @@ function Sender(props) {
                   size="middle"
                   style={{ width: "100%" }}
                   placeholder="Chọn tỉnh / thành phố"
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     setSenderInfo({ ...senderInfo, CityCode: e });
+                    const District = await getDistrict(senderInfo.CountryCode, e);
+                    await setDistrictCode(District);
                   }}
                   value={senderInfo.CityCode ? "Vui lòng chọn" : senderInfo.CityCode}
                 >
-                  <Select.Option value="P3">Phường 3</Select.Option>
-                  <Select.Option value="P2">Phường 2</Select.Option>
+                  {cityCode?.map((item, index) => {
+                    return (
+                      <Select.Option key={item.id} value={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
                 </Select>
               </Form.Item>
             </Col>
@@ -253,12 +273,19 @@ function Sender(props) {
                   placeholder="Chọn quận / huyện"
                   value={senderInfo.DistrictCode ? "Vui lòng chọn" : senderInfo.DistrictCode}
                   style={{ width: "100%" }}
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     setSenderInfo({ ...senderInfo, DistrictCode: e });
+                    const ward = await getWard(senderInfo.CountryCode, senderInfo.CityCode, e);
+                    await setWardCode(ward);
                   }}
                 >
-                  <Select.Option value="P3">Phường 3</Select.Option>
-                  <Select.Option value="P2">Phường 2</Select.Option>
+                  {districtCode?.map((item, index) => {
+                    return (
+                      <Select.Option key={item.id} value={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
                 </Select>
               </Form.Item>
             </Col>
@@ -274,8 +301,13 @@ function Sender(props) {
                     setSenderInfo({ ...senderInfo, WardCode: e });
                   }}
                 >
-                  <Select.Option value="P3">Phường 3</Select.Option>
-                  <Select.Option value="P2">Phường 2</Select.Option>
+                  {wardCode?.map((item, index) => {
+                    return (
+                      <Select.Option key={item.id} value={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })}
                 </Select>
               </Form.Item>
             </Col>

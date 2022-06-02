@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 import Sender from "./components/Sender";
 import "./components/Style/App.css";
 import TableListOrder from "./components/TableListOrder";
-import { postListOrder } from "./Service";
+import { getCountryAll, postListOrder } from "./Service";
 export const contextValue = React.createContext();
 console.log(process.env.API);
 const initialState = {
@@ -23,6 +23,7 @@ const initialState = {
   onErrorSender: false,
   isPostDataAPI: false,
   showButton: false,
+  countryCode: [],
 };
 const createOrderListReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -45,10 +46,14 @@ const createOrderListReducer = (state = initialState, action) => {
     case "SET_SUBMIT_DATA_TO_API": {
       return { ...state, isPostDataAPI: !!action.payload };
     }
+    case "GET_ALL_COUNTRY_CODE": {
+      return { ...state, countryCode: action.payload };
+    }
     default:
       return state;
   }
 };
+
 export default function App() {
   //set up reducer
   const [createOrderList, dispatch] = useReducer(createOrderListReducer, initialState);
@@ -56,6 +61,12 @@ export default function App() {
     createOrderList,
     dispatch,
   };
+
+  useEffect(async () => {
+    const country = await getCountryAll();
+    await dispatch({ type: "GET_ALL_COUNTRY_CODE", payload: country.responses });
+  }, []);
+
   // console.log(createOrderList.Sender.Name);
   const [nameFileExcel, setNameFileExcel] = useState("Vui Lòng Chọn File");
   useEffect(() => {
