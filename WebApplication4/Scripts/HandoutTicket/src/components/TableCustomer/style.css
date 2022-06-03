@@ -1,0 +1,12 @@
+.tab-custom .ant-tabs {
+    overflow: initial;
+}
+
+.tab-custom .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap {
+    overflow: initial;
+}
+
+.tab-custom .ant-ribbon.ant-ribbon-placement-end {
+    right: -20%;
+    top: -90%;
+}

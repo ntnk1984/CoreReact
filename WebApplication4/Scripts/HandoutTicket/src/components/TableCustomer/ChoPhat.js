@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-
+import "./style.css";
 import {
   Table,
   Switch,
@@ -16,10 +16,14 @@ import {
   Col,
   List,
   Avatar,
+  Tabs,
+  Badge,
+  Card,
 } from "antd";
 import { contextValue } from "../../App";
 
 const { Text } = Typography;
+const { TabPane } = Tabs;
 
 const columns = [
   {
@@ -128,11 +132,15 @@ function TableCustom(props) {
       <>
         <List
           itemLayout="horizontal"
+          bordered
           dataSource={dataPostMan}
           style={{ textAlign: "left", height: "220px", overflow: "auto" }}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
+                onClick={() => {
+                  console.log(item);
+                }}
                 avatar={<Avatar src={item.avatar} />}
                 title={<span>{item.name}</span>}
                 description={<span>{item.phone}</span>}
@@ -144,6 +152,32 @@ function TableCustom(props) {
     );
   };
   // end list
+
+  // Tab information of collection ticket
+  const [namePostMan, setNamePostMan] = useState("Nguyễn Đại Phúc");
+  const tabCollectionTicket = () => {
+    return (
+      <div className="tab-custom">
+        <Tabs tabPosition="top">
+          <TabPane tab="Thông tin phiếu giao" key="1">
+            Thông tin phiếu
+          </TabPane>
+          <TabPane
+            tab={
+              <Badge.Ribbon size="small" text={namePostMan}>
+                Thông tin người thực hiện
+              </Badge.Ribbon>
+            }
+            key="2"
+          >
+            Người Vận chuyển
+          </TabPane>
+        </Tabs>
+      </div>
+    );
+  };
+  // End Tab
+
   //Modal state
   const [visible, setVisible] = useState(false);
   const modal_antd = () => {
@@ -171,7 +205,7 @@ function TableCustom(props) {
               <Col span={8}>
                 <div style={{ background: "ryan" }}>{listPostMan()}</div>
               </Col>
-              <Col span={16}>2</Col>
+              <Col span={16}>{tabCollectionTicket()}</Col>
             </Row>
           </div>
         </Modal>
