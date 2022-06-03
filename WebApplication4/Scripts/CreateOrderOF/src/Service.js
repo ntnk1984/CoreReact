@@ -3,7 +3,7 @@ const HOST_UIPARS = process.env.HOST_UIPARS;
 const HOST_CATEGORY = process.env.HOST_CATEGORY;
 
 export const getToken = async() => {
-    var res = await fetch(`${HOST_UIPARS}/api/accoiunt/get-token`, {
+    var res = await fetch(`${HOST_UIPARS}/api/account/get-token`, {
         headers: {
             "Content-Type": "application/json",
         },

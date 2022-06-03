@@ -1,7 +1,19 @@
 const HOST_SHIPMENT = process.env.HOST_SHIPMENT;
 const HOST_UIPARS = process.env.HOST_UIPARS;
 const HOST_CATEGORY = process.env.HOST_CATEGORY;
-
+export const getToken = async() => {
+    var res = await fetch(`${HOST_UIPARS}/api/account/get-token`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    if (res.status == 200) {
+        res = await res.json();
+        return res.responses.access_Token;
+    } else {
+        return "";
+    }
+};
 export const postListOrder = async(data) => {
     let { importOrderList, Sender } = data;
     const ShipmentRequest = [];
@@ -76,13 +88,14 @@ export const postListOrder = async(data) => {
     };
     fortmatJson();
     const dataPostJson = JSON.stringify({ ShipmentRequest: ShipmentRequest });
-    console.log("dataPostJson", dataPostJson);
-    var res = await fetch(`http://localhost:5020/api/Shipment/add`, {
+    //console.log("dataPostJson", dataPostJson);
+    var token = getToken()
+    var res = await fetch(`${HOST_SHIPMENT}/api/Shipment/add`, {
         method: "POST",
         credentials: "include",
         body: dataPostJson,
         headers: {
-            Authorization: "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50IjoidGVzdDEiLCJJRCI6IjAyMDBhYTJmLTE1ZDUtNGMzMS05NmQ0LTU0ZTVlYmFjNzI2MSIsIklEUGFydG5lciI6InBhcnRuZXJfMSIsImV4cCI6MTY1NTc4NjMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDUwIn0.jX6rajdge6YaD7CxY-5nurWjcy-ZNs6R2Fsux5hyiww",
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
     });
