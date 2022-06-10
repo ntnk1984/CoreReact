@@ -13,8 +13,9 @@ export const contextValue = React.createContext();
 console.log(process.env.API);
 const initialState = {
   listOrder: [],
-  listOrderStartus6: [],
-  inFoPostman: [{ id: "", first_name: "", last_name: "", phone: "", email: "" }],
+  listOrderChecked: [],
+  shipmentDetails: {},
+  shipper: {},
 };
 
 //usereducer
@@ -23,11 +24,14 @@ const handoutTicketReducer = (state = initialState, action) => {
     case "LOAD_LIST_ORDER": {
       return { ...state, listOrder: action.payload };
     }
-    case "LOAD_LIST_ORDER_STARTUS3": {
-      return { ...state, listOrderStartus3: action.payload };
+    case "ADD_LISTORDER_CHECKED": {
+      return { ...state, listOrderChecked: action.payload };
     }
-    case "LOAD_DATA_POSTMAN": {
-      return { ...state, inFoPostman: action.payload };
+    case "ADD_SHIPMENT_DETAILS": {
+      return { ...state, shipmentDetails: action.payload };
+    }
+    case "ADD_SHIPER": {
+      return { ...state, shipper: action.payload };
     }
     default:
       return state;

@@ -1,0 +1,33 @@
+.option-warehouse .ant-input-number-group-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.option-warehouse .ant-input-group-wrapper {
+    width: 100%;
+}
+
+.option-warehouse .ant-input-group-addon:first-child {
+    width: 20%;
+}
+
+.option-warehouse .ant-input-number-group-addon:first-child {
+    width: 20%;
+}
+
+.zone .ant-badge .ant-scroll-number-custom-component {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0%;
+}
+
+.zone .active {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    transition: all 0.3s linear;
+}
+
+.zone {
+    transition: all 0.3s linear;
+}
