@@ -36,11 +36,12 @@ function CreatePermisGroup(props) {
       description: "Nhóm này là dành cho bạn đấy teser à....",
     },
   ]);
-  const [dataEdit, setDataEdit] = useState();
+  const [dataEdit, setDataEdit] = useState({ groupName: "", groupCode: "", permission: "", description: "" });
   const [visibleEdit, setVisibleEdit] = useState(false);
-  const [dataNewGroup, setDataNewGroup] = useState();
+  const [dataNewGroup, setDataNewGroup] = useState({ groupName: "", groupCode: "", permission: [], description: "" });
   const [visibleNew, setVisibleNew] = useState(false);
-
+  //validateInput
+  const [formValidate, setFormValidate] = useState({ groupName: "" });
   const typingTimeOutRef = useRef(null);
   // delay 0.5s giữa mỗi lần gõ kí tự trên bàn phím hạn chế việc set lại State
   const keyBoardTypingTime = (fSetState) => {
@@ -52,13 +53,32 @@ function CreatePermisGroup(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     // console.log(value);
-    const setStateInputEditF = () => setDataEdit({ ...dataEdit, [name]: value });
-    const setSateInputNewGroupF = () => setDataNewGroup({ ...dataNewGroup, [name]: value });
+    const setStateInputEditF = () => {
+      setDataEdit({ ...dataEdit, [name]: value });
+      if (value === "") {
+        setFormValidate({ ...formValidate, [name]: "Vui lòng nhập !" });
+      } else {
+        setFormValidate({ ...formValidate, [name]: "" });
+      }
+    };
+    const setSateInputNewGroupF = () => {
+      setDataNewGroup({ ...dataNewGroup, [name]: value });
+      if (value === "") {
+        setFormValidate({ ...formValidate, [name]: "Vui lòng nhập !" });
+      } else {
+        setFormValidate({ ...formValidate, [name]: "" });
+      }
+    };
+    //validate
+
+    //end validate
     if (dataEdit) {
       keyBoardTypingTime(setStateInputEditF);
+
       return;
     } else {
       keyBoardTypingTime(setSateInputNewGroupF);
+
       return;
     }
   };
@@ -81,12 +101,35 @@ function CreatePermisGroup(props) {
       permission: value?.permission,
     });
   };
+
+  const onFinish = (e) => {
+    console.log(e, "success");
+  };
+  const onFinishFailed = (e) => {
+    console.log(e, "Error");
+  };
+
   const createNewPresGroup = (props = undefined) => {
     return (
       <div className="create-group">
-        <Form layout="vertical" form={form} name="control-hooks">
-          <Form.Item name="groupName" label="Tên nhóm">
-            <Input name="groupName" placeholder="Vui lòng nhập tên nhóm" onChange={handleChange} />
+        <Form onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical" form={form} name="control-hooks">
+          <Form.Item
+            name="groupName"
+            label="Tên nhóm"
+            help={
+              formValidate.groupName ? (
+                <span style={{ color: "red", fontSize: "12px" }}>Vui lòng nhập tên nhóm</span>
+              ) : (
+                ""
+              )
+            }
+          >
+            <Input
+              status={formValidate.groupName ? "error" : "default"}
+              name="groupName"
+              placeholder="Vui lòng nhập tên nhóm"
+              onChange={handleChange}
+            />
           </Form.Item>
           <Form.Item name="description" label="Mô tả nhóm">
             <TextArea name="description" placeholder="Mô tả nhóm" onChange={handleChange} />
@@ -111,6 +154,11 @@ function CreatePermisGroup(props) {
               <Select.Option value="SeoEditor"> SEO Editor </Select.Option>
               <Select.Option value="Tester"> Tester </Select.Option>
             </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button id="btnValidateGroupName" htmlType="submit" style={{ display: "none" }}>
+              Validate
+            </Button>
           </Form.Item>
         </Form>
       </div>
@@ -141,8 +189,6 @@ function CreatePermisGroup(props) {
     }
   };
   const confirm = (e) => {
-    console.log(e);
-    // message.success("Click on Yes");
     const temp = [...dataTable];
     const dataDeleted = temp.filter((item) => item.groupCode !== e);
     console.log(dataDeleted);
@@ -154,8 +200,7 @@ function CreatePermisGroup(props) {
     setVisibleEdit(true);
     onFillEdit(record);
   };
-  console.log(dataEdit, "DataEdit");
-  console.log(dataNewGroup, " data new");
+
   const columns = [
     {
       title: "Mã Nhóm",
@@ -176,7 +221,7 @@ function CreatePermisGroup(props) {
       width: "60%",
       render: (_, { permission }) => (
         <>
-          {permission.map((item, index) => {
+          {permission?.map((item, index) => {
             const tag = handleShowColor(item);
             return <span key={index}> {tag}</span>;
           })}
@@ -224,18 +269,27 @@ function CreatePermisGroup(props) {
   };
   const handleOkEdit = () => {
     const index = dataTable.findIndex((item) => item.groupCode === dataEdit.groupCode);
-    dataTable.splice(index, 1, dataEdit);
-    setDataTable([...dataTable]);
-    setLoadingEdit(true);
-    setTimeout(() => {
-      setDataEdit(undefined);
-      setLoadingEdit(false);
-      setVisibleEdit(false);
-    }, 2000);
+    let valid = true;
+    Object.keys(formValidate).forEach((key) => {
+      if (dataEdit[key] == "") {
+        setFormValidate((pre) => ({
+          ...pre,
+          [key]: "vuilongnhap",
+        }));
+        valid = false;
+      }
+    });
+    if (valid) {
+      dataTable.splice(index, 1, dataEdit);
+      setDataTable([...dataTable]);
+      setLoadingEdit(true);
+      setTimeout(() => {
+        setDataEdit(undefined);
+        setLoadingEdit(false);
+        setVisibleEdit(false);
+      }, 2000);
+    }
   };
-
-  // const modal = Modal.info()
-  // const closeModal = () => modal.destroy()
 
   //en edit table
 
@@ -243,16 +297,31 @@ function CreatePermisGroup(props) {
   const handleCancelNew = () => {
     setVisibleNew(false);
   };
+  // console.log(formValidate);
   const handleOkNew = () => {
     const stt = dataTable.length + 1;
     const keyTable = stt;
     const GR_CODE = `NHOM-${stt}-ADMIN`;
-    dataTable.push({ ...dataNewGroup, groupCode: GR_CODE, key: keyTable });
-    setDataTable([...dataTable]);
-    setTimeout(() => {
-      setVisibleNew(false);
-    }, 1000);
+    let valid = true;
+    Object.keys(formValidate).forEach((key) => {
+      if (dataNewGroup[key] == "") {
+        setFormValidate((pre) => ({
+          ...pre,
+          [key]: "vuilongnhap",
+        }));
+        valid = false;
+      }
+    });
+    if (valid) {
+      console.log("123123123");
+      dataTable.push({ ...dataNewGroup, groupCode: GR_CODE, key: keyTable });
+      setDataTable([...dataTable]);
+      setTimeout(() => {
+        setVisibleNew(false);
+      }, 1000);
+    }
   };
+
   const handleShowModalNewGroup = () => {
     Promise.resolve().then(setDataEdit(undefined)).then(onFillEdit(undefined)).then(setVisibleNew(true));
   };
