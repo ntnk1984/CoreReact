@@ -118,6 +118,12 @@ export default function App() {
     }
   };
   // const handleChangeValue = (e) => {};
+  const successFunc = () => {
+    message.success("Đẩy dữ liệu thành công");
+  };
+  const faildFuc = () => {
+    message.error("Đẩy dữ liệu thất bại");
+  };
   return (
     <contextValue.Provider value={store}>
       <div className="app-main  pt-4 " style={{ width: "95%", margin: "auto" }}>
@@ -131,7 +137,7 @@ export default function App() {
                 className="px-3"
                 onClick={() => {
                   if (createOrderList.isPostDataAPI) {
-                    postListOrder(createOrderList);
+                    postListOrder(createOrderList, successFunc, faildFuc);
                   } else {
                     dispatch({ type: "SET_ONERROR_SENDER", payload: true });
                     message.warning("Vui lòng nhập thông tin người gửi!");

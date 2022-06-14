@@ -22,7 +22,7 @@ export const GetToken = async() => {
     }
 };
 
-export const postListOrder = async(data) => {
+export const postListOrder = async(data, successFunc, faildFunc) => {
     let { importOrderList, Sender } = data;
     const ShipmentRequest = [];
 
@@ -31,6 +31,7 @@ export const postListOrder = async(data) => {
             const temp = {
                 DropoffType: {
                     type: `${item.DropoffType}`,
+                    detail: {},
                 },
                 ServiceType: "1",
                 Sender: Sender,
@@ -77,7 +78,7 @@ export const postListOrder = async(data) => {
                     },
                     COD: item.COD,
                     currency: item.Currency,
-                    packagetype: 3,
+                    packagetype: "3",
                 }, ],
                 MerchandiseItems: [{
                     SequenceNumber: index + 1,
@@ -108,10 +109,14 @@ export const postListOrder = async(data) => {
             "Content-Type": "application/json",
         },
     });
-
-    if (res.STATUS === 200) {
-        res = await res.json();
-    } else {}
+    res = await res.json();
+    if (res.STATUSCODE === 200) {
+        await successFunc();
+        return;
+    } else {
+        const err = await res.json();
+        faildFunc();
+    }
 };
 
 export const getCountryAll = async() => {
