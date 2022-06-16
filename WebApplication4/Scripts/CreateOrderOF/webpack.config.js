@@ -21,7 +21,7 @@ module.exports = (e,argv) => {
     entry: "./src/index.js",
     output: {
       path: path.join(__dirname, "/dist"),
-      filename: "index-bundle.js",
+      filename: "createorder.js",
     },
     module: {
       rules: [
