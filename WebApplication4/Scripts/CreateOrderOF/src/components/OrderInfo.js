@@ -75,7 +75,8 @@ export default function CreateOrderThree({ handelSubmit }) {
   },[])
   useEffect(async()=>{
     const res= await getExtraService();
-    setExtraServiceID(res.responses)
+    
+    setExtraServiceID(res)
   },[])
 
   const updateData = () => {
@@ -140,8 +141,8 @@ export default function CreateOrderThree({ handelSubmit }) {
                 >
                  {extraServiceID?.map((item, index) => {
                   return (
-                    <Select.Option key={item.id}>
-                      {item.name}
+                    <Select.Option key={item.ID}>
+                      {item.NAME}
                     </Select.Option>
                   );
                 })} 

@@ -1,21 +1,30 @@
 const HOST_SHIPMENT=process.env.HOST_SHIPMENT;
 const HOST_UIPARS=process.env.HOST_UIPARS;
 const HOST_CATEGORY=process.env.HOST_CATEGORY;
+const TOKEN = process.env.TOKEN;
 
 export const getToken = async () => {
-
-  var res = await fetch(`${HOST_UIPARS}/api/accoiunt/get-token`, {
-    headers : {
-      "Content-Type" : "application/json",
+  if (TOKEN != "")
+    {
+        return TOKEN;
     }
-  })
-  if (res.status == 200) {
-    res = await res.json()
-    return res.responses.access_Token;
-  }
-  else {
-    return "";
-  }
+    else {
+        var res = await fetch(`${HOST_UIPARS}/api/account/get-token`, {
+            headers : {
+                "Content-Type" : "application/json",
+            }
+        })
+        res = await res.json()
+        if (res.STATUSCODE == 200)
+        {   
+            return res.RESPONSES.ACCESS_TOKEN;
+        }
+        else {
+            return "";
+        }
+    }
+
+  
 }
 
 export const postOrder = async (data) => {
@@ -136,7 +145,7 @@ export const getExtraService = async () => {
   let res = await fetch(
     `${HOST_CATEGORY}/api/ExtraService/GetAllExtraService`
   );
-  return await res.json();
+  return (await res.json()).responses;
 };
 
 export const getMerchandiseType = async () => {

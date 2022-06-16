@@ -2,43 +2,49 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
-// console.log(process.env.NODE_ENV);
-// let env = "";
-// if (process.env.NODE_ENV == "development  ") {
-//   env = "./.deverlopment.env";
-// } else {
-//   env = "./.production.env";
-// }
-module.exports = {
-  entry: "./src/index.js",
-  output: {
-    path: path.join(__dirname, "/dist"),
-    filename: "Create_Ordershipping.js",
-  },
-  // externals: {
-  //   antd: "antd",
-  //   react: "React",
-  //   "react-dom": "ReactDOM",
-  // },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: ["babel-loader"],
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
+
+
+
+
+module.exports = (e,argv) => {
+  let env = "";
+  
+  if (argv.mode == "production") {
+      env = "./.production.env";
+  } else {
+      env = "./.development.env";
+  }
+
+  console.log(env);
+
+  return({
+    entry: "./src/index.js",
+    output: {
+      path: path.join(__dirname, "/dist"),
+      filename: "index-bundle.js",
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ["babel-loader"],
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
+        },
+      ],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: "./src/index.html",
+      }),
+      new Dotenv({
+        path: env, // default is .env
+      }),
     ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-    }),
-    new Dotenv({
-      path:process.env.NODE_ENV.trim() == "development"?"./.development.env":"./.production.env" ,
-  }),
-  ],
+
+  })
+  
 };
