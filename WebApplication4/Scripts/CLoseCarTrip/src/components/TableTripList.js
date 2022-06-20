@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { getImportList } from "../Service";
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
-import FormDongChuyen from "./FormDongChuyen";
+import FormXacNhanChuyen from "./FormXacNhanChuyen";
 
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -31,48 +31,63 @@ function TableImportList(props) {
       }));
   };
   // / end
-  const loadingStateFail = () => {
-    setLoading(false);
-  };
-  const loadingStateTrue = () => {
-    setLoading(true);
-  };
-  async function getImportLists(loadingFail) {
-    let res = await getImportList(date, loadingFail);
-    setImportLists(res);
-  }
-  useEffect(() => {
-    loadingStateTrue();
-    getImportLists(loadingStateFail);
-  }, []);
-  const load = () => {
-    setIsLoading(false);
-  };
-  const fetchDataTable = async () => {
-    setIsLoading(true);
-    let res = await getImportList(date, load);
-    setImportLists(res);
-  };
+//   const loadingStateFail = () => {
+//     setLoading(false);
+//   };
+//   const loadingStateTrue = () => {
+//     setLoading(true);
+//   };
+//   async function getImportLists(loadingFail) {
+//     let res = await getImportList(date, loadingFail);
+//     setImportLists(res);
+//   }
+//   useEffect(() => {
+//     loadingStateTrue();
+//     getImportLists(loadingStateFail);
+//   }, []);
+//   const load = () => {
+//     setIsLoading(false);
+//   };
+//   const fetchDataTable = async () => {
+//     setIsLoading(true);
+//     let res = await getImportList(date, load);
+//     setImportLists(res);
+//   };
   const columns = [
     {
-      title: "Mã phiếu",
+      title: "Mã chuyến",
       dataIndex: "CODE",
       width: "10%",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Tên phiếu",
-      dataIndex: "NAME",
-      width: "10%",
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "DESCRIPTION",
+      title: "Loại phương tiện",
+      dataIndex: "VEHICLETYPE",
       width: "auto",
     },
     {
+      title: "Số hiệu phương tiện",
+      dataIndex: "VEHICLENO",
+      width: "auto",
+    },
+    {
+        title: "Trọng tải",
+        dataIndex: "TONNAGE",
+        width: "auto",
+    },
+    {
+        title: "Lộ trình",
+        dataIndex: "ROUTE",
+        width: "auto",
+    },
+    {
+        title: "Trạng thái",
+        dataIndex: "STATUS",
+        width: "auto",
+    },
+    {
       title: "Ngày tạo",
-      dataIndex: "CREATEDDATE",
+      dataIndex: "CREATEDTIME",
       width: "auto",
       render: (text, record) => (
         <Row>
@@ -82,16 +97,6 @@ function TableImportList(props) {
           </Col>
         </Row>
       ),
-    },
-    {
-      title: "Kho",
-      dataIndex: "EXPORT_FROM",
-      width: "auto",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "STATUS",
-      width: "auto",
     },
     {
       title: "Xem thêm",
@@ -137,13 +142,13 @@ function TableImportList(props) {
             type="primary"
             disabled={selectedData.length === 0 ? true : false}
           >
-            Đóng chuyến
+            Xác nhận
           </Button>
         </div>
       }
-      <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
+      {/* <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
         {isLoading ? <LoadingOutlined /> : <ReloadOutlined onClick={fetchDataTable} />}
-      </div>
+      </div> */}
     </div>
   );
   const HandleSetSelectedData = (key, obj) => {
@@ -192,8 +197,8 @@ function TableImportList(props) {
         dataSource={importLists}
         scroll={{ y: 700 }}
       />
-      <Modal title="Phiếu xuất kho" width="80%" visible={isVisibleShowModal} onCancel={HandleClose} footer={null}>
-        <FormDongChuyen selectedData={selectedData} />
+      <Modal title="Danh sách phiếu" width="80%" visible={isVisibleShowModal} onCancel={HandleClose} footer={null}>
+        <FormXacNhanChuyen selectedData={selectedData} />
       </Modal>
     </div>
   );

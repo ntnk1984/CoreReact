@@ -24,7 +24,7 @@ export const GetToken = async() => {
 
 export const getImportList = async(data, loadingFail) => {
     let dataImport = JSON.stringify({
-        Type: "IMEXPORT_GET_ALL",
+        Type: "IMEXPORT_GET_CAN_TRANSPORT",
         FromDate: data.startDate,
         ToDate: data.endDate + " 23:59:00",
         Data: "",
@@ -55,6 +55,32 @@ export const getImportList = async(data, loadingFail) => {
         return null;
     }
 };
+
+
+export const CreateTripApi = async(data, successFunc,erroFunc) => {
+    let dataImport = JSON.stringify(data);
+    console.log(dataImport);
+    let token = await GetToken();
+    let res = await fetch(`${HOST_SHIPMENT}/api/transport/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: dataImport,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        var res_ = res.RESPONSES;
+        successFunc();
+        return res_;
+    } else {
+        erroFunc();
+        return null;
+    }
+};
+
+
 export const getDetailImExport = async(data) => {
     let token = await GetToken();
     let dataJson = JSON.stringify(data);

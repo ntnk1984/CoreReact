@@ -1,32 +1,22 @@
+import { Tabs } from "antd";
 import React, { useState } from "react";
 import TableImportList from "./components/TableImportList";
+import TableTripList from "./components/TableTripList";
+const { TabPane } = Tabs;
 
-function App(props) {
-  const [memeCat, setMemeCat] = useState(false);
+const ManageTrip = () => {
   return (
-    <div className="App-main">
-      <div style={{ width: "95%", margin: " 0 auto", textAlign: "center" }}>
-        {memeCat ? (
-          <div>
-            <iframe
-              src="https://gfycat.com/ifr/WindyEssentialHyracotherium"
-              frameBorder={0}
-              scrolling="no"
-              allowFullScreen
-              width={"100%"}
-              height={250}
-            />
-          </div>
-        ) : (
-          ""
-        )}
-        <h3 className="py-3 text-secondary" onClick={() => setMemeCat(!memeCat)}>
-          Đóng chuyến xe
-        </h3>
-        <TableImportList />
-      </div>
-    </div>
+    <>
+        <Tabs tabPosition="left">
+        <TabPane tab="Danh sách phiếu" key="0">
+          <TableImportList />
+        </TabPane>
+        <TabPane tab="Danh sách chuyến" key="1">
+          <TableTripList />
+        </TabPane>
+      </Tabs>
+    </>
   );
 }
 
-export default App;
+export default ManageTrip;
