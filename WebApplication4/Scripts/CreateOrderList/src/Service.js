@@ -116,6 +116,7 @@ export const postListOrder = async(data, successFunc, faildFunc) => {
     } else {
         const err = await res.json();
         faildFunc();
+        return err;
     }
 };
 

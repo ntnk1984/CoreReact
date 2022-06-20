@@ -1,0 +1,8 @@
+.infoOrder .ant-input-group-addon:first-child {
+    border-right: 0;
+    width: 97px;
+}
+
+.infoOrder .ant-input-group-wrapper {
+    padding: 5px 0;
+}

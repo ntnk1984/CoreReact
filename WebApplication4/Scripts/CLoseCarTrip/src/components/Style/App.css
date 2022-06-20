@@ -1,0 +1,70 @@
+.app-main {
+
+}
+.app-main .wrapper .btn-style {
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0 7px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: all 0.3s linear;
+}
+.app-main .wrapper .lableName{
+  display: flex;
+  background-color: #EB5353;
+}
+.app-main .wrapper .lableName:hover{
+  background-color: #880606;
+}
+.app-main .wrapper .labelPost{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background-color: #28A745;
+}
+.app-main .wrapper .labelPost:hover{
+  background-color: #05a62b;
+}
+
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 992px) {
+ 
+}
+
+@media screen and (max-width: 768px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 10px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 10px;
+    padding: 3px 9px;
+    height: initial;
+  }
+
+}
+
+@media screen and (max-width: 576px) {
+  .container{
+    max-width: inherit;
+  }
+  .app-main .ant-tabs-tab {
+    font-size: 9px;
+  }
+
+  .app-main .button-statistic .ant-btn {
+    font-size: 9px;
+    padding: 2px 4px;
+    height: initial;
+  }
+  .app-tabs .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0 0 0 12px;
+  }
+}
