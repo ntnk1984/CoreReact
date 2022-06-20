@@ -99,10 +99,12 @@ export const postOrder = async (data) => {
     },
   });
 
-  if (res.status === 200) {
-    res = await res.json();
-    return res;
-  }
+  return res;
+
+  // if (res.status === 200) {
+  //   res = await res.json();
+  //   return res;
+  // }
 };
 
 export const getDataLocationPost = async (showSelect) => {

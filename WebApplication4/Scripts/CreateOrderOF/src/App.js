@@ -1,4 +1,4 @@
-import { Col, message, Row, Button } from "antd";
+import { Col, message, Row, Button, Spin } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
 import CreateOrderFour from "./components/Merchandise";
 import CreateOrderOne from "./components/SenderInfo";
@@ -175,6 +175,7 @@ const createOrderReducer = (state = initialState, action) => {
 };
 
 export default function App() {
+  const [loading, setLoading] = useState(false);
   //set up reducer
   const [createOrder, dispatch] = useReducer(createOrderReducer, initialState);
   const store = {
@@ -182,11 +183,22 @@ export default function App() {
     dispatch,
   };
   const handelSubmit = async () => {
+    
     document.getElementById("FormOne").click();
     document.getElementById("FormTwo").click();
 
     if (createOrder.checkData) {
-      postOrder(createOrder);
+      setLoading(true);
+      var res = await postOrder(createOrder);
+
+      if (res.status === 200) {
+        res = await res.json();
+        message.success("Thành công!");
+        setLoading(false);
+      }
+      else {
+        setLoading(false);
+      }
     }
   };
   useEffect(async () => {
@@ -196,46 +208,49 @@ export default function App() {
 
   return (
     <contextValue.Provider value={store}>
-      <div className="App-Form ">
-        <div className="main " style={{ margin: "0 auto", width: "95%" }}>
-          <Row style={{ height: "fit-content" }}>
-            <Col style={{ height: "fit-content" }} className="Scroll-Left" sm={24} lg={17} xxl={19}>
-              <Row gutter={[16, 24]} id="height123">
-                <Col sm={24} lg={12} xxl={12}>
-                  <CreateOrderOne />
-                </Col>
-                <Col sm={24} lg={12} xxl={12}>
-                  <CreateOrderTwo />
-                </Col>
+      <Spin spinning={loading}>
+      
+        <div className="App-Form ">
+          <div className="main " style={{ margin: "0 auto", width: "95%" }}>
+            <Row style={{ height: "fit-content" }}>
+              <Col style={{ height: "fit-content" }} className="Scroll-Left" sm={24} lg={17} xxl={19}>
+                <Row gutter={[16, 24]} id="height123">
+                  <Col sm={24} lg={12} xxl={12}>
+                    <CreateOrderOne />
+                  </Col>
+                  <Col sm={24} lg={12} xxl={12}>
+                    <CreateOrderTwo />
+                  </Col>
 
-                <Col style={{ width: "100%", overflow: "hidden" }} xl={24}>
-                  <CreateOrderFour />
-                </Col>
-              </Row>
-            </Col>
+                  <Col style={{ width: "100%", overflow: "hidden" }} xl={24}>
+                    <CreateOrderFour />
+                  </Col>
+                </Row>
+              </Col>
 
-            <Col style={{ paddingLeft: "10px", backgroundColor: "white", position: "relative" }} sm={24} lg={7} xxl={5}>
-              <CreateOrderThree handelSubmit={handelSubmit} />
-              <div style={{ position: "absolute", bottom: "5%", right: "10px" }}>
-                {createOrder.checkData ? (
-                  <Button className="btn-Submit" onClick={handelSubmit} type="primary">
-                    Hoàn tất
+              <Col style={{ paddingLeft: "10px", backgroundColor: "white", position: "relative" }} sm={24} lg={7} xxl={5}>
+                <CreateOrderThree handelSubmit={handelSubmit} />
+                <div style={{ position: "absolute", bottom: "5%", right: "10px" }}>
+                  {createOrder.checkData ? (
+                    <Button className="btn-Submit" onClick={handelSubmit} type="primary">
+                      Hoàn tất
+                    </Button>
+                  ) : (
+                    <Button className="btn-Submit" onClick={handelSubmit} type="primary">
+                      Kiểm tra
+                    </Button>
+                  )}
+                </div>
+                <div style={{ position: "absolute", bottom: "5%", left: "10px" }}>
+                  <Button danger className="btn-Submit" type="primary">
+                    Xóa dữ liệu
                   </Button>
-                ) : (
-                  <Button className="btn-Submit" onClick={handelSubmit} type="primary">
-                    Check
-                  </Button>
-                )}
-              </div>
-              <div style={{ position: "absolute", bottom: "5%", left: "10px" }}>
-                <Button danger className="btn-Submit" type="primary">
-                  Xóa dữ liệu
-                </Button>
-              </div>
-            </Col>
-          </Row>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div>
+      </Spin>
     </contextValue.Provider>
   );
 }
