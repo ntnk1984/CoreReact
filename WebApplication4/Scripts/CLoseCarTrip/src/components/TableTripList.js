@@ -9,7 +9,6 @@ import FormDoneTransit from "./FormDoneTransit";
 
 
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
-import FormXacNhanChuyen from "./FormXacNhanChuyen";
 const { TabPane } = Tabs;
 
 const { Text } = Typography;
@@ -172,7 +171,7 @@ function TableTripList(props) {
               ShowReadyForm();
             } else if (record.STATUS === "TRANSPORT_ONPROCESS") {
               ShowInTransitForm();
-            } else {
+            } else if (record.STATUS === "TRANSPORT_SUCCESS") {
               ShowDoneForm();
             }
           }}
@@ -193,14 +192,22 @@ function TableTripList(props) {
       }}
     >
       <div>
-        <Tabs onChange={handleChangeTabPane}>
-          <TabPane value="ALL" tab="Tất cả" key="0">
+        <Tabs onChange={(e) => setTabPaneStatus(e)}>
+          <TabPane 
+            tab="Tất cả" 
+            key="ALL">
           </TabPane>
-          <TabPane value="TRANSPORT_DRAFT" tab="Mới tạo" key="1">
+          <TabPane
+            tab="Mới tạo" 
+            key="TRANSPORT_DRAFT">
           </TabPane>
-          <TabPane value="TRANSPORT_ONPROCESS" tab="Đang thực hiện" key="2">
+          <TabPane
+            tab="Đang thực hiện" 
+            key="TRANSPORT_ONPROCESS">
           </TabPane>
-          <TabPane value="TRANSPORT_SUCCESS" tab="Kết thúc" key="3">
+          <TabPane
+            tab="Kết thúc" 
+            key="TRANSPORT_SUCCESS">
           </TabPane>
         </Tabs>
       </div>
@@ -224,9 +231,6 @@ function TableTripList(props) {
   const HandleSetSelectedData = (key, obj) => {
     setSelectedData(obj);
   };
-  const handleChangeTabPane = (e) => {
-    setTabPaneStatus(e);
-  };
 
   const tableColumns = columns.map((item) => ({ ...item, ellipsis: true, align: "center" }));
   const tableProps = {
@@ -244,14 +248,6 @@ function TableTripList(props) {
     tableLayout: "unset",
   };
   //Modal
-  const deleteData = (item) => {
-    let newData = [...selectedData];
-    let index = selectedData.indexOf(item.ID);
-    if (index !== -1) {
-      newData.splice(index, 1);
-      setSelectedData(newData);
-    }
-  };
 
   const [IsReadyFormShow, setIsReadyFormShow] = useState(false);
   const [IsInTransitFormShow, setIsInTransitFormShow] = useState(false);
@@ -291,7 +287,8 @@ function TableTripList(props) {
       />
       <Modal 
         title="Xác nhận chuyến" 
-        width="80%" 
+        width="80%"
+        height="auto" 
         visible={IsReadyFormShow} 
         onCancel={HandleClose} 
         footer={false}
@@ -304,6 +301,7 @@ function TableTripList(props) {
       <Modal
         title="Chuyến đang thực hiện"
         width="80%"
+        height="auto" 
         visible={IsInTransitFormShow}
         onCancel={HandleClose}
         footer={false}
@@ -316,6 +314,7 @@ function TableTripList(props) {
       <Modal
         title="Chuyến đã hoàn thành"
         width="80%"
+        height="auto" 
         visible={IsDoneTransitFormShow}
         onCancel={HandleClose}
         footer={false}
