@@ -1,22 +1,12 @@
 import { Tabs, Button, Input, Space, Table, Card, Popconfirm, message } from "antd";
 import React, { useEffect, useState } from "react";
-import "./Style/FromDongChuyen.css";
+import { updateTransportState } from "../Service";
 
 const { TabPane } = Tabs;
 
-const FormReady = ({ dataTable, onCancel, detailList }) => {
-  const dateFormat = "DD/MM/YYYY";
-  const [orders, setOrders] = useState();
-
-  const [data, setData] = useState(orders);
+const FormReady = ({ detailList, dataTable, onCancel }) => {
   const [visible, setVisible] = useState(false);
-  // console.log(dataTable, " component C");
-  // table
-  // useEffect(() => {
-  //   setOrders(detailList);
-  //   setData(detailList);
-  //   console.log("1");
-  // }, [detailList]);
+
   const columns = [
     {
       title: "Mã phiếu",
@@ -45,7 +35,21 @@ const FormReady = ({ dataTable, onCancel, detailList }) => {
       width: "20%",
     },
   ];
-  const defaultTitle = () => <h4>Danh sách phiếu</h4>;
+  const defaultTitle = () => (
+    <div
+      direction="horizonal"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: ".8rem 10% .8rem .8rem",
+        position: "relative",
+      }}
+    >
+      {
+        <h4>Danh sách phiếu</h4>
+      }
+    </div>
+  );
   // end table
   const column = columns.map((item) => ({ ...item, ellipsis: true }));
   const props = {
@@ -60,25 +64,20 @@ const FormReady = ({ dataTable, onCancel, detailList }) => {
   const showPopconfirm = () => {
     setVisible(true);
   };
-  // const messageSuccess = () => message.success("Thành công!!");
-  // const messageError = () => message.error("Error");
-  // const confirm = (e) => {
-  //   const dataPOST = {
-  //     Id: dataTable.ID,
-  //     ActionType: "IMEXPORTLIST_CONFIRM",
-  //     Note: "",
-  //     ActionData: {
-  //       IDSuccess: [],
-  //       IDFail: [],
-  //     },
-  //   };
-  //   console.log(dataPOST);
-  //   postConfirmUpdate(dataPOST, messageSuccess, messageError, onCancel);
-  //   setVisible(false);
-  // };
+
+  const messageSuccess = () => message.success("Thành công!!");
+  const messageError = () => message.error("Error");
   const cancel = (e) => {
     setVisible(false);
     onCancel();
+  };
+  const confirm = (e) => {
+    const dataPOST = {
+      Id: dataTable.ID,
+      ActionType: "TRANSPORT_CONFIRM",
+    };
+    updateTransportState(dataPOST, messageSuccess, messageError, onCancel);
+    setVisible(false);
   };
 
   return (
@@ -92,7 +91,13 @@ const FormReady = ({ dataTable, onCancel, detailList }) => {
           alignItems: "flex-start",
         }}
       >
-        <Table {...props} columns={column} dataSource={data} scroll={{ y: 700 }}></Table>
+        <Table 
+          {...props} 
+          columns={column} 
+          scroll={{ y: 700 }}
+          dataSource={detailList}
+        >
+        </Table>
         <div style={{ width: "100%" }}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Thông tin chuyến" key="1">
@@ -143,7 +148,7 @@ const FormReady = ({ dataTable, onCancel, detailList }) => {
         }}
       >
         <Popconfirm
-          title="Xác nhận phiếu nhập kho được chọn?"
+          title="Xác nhận danh sách phiếu của chuyến?"
           onConfirm={confirm}
           onCancel={cancel}
           okText="Xác nhận"

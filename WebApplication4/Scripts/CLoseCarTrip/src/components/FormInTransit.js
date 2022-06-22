@@ -1,67 +1,36 @@
-import { Space, Tag, Input, Table, DatePicker, Dropdown, Menu, Tabs, Button, message, Popconfirm } from "antd";
+import { Space, Tag, Input, Table, Row, Col, Button, message, Popconfirm, 
+Typography, Tabs, Divider, Tooltip, Badge, Avatar, List } from "antd";
 import React, { useEffect, useState } from "react";
-const { TabPane } = Tabs;
-
-const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
-  const [orders, setOrders] = useState();
-  const dateFormat = "DD/MM/YYYY";
-  const { TabPane } = Tabs;
-  const [SelectedData, setSelectedData] = useState([]);
+import { ContainerOutlined, UngroupOutlined, CloseOutlined } from "@ant-design/icons";
+const {Text, Title} = Typography;
+const {TabPane} = Tabs
+const FormInTransit = ({ dataTable, onCancel, detailList }) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(orders);
-  const [chosenData, setChosenData] = useState([]);
-  const [dropData, setDropData] = useState([]);
-  const [activeTab, setActiveTab] = useState("1");
+  const [data, setData] = useState();
   const [visible, setVisible] = useState(false);
   const [completeVisible, setCompleteVisible] = useState(false);
+  const [listDrop, setListDrop] = useState([]);
+  const [listUp, setListUp] = useState([]);
 
-  console.log(data, "dataTable");
-  // useEffect(() => {
-  //   setOrders(detailList);
-  //   setData(detailList);
-  //   console.log("1");
-  // }, [detailList]);
-  const dropList = (e) => {
-    setActiveTab("2");
-    const temp = [...data];
-    const dropItem = temp.find((item) => item.ID === e.ID);
-    setDropData([...dropData, dropItem]);
-    const idx = temp.findIndex((item) => item.ID === e.ID);
-    const temp1 = [...data];
-    temp1.splice(idx, 1);
-    setData(temp1);
+  useEffect (() => {
+    setData(detailList);
+    setListDrop([]);
+    setListUp([]);
+  }, [detailList]);
+
+  const dropList = (record) => {
+    setData(data.filter(x => x != record));
+    setListDrop(prev => ([...prev, record]))
   };
-  const unDropList = (e) => {
-    const temp = [...dropData];
-    const dropItem = temp.find((item) => item.ID === e.ID);
-    setData([...data, dropItem]);
-    const idx = temp.findIndex((item) => item.ID === e.ID);
-    const temp1 = [...dropData];
-    temp1.splice(idx, 1);
-    setDropData(temp1);
+  const unDropList = (record) => {
+    setListDrop(listDrop.filter(x => x != record));
+    setData(prev => ([...prev, record]))
   };
 
   const messageSuccess = () => message.success("Thêm thành công");
   const messageFail = () => message.error("Thất bại");
 
-  const HandleSetSelectedData = (e) => {
-    setSelectedData(e);
-  };
   // table
-  const menu = (record) => (
-    <Menu
-      items={[
-        {
-          key: "one",
-          label: <a onClick={() => dropList(record)}>Drop phiếu hihi</a>,
-        },
-        // {
-        //   key: "two",
-        //   label: <a onClick={() => dropOrder(record)}>Chênh lệch</a>,
-        // },
-      ]}
-    />
-  );
 
   const columns = [
     {
@@ -73,13 +42,13 @@ const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
     {
       title: "Tên phiếu",
       dataIndex: "NAME",
-      width: "20%",
+      width: "15%",
     },
-    {
-      title: "Địa chỉ xuất",
-      dataIndex: "EXPORT_FROM",
-      width: "20%",
-    },
+    // {
+    //   title: "Địa chỉ xuất",
+    //   dataIndex: "EXPORT_FROM",
+    //   width: "20%",
+    // },
     {
       title: "Địa chỉ tới",
       dataIndex: "IMPORT_TO",
@@ -89,60 +58,33 @@ const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
       title: "Ngày xuất",
       dataIndex: "EXPORT_DATE",
       width: "20%",
-    },
-    {
-      key: "action",
-      width: "auto",
       render: (text, record) => (
-        <Dropdown overlay={menu(record)}>
-          <MenuOutlined style={{ color: "blue" }}></MenuOutlined>
-        </Dropdown>
+        <Row>
+          <Col span={24}>{record.EXPORT_DATE.toString().split("T")[0]}</Col>
+          <Col span={24}>
+            <Text disabled>{record.EXPORT_DATE.toString().split("T")[1]}</Text>
+          </Col>
+        </Row>
       ),
     },
-  ];
-  
-  const dropColumns = [
     {
-      title: "Mã phiếu",
-      dataIndex: "CODE",
-      width: "20%",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Tên phiếu",
-      dataIndex: "NAME",
-      width: "20%",
-    },
-    {
-      title: "Địa chỉ xuất",
-      dataIndex: "EXPORT_FROM",
-      width: "20%",
-    },
-    {
-      title: "Địa chỉ tới",
-      dataIndex: "IMPORT_TO",
-      width: "20%",
-    },
-    {
-      title: "Ngày xuất",
-      dataIndex: "EXPORT_DATE",
-      width: "20%",
-    },
-    {
+      title: "Xem thêm",
       key: "action",
       width: "auto",
       render: (_, record) => (
-        <Tag color={"red"} onClick={() => unDropList(record)}>
-          Xóa
+        <Tag
+          color={"green"}
+          onClick={() => dropList(record)}
+        >
+          Drop
         </Tag>
       ),
     },
   ];
+  
   // end table
   const column = columns.map((item) => ({ ...item, ellipsis: true }));
-  const dropColumn = dropColumns.map((item) => ({ ...item, ellipsis: true }));
   const defaultTitle = () => <p style={{fontWeight: 'bold'}}>Danh sách phiếu</p>;
-  const defaultDropTitle = () => <p style={{fontWeight: 'bold'}}>Danh sách phiếu drop</p>;
 
   const prop = {
     title: defaultTitle,
@@ -151,19 +93,6 @@ const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
     loading,
     size: "middle",
     showHeader: true,
-    rowSelection: {
-      onChange: (e) => HandleSetSelectedData(e),
-    },
-    tableLayout: "unset",
-  };
-  const dropProp = {
-    title: defaultDropTitle,
-    bordered: true,
-    pagination: false,
-    loading,
-    size: "middle",
-    showHeader: true,
-    tableLayout: "unset",
   };
   const showPopconfirm = () => {
     setVisible(true);
@@ -189,6 +118,7 @@ const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
   //   postConfirmUpdate(dataPOST, messageSuccess, messageFail, onCancel);
   //   setVisible(false);
   // };
+  
   const cancel = (e) => {
     setVisible(false);
     setCompleteVisible(false);
@@ -223,28 +153,101 @@ const FormInTransit = ({ dataTableConfirm, onCancel, detailList }) => {
               size="middle"
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr",
               }}
             >
               <Input name="Tonnage" addonBefore="Trọng tải " />
-              <Input name="Route" addonBefore="Lộ trình " />   
-              <Input name="StartPoint" addonBefore="Nơi xuất " />         
+              <Input name="Route" addonBefore="Lộ trình " />        
             </Space>
           </Space>
         </Space>
+        
         <Space
           direction="horizontal"
           size="middle"
           style={{
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "1.3fr 1fr"
           }}
         >
           <Space>
             <Table {...prop} columns={column} dataSource={data} scroll={{ y: 700 }}></Table>
           </Space>
-          <Space>
-            <Table {...dropProp} columns={dropColumn} dataSource={data} scroll={{ y: 700 }}></Table>
-          </Space>    
+          <Tabs>
+          <TabPane tab={`Hàng xuống (${listDrop.length})`} key="0">
+              <Space direction="vertical" style={{ width: "100%" }}>
+                
+                <List
+                  dataSource={listDrop}
+                  renderItem={(item) => (
+                    <List.Item key={item.CODE}>
+                      <List.Item.Meta
+                        avatar={<Avatar size={48} icon={<UngroupOutlined />} />}
+                        title={<a>{item.CODE}</a>}
+                        description={
+                          <p>
+                            <b>Nơi xuống:&nbsp;</b>
+                            {item.IMPORT_TO}
+                          </p>
+                        }
+                      />
+                      <Tooltip title="Gỡ bỏ">
+                        <Button
+                          shape="circle"
+                          icon={<CloseOutlined />}
+                          onClick={() => unDropList(item)}
+                        />
+                      </Tooltip>
+                    </List.Item>
+                  )}
+                />
+              </Space>
+            </TabPane>
+            <TabPane tab={`Từ chối nhận`} key="1">
+              <Space direction="vertical" style={{ width: "100%" }}>
+                <Divider orientation="left">
+                  <Space>
+                    <Title level={5} style={{ marginTop: ".3rem" }}>
+                      Từ chối nhận
+                    </Title>
+                    <Badge count={0}>
+                      <Avatar
+                        size={24}
+                        shape="square"
+                        icon={<ContainerOutlined />}
+                      />
+                    </Badge>
+                  </Space>
+                </Divider>
+                <List
+                  dataSource={listUp}
+                  renderItem={(item) => (
+                    <List.Item key={item.CODE}>
+                      <List.Item.Meta
+                        avatar={<Avatar size={48} icon={<UngroupOutlined />} />}
+                        title={<a>{item.CODE}</a>}
+                        description={
+                          <p>
+                            <b>Người gửi:&nbsp;</b>
+                            {item.NAME} - {item.NAME}
+                          </p>
+                        }
+                      />
+                      <Tooltip title="Gỡ bỏ">
+                        <Button
+                          shape="circle"
+                          icon={<CloseOutlined />}
+                          onClick={() => {
+                           
+                          }}
+                        />
+                      </Tooltip>
+                    </List.Item>
+                  )}
+                />
+              </Space>
+            </TabPane>
+          </Tabs>
         </Space>
 
         <div style={{ position: "absolute", bottom: "-10px", right: "15%" }}>

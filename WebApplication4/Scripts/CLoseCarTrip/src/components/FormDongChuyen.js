@@ -79,7 +79,6 @@ function FormDongChuyen({ selectedData }) {
     message.error("Tạo thất bại")
   }
   const CreateTrip = () => {
-    console.log(dataTripCreated)
     var isValid = true;
     Object.keys(dataTripCreated.Transport).map(key => {
       if (dataTripCreated.Transport[key] == "")
@@ -126,9 +125,7 @@ function FormDongChuyen({ selectedData }) {
       </Select>
     );
   };
-  const handleTaoChuyen = () => {
-    
-  }
+
   const createNewTrip = () => {
     return (
       <div>

@@ -29,7 +29,6 @@ export const getImportList = async(data, loadingFail) => {
         ToDate: data.endDate + " 23:59:00",
         Data: "",
     });
-    console.log(dataImport);
     let token = await GetToken();
     let res = await fetch(`${HOST_SHIPMENT}/api/im-export/get-import`, {
         method: "POST",
@@ -59,7 +58,6 @@ export const getImportList = async(data, loadingFail) => {
 
 export const CreateTripApi = async(data, successFunc,erroFunc) => {
     let dataImport = JSON.stringify(data);
-    console.log(dataImport);
     let token = await GetToken();
     let res = await fetch(`${HOST_SHIPMENT}/api/transport/add`, {
         method: "POST",
@@ -108,30 +106,85 @@ export const getDetailImExport = async(data) => {
     }
 };
 
-export const getCountryAll = async() => {
-    const res = await fetch(`${HOST_CATEGORY}/api/Country/GetAllCountry`);
+export const getTransportList = async(data, loadingFail) => {
+    let dataImport = JSON.stringify({
+        Type: "TRANSPORT_GET_ALL",
+        FromDate: data.startDate,
+        ToDate: data.endDate + " 23:59:00",
+        Data: "",
+    });
+    let token = await GetToken();
+    let res = await fetch(`${HOST_SHIPMENT}/api/transport/get`, {
+        method: "POST",
 
-    return await res.json();
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: dataImport,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        var res_ = res.RESPONSES;
+        loadingFail();
+        if (res_) {
+            let res__ = res_.map((x) => ({...x, key: x.ID }));
+            return res__;
+        }
+
+        return res_;
+    } else {
+        loadingFail();
+        return null;
+    }
 };
 
-export const getCity = async(countryCode) => {
-    let res = await fetch(`${HOST_CATEGORY}/api/City/GetAllCityByCountryCode?CountryCode=${countryCode}`);
+export const getDetailTransport = async(data) => {
+    let token = await GetToken();
+    let dataJson = JSON.stringify(data);
+    let res = await fetch(`${HOST_SHIPMENT}/api/transport/get-detail`, {
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: dataJson,
+    });
     res = await res.json();
-    return await res.responses;
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        var res_ = res.RESPONSES;
+
+        if (res_) {
+            let res__ = res_.map((x) => ({...x, key: x.ID }));
+            return res__;
+        }
+
+        return res_;
+    } else {
+        return null;
+    }
 };
 
-export const getDistrict = async(countryCode, cityCode) => {
-    let res = await fetch(
-        `${HOST_CATEGORY}/api/District/GetAllDistrictByCityCountryCode?CityCode=${cityCode}&CountryCode=${countryCode}`
-    );
-    res = await res.json();
-    return await res.responses;
-};
+export const updateTransportState = async(data, successFunc, errorFuc, onCancel = () => {}) => {
+    let token = await GetToken();
+    let dataJson = JSON.stringify(data);
+    let res = await fetch(`${HOST_SHIPMENT}/api/transport/update-state`, {
+        method: "POST",
 
-export const getWard = async(countryCode, cityCode, districtCode) => {
-    let res = await fetch(
-        `${HOST_CATEGORY}/api/Ward/GetAllWardByDistrictCityCountryCode?DistrictCode=${districtCode}&CityCode=${cityCode}&CountryCode=${countryCode}`
-    );
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: dataJson,
+    });
     res = await res.json();
-    return await res.responses;
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        successFunc();
+        onCancel();
+        return res;
+    } else {
+        errorFuc();
+        return null;
+    }
 };

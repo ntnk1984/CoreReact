@@ -1,7 +1,7 @@
 import { Col, Row, Space, Table, Tag, Typography, DatePicker, Button, Modal } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { getImportList } from "../Service";
+import { getDetailTransport, getImportList } from "../Service";
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import FormDongChuyen from "./FormDongChuyen";
 
@@ -53,6 +53,7 @@ function TableImportList(props) {
     let res = await getImportList(date, load);
     setImportLists(res);
   };
+
   const columns = [
     {
       title: "Mã phiếu",

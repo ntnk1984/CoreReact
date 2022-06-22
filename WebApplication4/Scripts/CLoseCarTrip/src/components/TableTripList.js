@@ -1,12 +1,11 @@
-import { Tabs, Table, Tag, Typography, DatePicker, Button, Modal } from "antd";
+import { Tabs, Table, Row, Col, Tag, Typography, DatePicker, Button, Modal } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import FormReady from "./FormReady";
 import FormInTransit from "./FormInTransit";
 import FormDoneTransit from "./FormDoneTransit";
-//import { getImportList } from "../Service";
-
-
+import { getTransportList } from "../Service";
+import { getDetailTransport } from "../Service";
 
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 const { TabPane } = Tabs;
@@ -14,64 +13,63 @@ const { TabPane } = Tabs;
 const { Text } = Typography;
 const { RangePicker } = DatePicker;
 function TableTripList(props) {
-  const [selectedData, setSelectedData] = useState([]);
-  //const [importLists, setImportLists] = useState([]);
+  const [transportLists, setTransportLists] = useState([]);
+  const [detailTransports, setDetailTransports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isVisibleShowModal, setIsVisibleShowModal] = useState(false); //modal
   const [dataRenderTable, setDataRenderTable] = useState();
   const [tabPaneStatus, setTabPaneStatus] = useState("ALL");
 
-  const transports = [
-  {
-    "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
-    "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
-    "CODE": "VCFEHBEIEF",
-    "VEHICLENO": "51B-00723",
-    "VEHICLETYPE": "TRUCK",
-    "TONNAGE": 20,
-    "TIMESTART": "2022-06-25T14:00:00",
-    "STATUS": "TRANSPORT_SUCCESS",
-    "FIRSTPOINT": "HCM",
-    "ENDPOINT": "HN",
-    "ROUTE": "HCM-HN",
-    "DRIVERINFO": "",
-    "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-    "CREATEDTIME": "2022-06-20T14:33:27.885662"
-  },
-  {
-    "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
-    "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
-    "CODE": "VCFEHBEIEE",
-    "VEHICLENO": "51B-00723",
-    "VEHICLETYPE": "TRUCK",
-    "TONNAGE": 20,
-    "TIMESTART": "2022-06-25T14:00:00",
-    "STATUS": "TRANSPORT_ONPROCESS",
-    "FIRSTPOINT": "HCM",
-    "ENDPOINT": "HN",
-    "ROUTE": "HCM-HN",
-    "DRIVERINFO": "",
-    "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-    "CREATEDTIME": "2022-06-20T14:33:27.885662"
-  },
-  {
-    "ID": "b2db042d-127e-4c85-b5aa-edb0578c12da",
-    "key": "b2db042d-127e-4c85-b5aa-edb0578c12da",
-    "CODE": "VCRDIRCBEW",
-    "VEHICLENO": "51B-99999",
-    "VEHICLETYPE": "TRUCK",
-    "TONNAGE": 30,
-    "TIMESTART": "2022-06-30T16:46:29",
-    "STATUS": "TRANSPORT_DRAFT",
-    "FIRSTPOINT": "HCM",
-    "ENDPOINT": "HN",
-    "ROUTE": "HCM-HN",
-    "DRIVERINFO": "",
-    "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-    "CREATEDTIME": "2022-06-20T16:46:32.438094"
-  },
-  ];
+  // const transports = [
+  // {
+  //   "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
+  //   "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
+  //   "CODE": "VCFEHBEIEF",
+  //   "VEHICLENO": "51B-00723",
+  //   "VEHICLETYPE": "TRUCK",
+  //   "TONNAGE": 20,
+  //   "TIMESTART": "2022-06-25T14:00:00",
+  //   "STATUS": "TRANSPORT_SUCCESS",
+  //   "FIRSTPOINT": "HCM",
+  //   "ENDPOINT": "HN",
+  //   "ROUTE": "HCM-HN",
+  //   "DRIVERINFO": "",
+  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
+  //   "CREATEDTIME": "2022-06-20T14:33:27.885662"
+  // },
+  // {
+  //   "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
+  //   "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
+  //   "CODE": "VCFEHBEIEE",
+  //   "VEHICLENO": "51B-00723",
+  //   "VEHICLETYPE": "TRUCK",
+  //   "TONNAGE": 20,
+  //   "TIMESTART": "2022-06-25T14:00:00",
+  //   "STATUS": "TRANSPORT_ONPROCESS",
+  //   "FIRSTPOINT": "HCM",
+  //   "ENDPOINT": "HN",
+  //   "ROUTE": "HCM-HN",
+  //   "DRIVERINFO": "",
+  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
+  //   "CREATEDTIME": "2022-06-20T14:33:27.885662"
+  // },
+  // {
+  //   "ID": "b2db042d-127e-4c85-b5aa-edb0578c12da",
+  //   "key": "b2db042d-127e-4c85-b5aa-edb0578c12da",
+  //   "CODE": "VCRDIRCBEW",
+  //   "VEHICLENO": "51B-99999",
+  //   "VEHICLETYPE": "TRUCK",
+  //   "TONNAGE": 30,
+  //   "TIMESTART": "2022-06-30T16:46:29",
+  //   "STATUS": "TRANSPORT_DRAFT",
+  //   "FIRSTPOINT": "HCM",
+  //   "ENDPOINT": "HN",
+  //   "ROUTE": "HCM-HN",
+  //   "DRIVERINFO": "",
+  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
+  //   "CREATEDTIME": "2022-06-20T16:46:32.438094"
+  // },
+  // ];
 
   // day time
   let prev15now = new Date(Date.now() - 1296000000);
@@ -90,28 +88,37 @@ function TableTripList(props) {
       }));
   };
   // / end
-//   const loadingStateFail = () => {
-//     setLoading(false);
-//   };
-//   const loadingStateTrue = () => {
-//     setLoading(true);
-//   };
-//   async function getImportLists(loadingFail) {
-//     let res = await getImportList(date, loadingFail);
-//     setImportLists(res);
-//   }
-//   useEffect(() => {
-//     loadingStateTrue();
-//     getImportLists(loadingStateFail);
-//   }, []);
-//   const load = () => {
-//     setIsLoading(false);
-//   };
-//   const fetchDataTable = async () => {
-//     setIsLoading(true);
-//     let res = await getImportList(date, load);
-//     setImportLists(res);
-//   };
+  //get transport
+  const loadingStateFail = () => {
+    setLoading(false);
+  };
+  const loadingStateTrue = () => {
+    setLoading(true);
+  };
+  async function getTransportLists(loadingFail) {
+    let res = await getTransportList(date, loadingFail);
+    setTransportLists(res);
+  }
+  useEffect(() => {
+    loadingStateTrue();
+    getTransportLists(loadingStateFail);
+  }, []);
+  const load = () => {
+    setIsLoading(false);
+  };
+  const fetchDataTable = async () => {
+    setIsLoading(true);
+    let res = await getTransportList(date, load);
+    setTransportLists(res);
+  };
+  //get detail transport
+  const getDetailTransports = async (record) => {
+    let ID = record.ID;
+    const res = await getDetailTransport({ ID : ID });
+    if (res)
+    setDetailTransports(res);
+  };
+
   const columns = [
     {
       title: "Mã chuyến",
@@ -148,14 +155,14 @@ function TableTripList(props) {
       title: "Ngày tạo",
       dataIndex: "CREATEDTIME",
       width: "auto",
-      // render: (text, record) => (
-      //   <Row>
-      //     <Col span={24}>{record.CREATEDDATE.toString().split("T")[0]}</Col>
-      //     <Col span={24}>
-      //       <Text disabled>{record.CREATEDDATE.toString().split("T")[1]}</Text>
-      //     </Col>
-      //   </Row>
-      // ),
+      render: (text, record) => (
+        <Row>
+          <Col span={24}>{record.CREATEDTIME.toString().split("T")[0]}</Col>
+          <Col span={24}>
+            <Text disabled>{record.CREATEDTIME.toString().split("T")[1]}</Text>
+          </Col>
+        </Row>
+      ),
     },
     {
       title: "Xem thêm",
@@ -169,10 +176,13 @@ function TableTripList(props) {
 
             if (record.STATUS === "TRANSPORT_DRAFT") {
               ShowReadyForm();
+              getDetailTransports(record);
             } else if (record.STATUS === "TRANSPORT_ONPROCESS") {
               ShowInTransitForm();
-            } else if (record.STATUS === "TRANSPORT_SUCCESS") {
+              getDetailTransports(record);
+            } else {
               ShowDoneForm();
+              getDetailTransports(record);
             }
           }}
         >
@@ -223,14 +233,11 @@ function TableTripList(props) {
           />
         </div>
       }
-      {/* <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
+      <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
         {isLoading ? <LoadingOutlined /> : <ReloadOutlined onClick={fetchDataTable} />}
-      </div> */}
+      </div>
     </div>
   );
-  const HandleSetSelectedData = (key, obj) => {
-    setSelectedData(obj);
-  };
 
   const tableColumns = columns.map((item) => ({ ...item, ellipsis: true, align: "center" }));
   const tableProps = {
@@ -239,12 +246,6 @@ function TableTripList(props) {
     size: "middle",
     title: defaultTitle,
     showHeader: true,
-    rowSelection: {
-      selectedRowKeys: selectedData.map((x) => x.key),
-      onChange: (key, obj) => {
-        HandleSetSelectedData(key, obj);
-      },
-    },
     tableLayout: "unset",
   };
   //Modal
@@ -266,13 +267,11 @@ function TableTripList(props) {
     setIsDoneTransitFormShow(true);
   };
   const HandleClose = () => {
-    setIsVisibleShowModal(false);
-    setSelectedData([]);
     setIsReadyFormShow(false);
     setIsInTransitFormShow(false);
     setIsDoneTransitFormShow(false);
   };
-  //End Modal
+  
   return (
     <div>
       <Table
@@ -281,8 +280,7 @@ function TableTripList(props) {
           position: ["bottomRight"],
         }}
         columns={tableColumns}
-        //dataSource={importLists}
-        dataSource={tabPaneStatus === "ALL" ? transports : transports.filter((x) => x.STATUS == tabPaneStatus)}
+        dataSource={tabPaneStatus === "ALL" ? transportLists : transportLists.filter((x) => x.STATUS == tabPaneStatus)}
         scroll={{ y: 700 }}
       />
       <Modal 
@@ -294,6 +292,7 @@ function TableTripList(props) {
         footer={false}
       >
         <FormReady
+          detailList={detailTransports}
           dataTable={dataRenderTable}
           onCancel={HandleClose}
         />
@@ -307,6 +306,7 @@ function TableTripList(props) {
         footer={false}
       >
         <FormInTransit
+          detailList={detailTransports}
           dataTable={dataRenderTable}
           onCancel={HandleClose}
         />
@@ -320,6 +320,7 @@ function TableTripList(props) {
         footer={false}
       >
         <FormDoneTransit
+          detailList={detailTransports}
           dataTable={dataRenderTable}
           onCancel={HandleClose}
         />

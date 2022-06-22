@@ -7,7 +7,7 @@ const { TabPane } = Tabs;
 const ManageTrip = () => {
   return (
     <>
-        <Tabs tabPosition="left">
+      <Tabs tabPosition="left">
         <TabPane tab="Danh sách phiếu" key="0">
           <TableImportList />
         </TabPane>
