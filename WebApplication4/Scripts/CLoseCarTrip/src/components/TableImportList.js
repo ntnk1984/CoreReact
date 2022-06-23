@@ -1,8 +1,8 @@
-import { Col, Row, Space, Table, Tag, Typography, DatePicker, Button, Modal } from "antd";
+import { Col, Row, Space, Table, Tag, Typography, DatePicker, Button, Modal, Tooltip } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { getDetailTransport, getImportList } from "../Service";
-import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import { getImportList } from "../Service";
+import { LoadingOutlined, ReloadOutlined, CarOutlined } from "@ant-design/icons";
 import FormDongChuyen from "./FormDongChuyen";
 
 const { Text } = Typography;
@@ -102,7 +102,6 @@ function TableImportList(props) {
         <Tag
           color={"green"}
           onClick={() => {
-            console.log(record);
           }}
         >
           Chi tiết
@@ -117,22 +116,24 @@ function TableImportList(props) {
         display: "flex",
         justifyContent: "space-between",
         padding: ".8rem 10% .8rem .8rem",
-        fontWeight: "bold",
         position: "relative",
       }}
     >
-      <div>
-        <label style={{ color: "", fontWeight: "600", paddingRight: "20px" }} htmlFor="dateTime">
-          Khoảng thời gian:
-        </label>
-        <RangePicker
-          id="dateTime"
-          defaultValue={[moment(`${date.startDate}`, "YYYY-MM-DD"), moment(`${date.endDate}`, "YYYY-MM-DD")]}
-          onChange={OnSelectDateChange}
-        />
+      <div style={{ display: "flex", gap: "1.2rem" }}>
+        <CarOutlined style={{ fontSize: "2rem", color: "#8c8c8c" }} />
+        <h4 style={{ lineHeight: 1.5, color: "#8c8c8c" }}>
+        Danh sách chuyến xe
+        </h4>
       </div>
-      {
-        <div>
+      <Space>
+          <label style={{ color: "", fontWeight: "600", paddingRight: "20px" }} htmlFor="dateTime">
+            Khoảng thời gian:
+          </label>
+          <RangePicker
+            id="dateTime"
+            defaultValue={[moment(`${date.startDate}`, "YYYY-MM-DD"), moment(`${date.endDate}`, "YYYY-MM-DD")]}
+            onChange={OnSelectDateChange}
+          />
           <Button
             onClick={() => setIsVisibleShowModal(true)}
             type="primary"
@@ -140,18 +141,29 @@ function TableImportList(props) {
           >
             Đóng chuyến
           </Button>
-        </div>
-      }
-      <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
-        {isLoading ? <LoadingOutlined /> : <ReloadOutlined onClick={fetchDataTable} />}
-      </div>
-    </div>
+          <Tooltip title="Tải lại">
+            {isLoading ? 
+            <Button
+            //onClick={ReloadData}
+            type="primary"
+            shape="circle"
+            icon={<LoadingOutlined />}
+          /> : 
+          <Button
+            //onClick={ReloadData}
+            type="primary"
+            shape="circle"
+            icon={<ReloadOutlined onClick={fetchDataTable}/>}
+          />
+            }
+          </Tooltip>
+      </Space>
+    </div> 
   );
   const HandleSetSelectedData = (key, obj) => {
     setSelectedData(obj);
   };
-  ///
-  // console.log(selectedData);
+
   const tableColumns = columns.map((item) => ({ ...item, ellipsis: true, align: "center" }));
   const tableProps = {
     bordered: true,
@@ -171,7 +183,6 @@ function TableImportList(props) {
   const HandleClose = () => {
     setIsVisibleShowModal(false);
     setSelectedData([]);
-    console.log("close");
   };
   const deleteData = (item) => {
     let newData = [...selectedData];

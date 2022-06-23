@@ -4,18 +4,14 @@ import "./Style/FromDongChuyen.css";
 const { TabPane } = Tabs;
 
 const FormDoneTransit = ({ dataTable, onCancel, detailList }) => {
-  const dateFormat = "DD/MM/YYYY";
-  const [orders, setOrders] = useState();
 
-  const [data, setData] = useState(orders);
+  const [data, setData] = useState();
   const [visible, setVisible] = useState(false);
-  // console.log(dataTable, " component C");
-  // table
-  // useEffect(() => {
-  //   setOrders(detailList);
-  //   setData(detailList);
-  //   console.log("1");
-  // }, [detailList]);
+
+  useEffect(() => {
+    setData(detailList.filter(x => x.STATUS=="IMPORT_WAITING"));
+  }, [detailList]);
+
   const columns = [
     {
       title: "Mã phiếu",
@@ -44,7 +40,7 @@ const FormDoneTransit = ({ dataTable, onCancel, detailList }) => {
       width: "20%",
     },
   ];
-  const defaultTitle = () => <h4>Danh sách phiếu</h4>;
+  const defaultTitle = () => <h4>Danh sách phiếu đã xử lý</h4>;
   // end table
   const column = columns.map((item) => ({ ...item, ellipsis: true }));
   const props = {
@@ -77,6 +73,8 @@ const FormDoneTransit = ({ dataTable, onCancel, detailList }) => {
     onCancel();
   };
 
+  const driver = JSON.parse(dataTable.DRIVERINFO)
+
   return (
     <>
       <Space
@@ -94,35 +92,35 @@ const FormDoneTransit = ({ dataTable, onCancel, detailList }) => {
             <TabPane tab="Thông tin chuyến" key="1">
               <Card style={{ width: "100%" }}>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.CODE} name="Code" addonBefore="Mã chuyến " />
+                  <Input disabled value={dataTable.CODE} name="Code" addonBefore="Mã chuyến " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.VEHICLETYPE} name="VehicleType" addonBefore="Loại phương tiện " />
+                  <Input disabled value={dataTable.VEHICLETYPE} name="VehicleType" addonBefore="Loại phương tiện " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.VEHICLENO} name="VehicleNo" addonBefore="Số hiệu phương tiện " />
+                  <Input disabled value={dataTable.VEHICLENO} name="VehicleNo" addonBefore="Số hiệu phương tiện " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.TONNAGE} name="Tonnage" addonBefore="Trọng tải " />
+                  <Input disabled value={dataTable.TONNAGE} name="Tonnage" addonBefore="Trọng tải " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.ROUTE} name="Route" addonBefore="Lộ trình " />
+                  <Input disabled value={dataTable.ROUTE} name="Route" addonBefore="Lộ trình " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.CREATEDTIME} name="CreatedTime" addonBefore="Ngày tạo " />
+                  <Input disabled value={dataTable.CREATEDTIME} name="CreatedTime" addonBefore="Ngày tạo " />
                 </div>
               </Card>
             </TabPane>
             <TabPane tab="Thông tin tài xế" key="2">
               <Card style={{ width: "100%" }}>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.NAME} name="DriverName" addonBefore="Họ tên" />
+                  <Input disabled value={driver.Name} name="DriverName" addonBefore="Họ tên" />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.PHONE} name="Phone" addonBefore="Số điện thoại " />
+                  <Input disabled value={driver.Phone} name="Phone" addonBefore="Số điện thoại " />
                 </div>
                 <div style={{ width: "100%", paddingBottom: "15px" }}>
-                  <Input value={dataTable.IDENTIFYCARDNO} name="IdentifyCardNo" addonBefore="CMND/CCCD " />
+                  <Input disabled value={driver.IdentifyCardNo} name="IdentifyCardNo" addonBefore="CMND/CCCD " />
                 </div>
               </Card>
             </TabPane>

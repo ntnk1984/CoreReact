@@ -114,7 +114,7 @@ function FormDongChuyen({ selectedData }) {
         }}
       >
         {routeCar.map((item, index) => {
-          let name = `Tài xế: ${item.PRIVERINFO.NAME} - BSX: ${item.VEHICLENO} - Trọng tải:  ${item.TONNAGE} - Tuyến: ${item.ROUTE} `;
+          let name = `Tài xế: ${item.DRIVERINFO.NAME} - BSX: ${item.VEHICLENO} - Trọng tải:  ${item.TONNAGE} - Tuyến: ${item.ROUTE} `;
           let value = `${item.ROUTE}  `;
           return (
             <Select.Option key={index} value={value}>

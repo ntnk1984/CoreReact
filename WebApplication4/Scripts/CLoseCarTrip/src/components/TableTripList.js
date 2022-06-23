@@ -1,4 +1,4 @@
-import { Tabs, Table, Row, Col, Tag, Typography, DatePicker, Button, Modal } from "antd";
+import { Tabs, Table, Row, Col, Tag, Typography, DatePicker, Button, Modal, Tooltip, Space } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import FormReady from "./FormReady";
@@ -7,7 +7,7 @@ import FormDoneTransit from "./FormDoneTransit";
 import { getTransportList } from "../Service";
 import { getDetailTransport } from "../Service";
 
-import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import { LoadingOutlined, ReloadOutlined, CarOutlined } from "@ant-design/icons";
 const { TabPane } = Tabs;
 
 const { Text } = Typography;
@@ -19,57 +19,6 @@ function TableTripList(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [dataRenderTable, setDataRenderTable] = useState();
   const [tabPaneStatus, setTabPaneStatus] = useState("ALL");
-
-  // const transports = [
-  // {
-  //   "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
-  //   "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2706",
-  //   "CODE": "VCFEHBEIEF",
-  //   "VEHICLENO": "51B-00723",
-  //   "VEHICLETYPE": "TRUCK",
-  //   "TONNAGE": 20,
-  //   "TIMESTART": "2022-06-25T14:00:00",
-  //   "STATUS": "TRANSPORT_SUCCESS",
-  //   "FIRSTPOINT": "HCM",
-  //   "ENDPOINT": "HN",
-  //   "ROUTE": "HCM-HN",
-  //   "DRIVERINFO": "",
-  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-  //   "CREATEDTIME": "2022-06-20T14:33:27.885662"
-  // },
-  // {
-  //   "ID": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
-  //   "key": "84e1295c-7225-4b4f-9d46-8be8b0fe2705",
-  //   "CODE": "VCFEHBEIEE",
-  //   "VEHICLENO": "51B-00723",
-  //   "VEHICLETYPE": "TRUCK",
-  //   "TONNAGE": 20,
-  //   "TIMESTART": "2022-06-25T14:00:00",
-  //   "STATUS": "TRANSPORT_ONPROCESS",
-  //   "FIRSTPOINT": "HCM",
-  //   "ENDPOINT": "HN",
-  //   "ROUTE": "HCM-HN",
-  //   "DRIVERINFO": "",
-  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-  //   "CREATEDTIME": "2022-06-20T14:33:27.885662"
-  // },
-  // {
-  //   "ID": "b2db042d-127e-4c85-b5aa-edb0578c12da",
-  //   "key": "b2db042d-127e-4c85-b5aa-edb0578c12da",
-  //   "CODE": "VCRDIRCBEW",
-  //   "VEHICLENO": "51B-99999",
-  //   "VEHICLETYPE": "TRUCK",
-  //   "TONNAGE": 30,
-  //   "TIMESTART": "2022-06-30T16:46:29",
-  //   "STATUS": "TRANSPORT_DRAFT",
-  //   "FIRSTPOINT": "HCM",
-  //   "ENDPOINT": "HN",
-  //   "ROUTE": "HCM-HN",
-  //   "DRIVERINFO": "",
-  //   "CREATEDUSER": "0200aa2f-15d5-4c31-96d4-54e5ebac7261",
-  //   "CREATEDTIME": "2022-06-20T16:46:32.438094"
-  // },
-  // ];
 
   // day time
   let prev15now = new Date(Date.now() - 1296000000);
@@ -110,6 +59,7 @@ function TableTripList(props) {
     setIsLoading(true);
     let res = await getTransportList(date, load);
     setTransportLists(res);
+    return res
   };
   //get detail transport
   const getDetailTransports = async (record) => {
@@ -144,17 +94,17 @@ function TableTripList(props) {
     {
         title: "Lộ trình",
         dataIndex: "ROUTE",
-        width: "auto",
+        width: "20%",
     },
     {
         title: "Trạng thái",
         dataIndex: "STATUS",
-        width: "auto",
+        width: "15%",
     },
     {
       title: "Ngày tạo",
       dataIndex: "CREATEDTIME",
-      width: "auto",
+      width: "10%",
       render: (text, record) => (
         <Row>
           <Col span={24}>{record.CREATEDTIME.toString().split("T")[0]}</Col>
@@ -167,7 +117,7 @@ function TableTripList(props) {
     {
       title: "Xem thêm",
       key: "action",
-      width: "auto",
+      width: "10%",
       render: (_, record) => (
         <Tag
           color={"green"}
@@ -201,28 +151,13 @@ function TableTripList(props) {
         position: "relative",
       }}
     >
-      <div>
-        <Tabs onChange={(e) => setTabPaneStatus(e)}>
-          <TabPane 
-            tab="Tất cả" 
-            key="ALL">
-          </TabPane>
-          <TabPane
-            tab="Mới tạo" 
-            key="TRANSPORT_DRAFT">
-          </TabPane>
-          <TabPane
-            tab="Đang thực hiện" 
-            key="TRANSPORT_ONPROCESS">
-          </TabPane>
-          <TabPane
-            tab="Kết thúc" 
-            key="TRANSPORT_SUCCESS">
-          </TabPane>
-        </Tabs>
+      <div style={{ display: "flex", gap: "1.2rem" }}>
+        <CarOutlined style={{ fontSize: "2rem", color: "#8c8c8c" }} />
+        <h4 style={{ lineHeight: 1.5, color: "#8c8c8c" }}>
+        Danh sách chuyến xe
+        </h4>
       </div>
-      {
-        <div>
+      <Space>
           <label style={{ color: "", fontWeight: "600", paddingRight: "20px" }} htmlFor="dateTime">
             Khoảng thời gian:
           </label>
@@ -231,11 +166,21 @@ function TableTripList(props) {
             defaultValue={[moment(`${date.startDate}`, "YYYY-MM-DD"), moment(`${date.endDate}`, "YYYY-MM-DD")]}
             onChange={OnSelectDateChange}
           />
-        </div>
-      }
-      <div style={{ position: "absolute", top: "50%", right: "5%", transform: "translateY(-50%)" }}>
-        {isLoading ? <LoadingOutlined /> : <ReloadOutlined onClick={fetchDataTable} />}
-      </div>
+          <Tooltip title="Tải lại">
+            {isLoading ? 
+            <Button
+            type="primary"
+            shape="circle"
+            icon={<LoadingOutlined />}
+          /> : 
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<ReloadOutlined onClick={fetchDataTable}/>}
+          />
+            }
+          </Tooltip>
+      </Space>
     </div>
   );
 
@@ -274,6 +219,24 @@ function TableTripList(props) {
   
   return (
     <div>
+      <Tabs onChange={(e) => setTabPaneStatus(e)}>
+          <TabPane 
+            tab={`Tất cả (${transportLists.length})`}
+            key="ALL">
+          </TabPane>
+          <TabPane
+            tab={`Mới tạo (${transportLists.filter(x => x.STATUS=="TRANSPORT_DRAFT").length})`}
+            key="TRANSPORT_DRAFT">
+          </TabPane>
+          <TabPane
+            tab={`Đang thực hiện (${transportLists.filter(x => x.STATUS=="TRANSPORT_ONPROCESS").length})`}
+            key="TRANSPORT_ONPROCESS">
+          </TabPane>
+          <TabPane
+            tab={`Kết thúc (${transportLists.filter(x => x.STATUS=="TRANSPORT_SUCCESS").length})`}
+            key="TRANSPORT_SUCCESS">
+          </TabPane>
+        </Tabs>
       <Table
         {...tableProps}
         pagination={{
@@ -300,7 +263,6 @@ function TableTripList(props) {
       <Modal
         title="Chuyến đang thực hiện"
         width="80%"
-        height="auto" 
         visible={IsInTransitFormShow}
         onCancel={HandleClose}
         footer={false}
