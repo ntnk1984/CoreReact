@@ -1,26 +1,8 @@
-import {
-  Tooltip,
-  Card,
-  Divider,
-  List,
-  Typography,
-  Space,
-  Button,
-  Select,
-  Table,
-  Row,
-  Col,
-  Badge,
-  Skeleton,
-} from "antd";
-import { useState, useEffect } from "react";
-import moment from "moment";
-import { getDetailImExport, getImportList } from "../Service";
-import { LoadingOutlined, ReloadOutlined, CloseOutlined } from "@ant-design/icons";
-import Multiselect from "multiselect-react-dropdown";
+import { Badge, Button, Card, Col, Divider, Row, Skeleton, Space, Table, Typography } from "antd";
+import { useState } from "react";
+import { CloseOutlined } from "@ant-design/icons";
 import "./WarehouseD.css";
 const { Text } = Typography;
-const { Option } = Select;
 
 const orders = [
   {
@@ -147,9 +129,7 @@ const orders = [
     warehouse: "WH01",
   },
 ];
-const handleChange = (value) => {
-  console.log(`selected ${value}`);
-};
+
 const WarehouseDivider = () => {
   const [data, setData] = useState(orders);
   const [selectedData, setSelectedData] = useState([]);
@@ -181,8 +161,8 @@ const WarehouseDivider = () => {
   const listOrderColumn = listOrderColumns.map((item) => ({ ...item, ellipsis: true }));
   const HandleSetSelectedData = (key, obj) => {
     setSelectedData(obj);
-    console.log(obj, " data");
   };
+  console.log(selectedData, " selectedData");
   const listOrderProps = {
     bordered: true,
     pagination: false,
@@ -200,34 +180,70 @@ const WarehouseDivider = () => {
   const loadDataZone = (idZone) => {
     const idx = zoneList.findIndex((item) => item.idZone === idZone);
     const tempZone = zoneList[idx];
-    selectedData?.map((item) => {
-      tempZone.accepTable.push({ ...item });
-    });
+    selectedData?.map((item) => tempZone.accepTable.push({ ...item }));
     zoneList.slice(idx, 1, tempZone);
     setZoneList([...zoneList]);
     const diff = data.filter((x) => !selectedData.includes(x));
-    // data.splice(idx, 1, diff);
+
     setData([...diff]);
+    setSelectedData([]);
   };
   const loadInfoZone = (value) => {
     setClassNameActive(value.idZone);
     setDetailZone(value);
   };
-
+  const closeDetail = () => {
+    setClassNameActive();
+    setDetailZone();
+  };
+  const handleSubmit = () => {
+    const temp = [];
+    zoneList.map((item) => {
+      if (item.accepTable.length) {
+        temp.push(item);
+      } else {
+        return temp;
+      }
+      return temp;
+    });
+    // Call Api Gửi temp
+    // postData(temp)
+    console.log(temp, "temp");
+  };
   return (
     <div>
       <Row gutter={[16]} style={{ margin: 0 }}>
-        <Col span={8}>
+        <Col xs={24} sm={24} md={10} lg={8}>
           <Card style={{ height: "100%" }}>
             <Divider orientation="left">Danh sách đơn</Divider>
             <Table {...listOrderProps} columns={listOrderColumn} dataSource={data} scroll={{ y: "75vh" }}></Table>
           </Card>
         </Col>
-        <Col span={16}>
+        <Col xs={24} sm={24} md={14} lg={16}>
           <Card style={{ height: "100%", border: "true" }}>
             <Row gutter={[16]}>
               <Col span={24}>
-                <Divider orientation="left">Kho PayNet</Divider>
+                <div>
+                  <Row style={{ alignItems: "center" }}>
+                    <Col span={18}>
+                      <Divider orientation="left">Kho PayNet</Divider>
+                    </Col>
+                    <Col span={6}>
+                      <Divider orientation="center">
+                        <Button
+                          type="primary"
+                          style={{ transition: "linear 0.3s" }}
+                          disabled={!zoneList.find((item) => item.accepTable.length !== 0)}
+                          onClick={() => {
+                            handleSubmit();
+                          }}
+                        >
+                          Xác Nhận
+                        </Button>
+                      </Divider>
+                    </Col>
+                  </Row>
+                </div>
 
                 <div className="customSpace" style={{ overflow: "auto", maxWidth: "100%", padding: "20px 5px " }}>
                   <Space style={{ width: "100%" }}>
@@ -235,7 +251,7 @@ const WarehouseDivider = () => {
                       return (
                         <Badge key={index} count={item.accepTable?.length}>
                           <Card
-                            className={classNameActive === item.idZone ? "active" : ""}
+                            className={classNameActive === item.idZone ? "active" : "unActive"}
                             style={{
                               textAlign: "center",
                               minWidth: "100%",
@@ -249,7 +265,10 @@ const WarehouseDivider = () => {
                             size="small"
                           >
                             <p>{item.zoneName || " kho tạm"}</p>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div
+                              className="btn-footer"
+                              style={{ display: "flex", justifyContent: "space-between", width: "100%" }}
+                            >
                               <Button
                                 type="link"
                                 style={{ marginTop: "10px" }}
@@ -262,7 +281,7 @@ const WarehouseDivider = () => {
                               </Button>
                               {selectedData.length ? (
                                 <Button
-                                  type="primary"
+                                  type="dashed"
                                   style={{ marginTop: "10px" }}
                                   onClick={() => {
                                     loadDataZone(item.idZone);
@@ -284,7 +303,17 @@ const WarehouseDivider = () => {
               <Col span={24}>
                 {detailZone ? (
                   <>
-                    <p>{detailZone?.zoneName}</p>
+                    <div className="detail-zone">
+                      <Row style={{ alignItems: "center", textAlign: "center" }}>
+                        <Col span={20}>
+                          {" "}
+                          <Divider orientation="left">Chi tiết khu {detailZone?.zoneName}</Divider>
+                        </Col>
+                        <Col span={4}>
+                          <CloseOutlined className="close-detail-zone" onClick={closeDetail} />
+                        </Col>
+                      </Row>
+                    </div>
                     <Skeleton />
                   </>
                 ) : (
