@@ -1,24 +1,170 @@
-import { Col, Divider, Form, Row, Select, Skeleton } from "antd";
+import { Button, Col, Divider, Form, message, Row, Select, Skeleton, Space, Table } from "antd";
 import React, { useContext, useEffect, useState } from "react";
-import { contextValue } from "../../App";
-
+import {
+  CheckOutlined,
+  CloseCircleFilled,
+  CloseOutlined,
+  EditOutlined,
+  HomeOutlined,
+  LoadingOutlined,
+  ReloadOutlined,
+  SelectOutlined,
+} from "@ant-design/icons";
+import ISO from "../../assets/huongdi.json";
+import { updateOrderShippingListApi } from "../../utils/Service";
 const { Option } = Select;
-function ZoneItems({ itemZoneChecked, editZoneItem }) {
-  const context = useContext(contextValue);
+function ZoneItems({ closeDetail, orderMapKey, itemZoneChecked, editZoneItem }) {
+  const [acceptOrderCityCodes, setAcceptOrderCityCodes] = useState(ISO);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+  const [itemValue, setItemValue] = useState([]);
+  //edit state
+  const [editDirection, setEditDirection] = useState(false);
+
+  //
   useEffect(() => {
     setItemValue(itemZoneChecked);
+    setEditDirection(false);
   }, [itemZoneChecked]);
-  const [itemValue, setItemValue] = useState(itemZoneChecked);
-  console.log(itemValue, "item vlue");
-  const [selectZoneType, setSelectZoneType] = useState();
-  const handleValue = () => {
-    editZoneItem("Nguyễn Đại Phúc");
+  useEffect(() => {
+    const dataTemp = orderMapKey[itemZoneChecked.CODE] || orderMapKey[itemZoneChecked];
+    if (dataTemp.length) {
+      const dataKey = dataTemp.map((item) => ({ ...item, key: item.ID }));
+      setData(dataKey);
+    } else {
+      setData([]);
+    }
+  }, [itemZoneChecked]);
+
+  const [selectAccepOrderCityCode, setSelectAccepOrderCityCode] = useState();
+
+  const editData = () => {};
+
+  const submitDataLocation = () => {
+    const objT = { ...itemValue, ACCEPTORDERCITYCODE: selectAccepOrderCityCode };
+
+    editZoneItem(objT);
+    setEditDirection(false);
+  };
+  const selectLocation = () => {
+    return (
+      <Select
+        mode="multiple"
+        defaultValue={itemValue.ACCEPTORDERCITYCODE.split(",")}
+        // allowClear
+        style={{
+          width: "100%",
+        }}
+        placeholder="Vui lòng chọn hướng"
+        onChange={(e) => {
+          let temp = e.join(",");
+          setSelectAccepOrderCityCode(temp);
+        }}
+      >
+        {acceptOrderCityCodes?.map((item, index) => {
+          return (
+            <Select.Option
+              // disabled={itemValue.ACCEPTORDERCITYCODE.split(",").includes(item.CODE)}
+              key={index}
+              value={item.CODE}
+            >
+              {item.NAME}
+            </Select.Option>
+          );
+        })}
+      </Select>
+    );
+  };
+  //Tab chi tiết đơn hàng có trong khu
+  const fetchDataTable = async () => {
+    setIsLoading(true);
+    // let res = await getImportList(date, load);
+    // setImportLists(res);
   };
 
-  const handleChange = (value) => {
-    setSelectZoneType(value);
-    console.log(`Selected: ${value}`);
+  const listOrderColumns = [
+    {
+      title: "Mã đơn",
+      dataIndex: "ORDERCODE",
+      width: "20%",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Địa chỉ gửi",
+      dataIndex: "SENDERADDRESS",
+      width: "20%",
+    },
+    {
+      title: "Địa chỉ nhận",
+      dataIndex: "RECEIVERADDRESS",
+      width: "20%",
+    },
+    {
+      title: "Khối lượng",
+      dataIndex: "WEIGHT",
+      width: "20%",
+    },
+  ];
+  const listOrderColumn = listOrderColumns.map((item) => ({ ...item, ellipsis: true, align: "center" }));
+  const HandleSetSelectedData = (e) => {
+    setSelectedData(e);
   };
+  ///Api
+  const succF = () => message.success("Cập nhật thành công");
+  const failF = () => message.error("Cập nhật thất bại");
+
+  const divisionArea = () => {
+    updateOrderShippingListApi(selectedData, succF, failF);
+  };
+  let locale = {
+    emptyText: () => <p style={{ fontWeight: "600", fontSize: "18px" }}>Khu trống</p>,
+  };
+  console.log(itemValue, "item value");
+  const defaultTitle = () => (
+    <>
+      <Space direction="horizonal" style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+        <Space>
+          <div style={{ display: "flex", gap: "1.2rem", fontWeight: "bold", paddingRight: "30px" }}>
+            <HomeOutlined style={{ fontSize: "1rem", color: "#8c8c8c" }} />
+            <span style={{ color: "#8c8c8c", fontWeight: "bold" }}>Mã Kho: {itemValue.WAREHOUSECODE}</span>
+          </div>
+        </Space>
+
+        <Space>
+          <Button
+            disabled={selectedData.length ? false : true}
+            hidden={itemValue != "null"}
+            onClick={divisionArea}
+            type="primary"
+          >
+            Phân Khu
+          </Button>
+
+          <Button
+            icon={isLoading ? <LoadingOutlined /> : <ReloadOutlined onClick={fetchDataTable} />}
+            onClick={fetchDataTable}
+            type="primary"
+          >
+            Tải lại
+          </Button>
+        </Space>
+      </Space>
+    </>
+  );
+
+  const listOrderProps = {
+    bordered: true,
+    pagination: false,
+    title: defaultTitle,
+    rowSelection: {
+      onChange: (e) => HandleSetSelectedData(e),
+    },
+    size: "middle",
+    showHeader: true,
+    tableLayout: "unset",
+  };
+  // end tab
   return (
     <div>
       <Row>
@@ -27,37 +173,77 @@ function ZoneItems({ itemZoneChecked, editZoneItem }) {
             Chi tiết khu
           </Divider>
         </Col>
-        <Col span={4}></Col>
+        <Col span={4} style={{ textAlign: "end" }}>
+          <CloseOutlined onClick={closeDetail} style={{ cursor: "pointer", fontSize: 24 }} />
+        </Col>
       </Row>
 
       <div>
-        <Row gutter={[32, 32]}>
+        <Row gutter={[16]}>
           <Col span={8}>
             <div>
-              <Skeleton active />
+              {/* <Skeleton active /> */}
+              <Row>
+                <Col span={6}>
+                  <p style={{ fontWeight: 600, fontSize: "1rem" }}>Tên Khu:</p>
+                </Col>
+                <Col span={18}>
+                  <p> {itemValue.NAME || "Kho đặc biệt"}</p>
+                </Col>
+
+                <Col span={6}>
+                  <p style={{ fontWeight: 600, fontSize: "1rem" }}>Hướng:</p>
+                </Col>
+                <Col span={18}>
+                  {editDirection ? (
+                    <Row style={{ textAlign: "center" }}>
+                      <Col span={22}>{selectLocation()}</Col>
+                      <Col span={2}>
+                        <CheckOutlined
+                          onClick={() => submitDataLocation()}
+                          style={{ fontSize: "18px", cursor: "pointer" }}
+                        />
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col span={22}>
+                        <p> {itemValue.ACCEPTORDERCITYCODE || "Tất Cả"}</p>
+                      </Col>
+                      <Col span={2}>
+                        <EditOutlined
+                          onClick={() => setEditDirection(true)}
+                          style={{ fontSize: "18px", cursor: "pointer" }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                </Col>
+
+                <Col span={6}>
+                  <p style={{ fontWeight: 600, fontSize: "1rem" }}>Sức chứa:</p>
+                </Col>
+                <Col span={18}>
+                  <p> {itemValue.CAPACITY || "+∞"}</p>
+                </Col>
+                {/* 
+                <Col span={6}>
+                  <p style={{ fontWeight: 600, fontSize: "1rem" }}>Đã chứa:</p>
+                </Col>
+                <Col span={18}>
+                  <p> {itemValue.STORED}</p>
+                </Col> */}
+              </Row>
             </div>
           </Col>
           <Col span={16}>
-            <Form>
-              <Form.Item name="loaiKhu" label="Loại Khu">
-                <Select
-                  mode="tags"
-                  size="middle"
-                  labelInValue="loại khu"
-                  placeholder="Please select"
-                  defaultValue={["KCB"]}
-                  onChange={handleChange}
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  <Option value="KL">Khu lạnh</Option>
-                  <Option value="KDN">Khu đồ nhẹ</Option>
-                  <Option value="KDV">Khu dễ vỡ</Option>
-                  <Option value="KCB">Khu chưa biết </Option>
-                </Select>
-              </Form.Item>
-            </Form>
+            <Table
+              locale={locale}
+              {...listOrderProps}
+              columns={listOrderColumn}
+              dataSource={data}
+              scroll={{ y: 200 }}
+            ></Table>
           </Col>
         </Row>
       </div>

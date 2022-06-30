@@ -1,0 +1,10 @@
+[{ "CODE": "VN-SG", "NAME": "Thành phố Hồ Chí Minh " },
+    { "CODE": "VN-HP", "NAME": "Hải Phòng" },
+    { "CODE": "VN-HN", "NAME": "Hà Nội" },
+    { "CODE": "VN-DN", "NAME": "Đà Nẵng" },
+    { "CODE": "VN-CT", "NAME": "Cần Thơ" },
+    { "CODE": "VN-26", "NAME": "Thừa Thiên-Huế" },
+    { "CODE": "VN-69", "NAME": "Thái Nguyên" },
+    { "CODE": "VN-33", "NAME": "Đắk Lắk" },
+    { "CODE": "VN-", "NAME": "Cà Mau" }
+]

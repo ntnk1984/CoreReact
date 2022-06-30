@@ -1,7 +1,9 @@
+import { Tabs } from "antd";
 import React, { useEffect, useReducer } from "react";
 import Domestic from "./components/Domestic";
+import CreateNewWareHouse from "./components/NewWareHouse";
 import "./components/Style/App.css";
-
+const { TabPane } = Tabs;
 export const contextValue = React.createContext();
 
 console.log(process.env.API);
@@ -39,21 +41,24 @@ export default function App() {
   };
   // modal signin
 
-  // useEffect(async () => {
-  //   // call API
-  //   let data_request = {
-  //     Action_data: "",
-  //     Action_type: "ALL",
-  //   };
-  //   // let response = await GetAccountApi(data_request);
-  // }, []);
-
   //Format XLSX to Json
   return (
     <contextValue.Provider value={store}>
       <div className="app-main " style={{ backgroundColor: "#F2F2F2", minHeight: "100vh" }}>
+        {/* <div className=" pt-4 " style={{ width: "90%", margin: "auto" }}>
+          <CreateNewWareHouse />
+        </div> */}
+
+        {/* test */}
         <div className=" pt-4 " style={{ width: "90%", margin: "auto" }}>
-          <Domestic />
+          <Tabs tabPosition="left">
+            <TabPane tab="Quản lí khu" key="1">
+              <Domestic />
+            </TabPane>
+            <TabPane tab="Tạo kho mới" key="2">
+              <CreateNewWareHouse />
+            </TabPane>
+          </Tabs>
         </div>
       </div>
     </contextValue.Provider>

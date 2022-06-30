@@ -1,9 +1,11 @@
+import GhepChuyen from "./components/GhepChuyen/GhepChuyen.jsx";
 import WarehouseDivider from "./components/WarehouseDivider.jsx";
 
 const ManageWarehouseOrderDivider = () => {
   return (
     <div style={{ paddingTop: "35px" }}>
-      <WarehouseDivider />
+      {/* <WarehouseDivider /> */}
+      <GhepChuyen />
     </div>
   );
 };
