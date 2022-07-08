@@ -36,11 +36,14 @@ function Domestic(props) {
       setLoading(false);
     }
 
-    console.log(res, "lisszone");
+    // console.log(res, "lisszone");
   }
   async function getListOrderShipping() {
     const res = await getOrderShippingListApi();
     setListOrder(res);
+  }
+  const fetchListOrder = () =>{
+    getListOrderShipping()
   }
   useEffect(() => {
     getArea();
@@ -212,6 +215,7 @@ function Domestic(props) {
                   orderMapKey={orderMapKey}
                   itemZoneChecked={itemZoneChecked}
                   editZoneItem={editZoneItem}
+                  fetchListOrder={fetchListOrder}
                 />
               </div>
             ) : (

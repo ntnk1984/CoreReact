@@ -74,6 +74,7 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
   };
 
   let childNode = children;
+  console.log(children, " childNode");
   if (editable) {
     childNode = editing ? (
       <Form.Item

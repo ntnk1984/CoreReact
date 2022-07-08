@@ -6,7 +6,7 @@ import "./components/Style/App.css";
 const { TabPane } = Tabs;
 export const contextValue = React.createContext();
 
-console.log(process.env.API);
+// console.log(process.env.API);
 const initialState = {
   storageList: [
     { id: 1, name: "Khu Hà Nội" },
@@ -45,11 +45,6 @@ export default function App() {
   return (
     <contextValue.Provider value={store}>
       <div className="app-main " style={{ backgroundColor: "#F2F2F2", minHeight: "100vh" }}>
-        {/* <div className=" pt-4 " style={{ width: "90%", margin: "auto" }}>
-          <CreateNewWareHouse />
-        </div> */}
-
-        {/* test */}
         <div className=" pt-4 " style={{ width: "90%", margin: "auto" }}>
           <Tabs tabPosition="left">
             <TabPane tab="Quản lí khu" key="1">

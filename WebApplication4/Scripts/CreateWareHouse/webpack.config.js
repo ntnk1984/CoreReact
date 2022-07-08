@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 let env = "";
 console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == "development  ") {
-    env = "./.deverlopment.env";
+    env = "./.development.env";
 } else {
     env = "./.production.env";
 }

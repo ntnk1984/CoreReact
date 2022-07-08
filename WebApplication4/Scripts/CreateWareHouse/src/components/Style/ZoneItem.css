@@ -1,0 +1,66 @@
+@-webkit-keyframes my {
+    0% {
+        color: #EB1D36;
+    }
+    50% {
+        color: #fff;
+    }
+    100% {
+        color: #F37878;
+    }
+}
+
+@-moz-keyframes my {
+    0% {
+        color: #EB1D36;
+    }
+    50% {
+        color: #fff;
+    }
+    100% {
+        color: #F37878;
+    }
+}
+
+@-o-keyframes my {
+    0% {
+        color: #EB1D36;
+    }
+    50% {
+        color: #fff;
+    }
+    100% {
+        color: #F37878;
+    }
+}
+
+@keyframes my {
+    0% {
+        color: #EB1D36;
+    }
+    50% {
+        color: #fff;
+    }
+    100% {
+        color: #F37878;
+    }
+}
+
+.test {
+    /* background:#3d3d3d; */
+    /* font-size: 24px;
+    font-weight: bold; */
+    -webkit-animation: my 700ms infinite;
+    -moz-animation: my 700ms infinite;
+    -o-animation: my 700ms infinite;
+    animation: my 700ms infinite;
+}
+
+.test::after {
+    content: " Khu đã đầy";
+    color: red;
+    -webkit-animation: my 3000ms infinite;
+    -moz-animation: my 3000ms infinite;
+    -o-animation: my 3000ms infinite;
+    animation: my 2000ms infinite ease-in;
+}

@@ -6,9 +6,6 @@ import { RexName, validate } from "../validate.js";
 import { SendOutlined } from "@ant-design/icons";
 import { getCity, getDistrict, getWard } from "../Service.js";
 
-// import { validate } from "../../utils/validate/validate";
-// import provinceData from "../../assets/local.json";
-
 const { Option } = Select;
 
 export default function CreateOrderOne() {
