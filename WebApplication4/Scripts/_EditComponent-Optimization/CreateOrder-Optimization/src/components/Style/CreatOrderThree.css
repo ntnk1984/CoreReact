@@ -1,0 +1,89 @@
+.creatOrderThree-Main {
+  /* position: relative;   */
+}
+.creatOrderThree-Main .form-orderThree .sizeForm-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.creatOrderThree-Main .form-orderThree .sizeForm-div .input-size {
+  width: 44px;
+  font-size: 10px;
+  
+}
+.creatOrderThree-Main .form-orderThree .sizeForm-div .ant-input {
+  padding: 5px 4px;
+  font-size: 12px;
+}
+
+.creatOrderThree-Main .form-orderThree .customs-font .ant-form-item-label > label  {
+  
+  font-size: 12px !important;
+}
+.creatOrderThree-Main  .btn-Submit{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.creatOrderThree-Main .ant-form-item {
+  font-size: 14px;
+  margin-bottom: 10px;
+  transition: none;
+}
+.creatOrderThree-Main .ant-form-vertical .ant-form-item-label{
+  padding: 0 0 2px;
+}
+.creatOrderThree-Main .ant-form-item-explain, .ant-form-item-extra {
+  font-size: 10px;
+  line-height: 1.5715;
+
+}
+.creatOrderThree-Main .ant-form-item-with-help .ant-form-item-explain {
+  position: absolute;
+  bottom: -50% ;
+  right: 0;
+  min-height: 15px;
+  text-align: end;
+}
+.creatOrderThree-Main .ant-form-item-has-error{
+  /* margin-bottom: 0px !important; */
+  position: relative;
+  
+}
+.creatOrderThree-Main .ant-form-item-has-success .ant-form-item-explain {
+  transition: none !important;
+  animation-name: nhanhoa;
+  animation-delay: 0s;
+  position: absolute;
+  /* opacity: 0; */
+  bottom: 0;
+  right: 0;
+  
+  z-index: 1;
+}
+.creatOrderThree-Main .ant-form-item-has-success {
+  z-index: 10;
+}
+.creatOrderThree-Main .showForm{
+  
+}
+@keyframes nhatnhoa {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.75;
+    background-color: blue;
+    font-size: 100px;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75%{
+    opacity: 0.25;
+  }
+  100%{
+    opacity: 0;
+  }
+}

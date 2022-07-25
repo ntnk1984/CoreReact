@@ -5,7 +5,7 @@ import { CloseCircleFilled, PlusOutlined } from "@ant-design/icons";
 import { contextValue } from "../../App";
 import "../Style/Domestic.css";
 import ZoneItems from "../ZoneItem";
-import { getAreaList, getOrderShippingListApi, updateAreaList } from "../../utils/Service";
+import { fetchShipmentId, getAreaList, getOrderShippingListApi, updateAreaList } from "../../utils/Service";
 
 function Domestic(props) {
   const [listZone, setListZone] = useState([]);
@@ -31,6 +31,7 @@ function Domestic(props) {
   async function getArea() {
     setLoading(true);
     const res = await getAreaList();
+    console.log(res);
     if (res) {
       setListZone(res);
       setLoading(false);
@@ -46,6 +47,7 @@ function Domestic(props) {
     getListOrderShipping()
   }
   useEffect(() => {
+    // fetchShipmentId();
     getArea();
     getListOrderShipping();
   }, []);

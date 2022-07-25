@@ -1,0 +1,96 @@
+.zone .ant-badge .ant-scroll-number-custom-component {
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0%;
+}
+
+.zone .active {
+    border-radius: 50px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    transition: all 0.3s linear;
+}
+
+.zone {
+    transition: all 0.3s linear;
+}
+
+.un-active {
+    transition: all 0.4s linear;
+}
+
+.create-new-box {
+    background-color: #f1f1f1;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+    text-align: center;
+    overflow: hidden;
+    /* width: 200px; */
+    min-width: 100%;
+    /* min-height: 250px; */
+    cursor: pointer;
+}
+
+
+/* .create-new-box::-webkit-scrollbar {
+    width: 5px;
+    padding: 20px 0;
+    border-radius: 30px;
+}
+
+.create-new-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.create-new-box::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.create-new-box::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} */
+
+.ant-breadcrumb ol {
+    flex-wrap: nowrap;
+    font-size: 20px;
+    /* border: initial ; */
+}
+
+.map-box {
+    background-color: #f1f1f1;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid #afabab;
+    border-radius: 10px;
+    color: #7F8487;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    /* min-height: 250px; */
+}
+
+
+/* ************************************************************************ */
+
+
+/* Custom library  */
+
+.option-warehouse .ant-input-number-group-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.option-warehouse .ant-input-group-wrapper {
+    width: 100%;
+}
+
+.option-warehouse .ant-input-group-addon:first-child {
+    width: 20%;
+}
+
+.option-warehouse .ant-input-number-group-addon:first-child {
+    width: 20%;
+}

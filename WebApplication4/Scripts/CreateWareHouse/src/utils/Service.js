@@ -21,6 +21,8 @@ export const GetToken = async() => {
         }
     }
 };
+
+
 export const getAreaList = async(data, loadingFail) => {
     let dataImport = JSON.stringify({
         Action_Type: "GET_ALL_AREA",

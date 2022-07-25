@@ -1,0 +1,33 @@
+{
+    "RECEIVEPROVINCE": [{
+            "NAME": "Hồ Chí Minh",
+            "CODE": "SG"
+        },
+        {
+            "NAME": "Hà Nội",
+            "CODE": "HN"
+        },
+        {
+            "NAME": "Đà Nẵng",
+            "CODE": "DN"
+        }
+    ],
+    "SERVICE": [{
+            "NAME": "Giao Hàng Nhanh",
+            "CODE": "GHN"
+        },
+        {
+            "NAME": "Giao Hàng Tiết Kiệm",
+            "CODE": "GHTK"
+        }
+    ],
+    "VULL": [{
+            "NAME": "Đông Lạnh",
+            "CODE": "DL"
+        },
+        {
+            "NAME": "Hàng Dễ Vỡ",
+            "CODE": "HDV"
+        }
+    ]
+}

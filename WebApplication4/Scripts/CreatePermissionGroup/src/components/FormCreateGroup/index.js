@@ -117,11 +117,8 @@ function CreatePermisGroup(props) {
             name="groupName"
             label="Tên nhóm"
             help={
-              formValidate.groupName ? (
-                <span style={{ color: "red", fontSize: "12px" }}>Vui lòng nhập tên nhóm</span>
-              ) : (
-                ""
-              )
+              formValidate.groupName && <span style={{ color: "red", fontSize: "12px" }}>Vui lòng nhập tên nhóm</span>
+              
             }
           >
             <Input
