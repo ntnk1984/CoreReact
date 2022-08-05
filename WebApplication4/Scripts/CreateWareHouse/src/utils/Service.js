@@ -34,7 +34,7 @@ export const getAreaList = async(data, loadingFail) => {
 
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
         },
         body: dataImport,
     });

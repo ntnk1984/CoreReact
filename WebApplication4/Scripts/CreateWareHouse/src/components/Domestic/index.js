@@ -61,11 +61,15 @@ function Domestic(props) {
   const mapKeyGroup = () => {
     const order = groupBy(listOrder, "WAREHOUSEAREA");
     const area = groupBy(listZone, "CODE");
+    console.log(order, " order ");
+    console.log(area, " area ");
 
     Object.keys(area).forEach((k) => (area[k] = []));
+    // console.log(area," area FE");  
     Object.keys(order).forEach((k) => (area[k] ? (area[k] = order[k]) : (area[k] = order[k])));
     setOrderMapKey(area);
   };
+  console.log(orderMapKey," orde mpa key");
   useEffect(() => {
     mapKeyGroup();
   }, [listOrder, listZone]);

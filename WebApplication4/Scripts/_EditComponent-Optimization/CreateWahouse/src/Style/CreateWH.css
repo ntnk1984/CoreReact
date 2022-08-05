@@ -29,27 +29,17 @@
     /* width: 200px; */
     min-width: 100%;
     /* min-height: 250px; */
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
-
-/* .create-new-box::-webkit-scrollbar {
-    width: 5px;
-    padding: 20px 0;
-    border-radius: 30px;
+.create-new-WH {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+    text-align: center;
+    overflow: hidden;
+    min-width: 100%;
+    /* padding: 0 20px; */
 }
-
-.create-new-box::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.create-new-box::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-.create-new-box::-webkit-scrollbar-thumb:hover {
-    background: #555;
-} */
 
 .ant-breadcrumb ol {
     flex-wrap: nowrap;

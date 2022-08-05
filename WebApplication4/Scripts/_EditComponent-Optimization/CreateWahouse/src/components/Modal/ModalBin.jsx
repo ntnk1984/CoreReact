@@ -52,12 +52,7 @@ function CreateNewBin(props) {
     }
   }, [activeAreaNewBin]);
 
-  useEffect(() => {
-    let temp = [];
-    Object.keys(dataAPi).map((key) => dataAPi[key].map((x) => temp.push(key + "-" + x.CODE)));
-    // setValueTree(temp);
-    // form.setFieldsValue({ PROPERTY: temp})
-  }, [activeAreaNewBin]);
+
 
   const [binInfo, setBinInfo] = useState({
     NAME: "",
@@ -108,7 +103,7 @@ function CreateNewBin(props) {
     setIsDisable(true);
     Object.keys(binInfo).forEach((key) => {
       if (binInfo[key] === "") {
-        console.log(key, " key");
+        // console.log(key, " key");
         setBinInfoValidate((pre) => ({
           ...pre,
           [key]: "Vui Lòng Nhập",
@@ -119,7 +114,7 @@ function CreateNewBin(props) {
     });
     if (valid) {
       const { LENGTH, WIDTH, HEIGHT } = binInfo;
-      let total = +((LENGTH * WIDTH * HEIGHT) / 6000).toFixed();
+      let total = +(LENGTH * WIDTH * HEIGHT) ;
       if (total > emptyVolume) {
         setBinInfoValidate((pre) => ({
           ...pre,
@@ -136,6 +131,7 @@ function CreateNewBin(props) {
           Type: "ADD_BIN",
           AddBinRequest: temp,
         };
+        console.log(json_request," json_request");
         let res = await postDataAreaApi(json_request);
         if (res) {
           message.success("Tạo Kệ Thành Công");
@@ -176,15 +172,18 @@ function CreateNewBin(props) {
 
   const TreeSelectRender = () => {
     const onChange = (newValue) => {
+      console.log(newValue," new Value");
       let temp = {
         RECEIVEPROVINCE: [],
         SERVICE: [],
         VULL: [],
       };
       newValue.forEach((x) => {
-        let a = x.split("-");
+        let a = x.split("__");
+        console.log(a," split");
         temp[a[0]].push(a[1]);
       });
+      console.log(temp," temp");
       setBinInfo({ ...binInfo, PROPERTY: temp });
       setValueTree(newValue);
       if (newValue.length) {
@@ -217,7 +216,7 @@ function CreateNewBin(props) {
           return (
             <TreeNode key={`ALL` + key} value={`ALL` + key} title={"Nhóm " + (index + 1)}>
               {propertiesArea[key].map((item) => (
-                <TreeNode key={key + "-" + item.CODE} value={key + "-" + item.CODE} title={item.NAME}></TreeNode>
+                <TreeNode key={key + "__" + item.CODE} value={key + "__" + item.CODE} title={item.NAME}></TreeNode>
               ))}
             </TreeNode>
           );

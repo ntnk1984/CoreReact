@@ -25,7 +25,7 @@ const tailLayout = {
   },
 };
 function CreateNewWareHouse(props) {
-  const { handleDataCreateNewWH, onCancelModal, propertiesWH } = props;
+  const { handleDataCreateNewWH, onCancelModal, propertiesWH,getWarehouseList } = props;
   const [wareHouseInfo, setWareHouseInfo] = useState({
     NAME: "",
     LOCATION: "1 Nguyễn Thái Sơn, Phường 3, Gò Vấp, Thành phố Hồ Chí Minh",
@@ -51,7 +51,7 @@ function CreateNewWareHouse(props) {
   const [wardCode, setWardCode] = useState([]);
 
   /// GGMap
-  console.log(wareHouseInfo, "111");
+  // console.log(wareHouseInfo, "111");
   const [location, setLocation] = useState();
   const [locationAutocomplete, setLocationAutocomplete] = useState();
   const onLocationLoad = (autocomplete) => {
@@ -100,6 +100,7 @@ function CreateNewWareHouse(props) {
     let mapProperty = res.PROPERTY.split(",");
     let temp = {...res, PROPERTY: mapProperty}
     handleDataCreateNewWH({ ...temp });
+    getWarehouseList()
     setTimeout(() => {
       onCancelModal();
       onReset();

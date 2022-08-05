@@ -28,10 +28,9 @@ export const getReleasedOrder = async() => {
     let token = await GetToken();
     let res = await fetch(`${HOST_SHIPMENT}/api/shipment/query`, {
         method: "POST",
-        // credentials : "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
         },
         body: json_request,
     });
@@ -42,16 +41,17 @@ export const getReleasedOrder = async() => {
         return null;
     }
 };
-
-export const postWarehouseApi = async(data) => {
+export const getOrderByLocationStored = async(code) => {
+    var json_request = JSON.stringify({
+        Type: "ORDERSHIPPING_GET_BYSTOREDLOCATION",
+        Request: { LocationToStore: code }
+    });
     let token = await GetToken();
-    let json_request = JSON.stringify(data);
-    let res = await fetch(`${HOST_SHIPMENT}/api/warehouse/add`, {
-        // credentials : "include",
+    let res = await fetch(`${HOST_SHIPMENT}/api/shipment/query`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
         },
         body: json_request,
     });
@@ -63,6 +63,111 @@ export const postWarehouseApi = async(data) => {
     }
 };
 
+export const postWarehouseApi = async(data) => {
+    let token = await GetToken();
+    let json_request = JSON.stringify(data);
+    let res = await fetch(`${HOST_SHIPMENT}/api/warehouse/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: json_request,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        return res.RESPONSES;
+    } else {
+        return null;
+    }
+};
+
+export const updateWarehouseApi = async(data, onReLoad) => {
+    let token = await GetToken();
+    let json_request = JSON.stringify(data);
+    let res = await fetch(`${HOST_SHIPMENT}/api/warehouse/update`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: json_request,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        // onReLoad()
+        return res.RESPONSES;
+    } else {
+        return null;
+    }
+};
+
+export const getSingleWarehouseApi = async() => {
+    let token = await GetToken();
+    var json_request = JSON.stringify({
+        Type: "GET",
+    });
+    let res = await fetch(`${HOST_SHIPMENT}/api/warehouse/getInfo`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: json_request,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        return res.RESPONSES;
+    } else {
+        return null;
+    }
+};
+export const getDataListOrderApi = async() => {
+    let token = await GetToken();
+    var json_request = JSON.stringify({
+        Type: "ORDERSHIPPING_GET_NEEDSTORED",
+    });
+    let res = await fetch(`${HOST_SHIPMENT}/api/shipment/query`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: json_request,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        return res.RESPONSES;
+    } else {
+        return null;
+    }
+};
+export const pushOrdersInTheWHApi = async(IDOrders, CodeWH, remoreState) => {
+    let token = await GetToken();
+    var json_request = JSON.stringify({
+        Type: "WAREHOUSE_DISTRIBUTE_ORDER",
+        Request: {
+            IDOrder: IDOrders,
+            LocationToStore: CodeWH
+        }
+    });
+    let res = await fetch(`${HOST_SHIPMENT}/api/warehouse/store-order`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: json_request,
+    });
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        remoreState()
+        return res.RESPONSES;
+    } else {
+        console.log(res, " Lỗi Rồi Cha Nội Ơi");
+        return null;
+    }
+};
 export const getWarehouseApi = async() => {
     let token = await GetToken();
     let res = await fetch(
@@ -70,11 +175,9 @@ export const getWarehouseApi = async() => {
         new URLSearchParams({
             Type: "WAREHOUSE_GET_ALLDETAIL",
         }), {
-            // credentials : "include",
-
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
             },
         }
     );
@@ -85,6 +188,37 @@ export const getWarehouseApi = async() => {
         return null;
     }
 };
+
+// Categoty ------------------------------------------------------------------//
+
+export const getAllCity = async() => {
+    let res = await fetch(`${HOST_CATEGORY}/api/City/GetAllCityByCountryCode?CountryCode=VN`);
+    res = await res.json();
+    return await res.RESPONSES;
+};
+export const getMerchandiseAttribute = async() => {
+    let res = await fetch(`${HOST_CATEGORY}/api/MerchandiseAttribute/GetAllMerchandiseAttribute`);
+    let city = await getAllCity();
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        let data = res.RESPONSES;
+        let { PROVINCE: foo, ...rest } = data;
+        let _data = { RECEIVEPROVINCE: city, ...rest };
+        return _data;
+    } else {
+        return null;
+    }
+};
+export const getWarehouseAttribute = async() => {
+    let res = await fetch(`${HOST_CATEGORY}/api/WarehouseAttribute/GetAllWarehouseAttribute`);
+    res = await res.json();
+    if (res.STATUSCODE == 200 && res.MESSAGE == "Success") {
+        return res.RESPONSES;
+    } else {
+        return null;
+    }
+};
+
 export const getCountryAll = async() => {
     const res = await fetch(`${HOST_CATEGORY}/api/Country/GetAllCountry`);
 

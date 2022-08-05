@@ -9,26 +9,23 @@ p {
     margin: 0;
 }
 
-.ant-card-head {
-    /* min-height: 48px;
-    margin-bottom: -1px;
-    padding: 0 24px;
-
-    font-weight: 500;
-    font-size: 16px;
-    background: transparent;
-    border-radius: 2px 2px 0 0; */
+.CustomCard .ant-card-head {
     color: #626566;
     opacity: 1 !important;
     border-bottom: 1px solid #afabab !important;
 }
 
-.ant-card-bordered {
+.CustomCard .ant-card-bordered {
     border: 1px solid #afabab;
 }
 
-.ant-card-small>.ant-card-head {
+.CustomCard .ant-card-small>.ant-card-head {
     /* min-height: 36px;
     padding: 0 12px; */
-    font-size: 20px;
+    font-size: 16px;
+}
+
+.ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
+    padding-left: 0px;
+    background-color: #DFDFDE;
 }

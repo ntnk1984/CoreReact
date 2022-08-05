@@ -14,8 +14,14 @@ code {
 
 .slick-slide {
     padding: 0 27px;
+    background-color: #DFDFDE;
+    min-height: 100vh;
 }
 
 .slick-list {
     padding: 0 -27px;
+}
+
+p {
+    margin: 0 !important;
 }

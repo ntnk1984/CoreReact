@@ -48,6 +48,7 @@ function CreateNewBox(props) {
     LENGTH: "",
     PROPERTY: "",
     HEIGHT: "",
+    LOADED:0
   });
   const [boxInfoValidate, setBoxInfoValidate] = useState({
     NAME: "",
@@ -108,7 +109,7 @@ function CreateNewBox(props) {
     // setIsDisable(true);
     Object.keys(boxInfo).forEach((key) => {
       if (boxInfo[key] === "") {
-        console.log(key, " key");
+        // console.log(key, " key");
         setBoxInfoValidate((pre) => ({
           ...pre,
           [key]: "Vui Lòng Nhập",
@@ -119,7 +120,7 @@ function CreateNewBox(props) {
     });
     if (valid) {
       const { LENGTH, WIDTH, HEIGHT } = boxInfo;
-      let total = +((LENGTH * WIDTH * HEIGHT) / 6000).toFixed();
+      let total = +(LENGTH * WIDTH * HEIGHT);
       if (total > emptyVolume) {
         setBoxInfoValidate((pre) => ({
           ...pre,
@@ -145,7 +146,7 @@ function CreateNewBox(props) {
         let res = await postDataBinApi(json_request);
         if (res) {
           message.success("Tạo Ô Thành Công");
-          console.log(res,"ress");
+          // console.log(res,"ress");
           handleListBox({ boxInfo: temp, volume: total, idBin: activeBinNewBox.CODE });
           setBoxInfo({ NAME: "", LOCATION: "", WIDTH: "", LENGTH: "", HEIGHT: "", PROPERTY: "" });
           setBoxInfoValidate({
@@ -190,7 +191,7 @@ function CreateNewBox(props) {
         VULL: [],
       };
       newValue.forEach((x) => {
-        let a = x.split("-");
+        let a = x.split("__");
         temp[a[0]].push(a[1]);
       });
       setBoxInfo({ ...boxInfo, PROPERTY: temp });
@@ -225,7 +226,7 @@ function CreateNewBox(props) {
           return (
             <TreeNode key={`ALL` + key} value={`ALL` + key} title={"Nhóm " + (index + 1)}>
               {propertiesArea[key].map((item) => (
-                <TreeNode key={key + "-" + item.CODE} value={key + "-" + item.CODE} title={item.NAME}></TreeNode>
+                <TreeNode key={key + "__" + item.CODE} value={key + "__" + item.CODE} title={item.NAME}></TreeNode>
               ))}
             </TreeNode>
           );

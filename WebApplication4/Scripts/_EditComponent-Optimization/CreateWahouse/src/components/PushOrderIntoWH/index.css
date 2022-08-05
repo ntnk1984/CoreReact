@@ -1,0 +1,12 @@
+.activeItem {
+    /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    background-color: antiquewhite;
+    padding: 10px;
+}
+
+.default {
+    padding: 10px;
+    transition: all 0.1s linear;
+}

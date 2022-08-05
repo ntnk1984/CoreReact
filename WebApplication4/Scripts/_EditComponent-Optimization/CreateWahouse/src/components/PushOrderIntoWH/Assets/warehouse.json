@@ -1,0 +1,331 @@
+{
+    "ID": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+    "NAME": "Kho Quận 3",
+    "WAREHOUSECODE": "WHVSWFEE",
+    "LOCATION": "30 Đ. Cách Mạng Tháng 8, Phường 6, Quận 3, Thành phố Hồ Chí Minh, Việt Nam",
+    "STATUS": "1",
+    "COUNTRYCODE": "VN",
+    "CITYCODE": "VN-SG",
+    "DISTRICTCODE": "770",
+    "WARDCODE": "27148",
+    "IDCREATOR": "36e636f0-ca00-4590-aa28-05e524c30e91",
+    "IDPARTNER": "XLOG",
+    "HEIGHT": 2000,
+    "LENGTH": 2001,
+    "WIDTH": 2000,
+    "CAPACITY": 8.004E+09,
+    "LOADED": 520203330,
+    "CORORDINATES": "10.77405,106.689003",
+    "PROPERTY": "1,2",
+    "LISTAREA": [{
+            "ID": "aa427869-f1eb-4750-8370-6cd77673d5af",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "Khu Test 1",
+            "CODE": "WHVSWFEE_A02",
+            "CAPACITY": 200200000,
+            "LOADED": 0,
+            "HEIGHT": 400,
+            "LENGTH": 1001,
+            "WIDTH": 500,
+            "LOCATION": "N02",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "5ba886a1-a143-4472-8413-15c1a0835010",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "Khu test 2",
+            "CODE": "WHVSWFEE_A03",
+            "CAPACITY": 200000000,
+            "LOADED": 0,
+            "HEIGHT": 400,
+            "LENGTH": 1000,
+            "WIDTH": 500,
+            "LOCATION": "N03",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "8701f3fa-dc7d-447d-8d70-a7fe77ce9fb7",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "Khu test 3",
+            "CODE": "WHVSWFEE_A04",
+            "CAPACITY": 80000000,
+            "LOADED": 0,
+            "HEIGHT": 400,
+            "LENGTH": 1000,
+            "WIDTH": 200,
+            "LOCATION": "N04",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "67a53bf9-69ad-43a6-9239-faa020c81c19",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "test 4",
+            "CODE": "WHVSWFEE_A05",
+            "CAPACITY": 1,
+            "LOADED": 0,
+            "HEIGHT": 1,
+            "LENGTH": 1,
+            "WIDTH": 1,
+            "LOCATION": "n05",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "db7fd0b8-fd30-4b1d-b164-e50c1cb36c76",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "test 5",
+            "CODE": "WHVSWFEE_A06",
+            "CAPACITY": 1,
+            "LOADED": 0,
+            "HEIGHT": 1,
+            "LENGTH": 1,
+            "WIDTH": 1,
+            "LOCATION": "n06",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "b1ef56cc-062f-43d6-9588-e7a595a4cf21",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "test 6",
+            "CODE": "WHVSWFEE_A07",
+            "CAPACITY": 1,
+            "LOADED": 0,
+            "HEIGHT": 1,
+            "LENGTH": 1,
+            "WIDTH": 1,
+            "LOCATION": "N07",
+            "LISTBIN": [],
+            "PROPERTY": {}
+        },
+        {
+            "ID": "363f1559-01c1-4759-a79a-e8346d971f98",
+            "IDWAREHOUSE": "6a98b7ad-e470-4cec-a128-ba605c1d59d0",
+            "WAREHOUSECODE": null,
+            "NAME": "Khu Dong Lanh 1000",
+            "CODE": "WHVSWFEE_A01",
+            "CAPACITY": 20010000,
+            "LOADED": 13135987,
+            "HEIGHT": 100,
+            "LENGTH": 2001,
+            "WIDTH": 100,
+            "LOCATION": " n01 ",
+            "LISTBIN": [{
+                    "ID": "9c2e6237-9dda-415c-aa7b-cb1f9ac076b4",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B02",
+                    "HEIGHT": 200,
+                    "LENGTH": 100,
+                    "WIDTH": 100,
+                    "CAPACITY": 2000000,
+                    "LOCATION": "N01_B2",
+                    "NAME": "Kệ HCM - Chuyển phát Nhanh",
+                    "LOADED": 0,
+                    "LISTBOX": [],
+                    "PROPERTY": {
+                        "SERVICE": [
+                            "DELIVERY_FAST"
+                        ]
+                    }
+                },
+                {
+                    "ID": "508903fd-08c1-4ef9-8cc4-28f8cc4be210",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B03",
+                    "HEIGHT": 200,
+                    "LENGTH": 200,
+                    "WIDTH": 200,
+                    "CAPACITY": 8000000,
+                    "LOCATION": "N01_B00",
+                    "NAME": "Kệ Tổng Hợp",
+                    "LOADED": -47999084,
+                    "LISTBOX": [{
+                            "ID": "9c8b45e1-d763-4a99-b225-5355c9fa7189",
+                            "IDBIN": "508903fd-08c1-4ef9-8cc4-28f8cc4be210",
+                            "CODE": "WHVSWFEE_A01_B03_X02",
+                            "HEIGHT": 5,
+                            "LENGTH": 5,
+                            "CAPACITY": 125,
+                            "WIDTH": 5,
+                            "LOCATION": " N02",
+                            "NAME": "Ô 01",
+                            "LOADED": 0,
+                            "PROPERTY": {
+                                "SERVICE": [
+                                    "DELIVERY_NORMAL"
+                                ],
+                                "VULL": [
+                                    "FROZEN"
+
+                                ]
+                            }
+                        },
+                        {
+                            "ID": "407edce3-7168-47c9-8dc4-e4d34fb39b84",
+                            "IDBIN": "508903fd-08c1-4ef9-8cc4-28f8cc4be210",
+                            "CODE": "WHVSWFEE_A01_B03_X04",
+                            "HEIGHT": 5,
+                            "LENGTH": 5,
+                            "CAPACITY": 125,
+                            "WIDTH": 5,
+                            "LOCATION": "11",
+                            "NAME": "Ô Tổng Hợp",
+                            "LOADED": 0,
+                            "PROPERTY": {
+                                "RECEIVEPROVINCE": [
+                                    "VN-SG"
+                                ],
+                                "SERVICE": [
+                                    "DELIVERY_NORMAL",
+                                    "DELIVERY_FAST"
+                                ],
+                                "VULL": [
+                                    "FROZEN",
+                                    "VULNERABLE"
+                                ]
+                            }
+                        },
+                        {
+                            "ID": "33815b4d-3d10-4ec1-b954-3375c4a78ca4",
+                            "IDBIN": "508903fd-08c1-4ef9-8cc4-28f8cc4be210",
+                            "CODE": "WHVSWFEE_A01_B03_X03",
+                            "HEIGHT": 5,
+                            "LENGTH": 5,
+                            "CAPACITY": 125,
+                            "WIDTH": 5,
+                            "LOCATION": "N03",
+                            "NAME": "Ô 3",
+                            "LOADED": 0,
+                            "PROPERTY": {
+                                "RECEIVEPROVINCE": [
+                                    "VN-SG",
+                                    "VN-HN",
+                                    "VN-DN"
+                                ],
+                                "SERVICE": [
+                                    "DELIVERY_NORMAL",
+                                    "DELIVERY_FAST"
+                                ],
+                                "VULL": [
+                                    "FROZEN",
+                                    "VULNERABLE"
+                                ]
+                            }
+                        },
+                        {
+                            "ID": "cfdd0ba8-e0a8-4a70-bfe7-7677dcab41cb",
+                            "IDBIN": "508903fd-08c1-4ef9-8cc4-28f8cc4be210",
+                            "CODE": "WHVSWFEE_A01_B03_X01",
+                            "HEIGHT": 10,
+                            "LENGTH": 10,
+                            "CAPACITY": 1000,
+                            "WIDTH": 10,
+                            "LOCATION": " 1",
+                            "NAME": "Test1",
+                            "LOADED": 0,
+                            "PROPERTY": {
+                                "SERVICE": [
+                                    "DELIVERY_NORMAL",
+                                    "DELIVERY_FAST"
+                                ]
+                            }
+                        }
+                    ],
+                    "PROPERTY": null
+                },
+                {
+                    "ID": "1918f5f2-53f8-4b54-ba78-0a3c8b674c53",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B03",
+                    "HEIGHT": 100,
+                    "LENGTH": 100,
+                    "WIDTH": 100,
+                    "CAPACITY": 1000000,
+                    "LOCATION": "1",
+                    "NAME": "Nguyễn Đại Phúc",
+                    "LOADED": 0,
+                    "LISTBOX": [],
+                    "PROPERTY": {}
+                },
+                {
+                    "ID": "5053139f-eb5c-405f-a282-fc4bb01c6273",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B04",
+                    "HEIGHT": 11,
+                    "LENGTH": 111,
+                    "WIDTH": 111,
+                    "CAPACITY": 135531,
+                    "LOCATION": "1",
+                    "NAME": "Nguyễn Đại Phúc",
+                    "LOADED": null,
+                    "LISTBOX": [],
+                    "PROPERTY": {}
+                },
+                {
+                    "ID": "4b489cfc-058b-408e-8f3c-4b0bb80a9f6d",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B05",
+                    "HEIGHT": 100,
+                    "LENGTH": 200,
+                    "WIDTH": 100,
+                    "CAPACITY": 2000000,
+                    "LOCATION": "N01_B5",
+                    "NAME": "Kệ 01111111",
+                    "LOADED": -5999996,
+                    "LISTBOX": [{
+                        "ID": "a2ea9ad6-d2d4-445c-a54e-7666c025bb80",
+                        "IDBIN": "4b489cfc-058b-408e-8f3c-4b0bb80a9f6d",
+                        "CODE": "WHVSWFEE_A01_B05_X01",
+                        "HEIGHT": 1,
+                        "LENGTH": 1,
+                        "CAPACITY": 1,
+                        "WIDTH": 1,
+                        "LOCATION": "1",
+                        "NAME": "Nguyễn Đại Phúc",
+                        "LOADED": 0,
+                        "PROPERTY": {
+                            "RECEIVEPROVINCE": [
+                                "VN-SG",
+                                "VN-HN",
+                                "VN-DN"
+                            ],
+                            "SERVICE": [
+                                "DELIVERY_NORMAL",
+                                "DELIVERY_FAST"
+                            ],
+                            "VULL": [
+                                "FROZEN",
+                                "VULNERABLE"
+                            ]
+                        }
+                    }],
+                    "PROPERTY": null
+                },
+                {
+                    "ID": "0a97d469-ba6b-4fb8-86ac-bb047fd57307",
+                    "IDAREA": "363f1559-01c1-4759-a79a-e8346d971f98",
+                    "CODE": "WHVSWFEE_A01_B06",
+                    "HEIGHT": 1,
+                    "LENGTH": 100,
+                    "WIDTH": 1,
+                    "CAPACITY": 100,
+                    "LOCATION": "N00",
+                    "NAME": "Kệ Test",
+                    "LOADED": null,
+                    "LISTBOX": [],
+                    "PROPERTY": {}
+                }
+            ],
+            "PROPERTY": null
+        }
+    ]
+}

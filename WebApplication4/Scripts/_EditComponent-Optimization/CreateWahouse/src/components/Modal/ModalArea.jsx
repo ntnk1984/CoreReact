@@ -47,18 +47,11 @@ function CreateNewArea(props) {
   const [form] = Form.useForm();
   useEffect(() => {
     if (activeWHNewArea) {
-      // let temp = +((activeWHNewArea.LENGTH * activeWHNewArea.HEIGHT * activeWHNewArea.WIDTH) / 6000).toFixed();
-      // setEmptyVolume(temp - activeWHNewArea.LOADED);
       setEmptyVolume(activeWHNewArea.CAPACITY - activeWHNewArea.LOADED);
     }
   }, [activeWHNewArea]);
 
-  useEffect(() => {
-    let temp = [];
-    Object.keys(dataAPi).map((key) => dataAPi[key].map((x) => temp.push(key + "-" + x.CODE)));
-    setValueTree(temp);
-    form.setFieldsValue({ PROPERTY: temp });
-  }, [activeWHNewArea]);
+
 
   const [areaInfo, setAreaInfo] = useState({
     NAME: "",
@@ -116,7 +109,7 @@ function CreateNewArea(props) {
 
   const handleSubmitForm = async () => {
     let valid = true;
-    setIsDisable(true);
+    // setIsDisable(true);
     Object.keys(areaInfo).forEach((key) => {
       if (areaInfo[key] === "") {
         setAreaInfoValidate((pre) => ({
@@ -129,7 +122,7 @@ function CreateNewArea(props) {
     });
     if (valid) {
       const { LENGTH, WIDTH, HEIGHT } = areaInfo;
-      let total = +((LENGTH * WIDTH * HEIGHT) / 6000).toFixed();
+      let total = +(LENGTH * WIDTH * HEIGHT).toFixed();
       if (total > emptyVolume) {
         setAreaInfoValidate((pre) => ({
           ...pre,
@@ -155,9 +148,9 @@ function CreateNewArea(props) {
           AddAreaRequest: temp,
         };
         let res = await postDataWHApi(json_request);
+        // let res = 0
         if (res) {
-          // console.log(res, " ress 148");
-          handleListArea({ areaInfo: temp, volume: total, idWh: activeWHNewArea.CODE });
+          handleListArea({ areaInfo: res, volume: total, idWh: activeWHNewArea.WAREHOUSECODE });
           setAreaInfo({ NAME: "", LOCATION: "", WIDTH: "", LENGTH: "", HEIGHT: "" });
           setAreaInfoValidate({
             NAME: "",
@@ -202,7 +195,7 @@ function CreateNewArea(props) {
         VULL: [],
       };
       newValue.forEach((x) => {
-        let a = x.split("-");
+        let a = x.split("__");
         temp[a[0]].push(a[1]);
       });
       setAreaInfo({ ...areaInfo, PROPERTY: temp });
@@ -237,7 +230,7 @@ function CreateNewArea(props) {
           return (
             <TreeNode key={`ALL` + key} value={`ALL` + key} title={"Nhóm " + (index + 1)}>
               {propertiesArea[key].map((item) => (
-                <TreeNode key={key + "-" + item.CODE} value={key + "-" + item.CODE} title={item.NAME}></TreeNode>
+                <TreeNode key={key + "__" + item.CODE} value={key + "__" + item.CODE} title={item.NAME}></TreeNode>
               ))}
             </TreeNode>
           );
